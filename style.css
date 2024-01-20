@@ -1,7 +1,7 @@
 
 @font-face{
-  font-family: Titulo;
-  src: url(fontes/DOSSMOOTH.ttf);
+  font-family: Hyper;
+  src: url(fontes/menu.ttf);
 }
 @font-face{
   font-family: DosS;
@@ -25,14 +25,13 @@ body{
     margin:0;
     height: 100%;
     background: rgb(0,0,0);
+    font-family: Hyper;
 }
 
 #cab{
     height:480px;
     width:100%;
     background: linear-gradient(0deg, rgba(0,0,0,1) 0%,rgba(30,30,30,1) 60%, rgba(110,110,110,1) 100%);
-    justify-content: 
-    top: 0px;
     z-index:5;
     display: flex;
     justify-content: center;
@@ -43,7 +42,7 @@ body{
 #cab h1{
     width: 40%;
     text-align: center;
-    font-family: Titulo;
+    font-family: Hyper;
     font-size: 5em;
     color:white;
     z-index: 3;
@@ -53,8 +52,6 @@ body{
 #cabM{ 
     height:30px;
     width:100%;
-    justify-content: 
-    top: 0px;
     z-index:5;
     display: flex;
     justify-content: flex-end;
@@ -65,7 +62,7 @@ body{
 #menu {
 	height:100%;
     width: 35%;
-    font-family: Titulo;
+    font-family: Hyper;
     font-size: 1.5em;
     z-index: 2;
     display: flex;
