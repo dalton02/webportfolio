@@ -1,11 +1,6 @@
 
 @font-face{
-    font-family: Titulo;
-  src: url(fontes/title.ttf);
-    
-}
-@font-face{
-  font-family: Menu;
+  font-family: Titulo;
   src: url(fontes/menu.ttf);
 }
 @font-face{
@@ -48,7 +43,7 @@ body{
 #cab h1{
     width: 40%;
     text-align: center;
-    font-family: Menu;
+    font-family: Titulo;
     font-size: 5em;
     color:white;
     z-index: 3;
@@ -70,7 +65,7 @@ body{
 #menu {
 	height:100%;
     width: 35%;
-    font-family: Menu;
+    font-family: Titulo;
     font-size: 1.5em;
     z-index: 2;
     display: flex;
