@@ -129,14 +129,14 @@ body{
 }
 
 .textInContainer h2{
-    font-family: Hyper;
+    font-family: Dos;
     font-size: 2em;
     text-shadow: 2px 1px black;
     color: white;
 }
 
 .textInContainer h3{
-    font-family: Hyper;
+    font-family: Dos;
     color:white;
     text-align:justify;
     word-break: break-all; 
