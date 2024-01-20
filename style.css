@@ -1,0 +1,228 @@
+
+@font-face{
+    font-family: Titulo;
+  src: url(fontes/title.ttf);
+    
+}
+@font-face{
+  font-family: Menu;
+  src: url(fontes/menu.ttf);
+}
+@font-face{
+  font-family: DosS;
+  src: url(fontes/DOSSMOOTH.ttf);
+    
+}
+@font-face{
+  font-family: Dos;
+  src: url(fontes/DOS.ttf);    
+}
+@font-face{
+  font-family: Dos3D;
+  src: url(fontes/DOS3D.ttf);
+}
+
+html{
+    height: 100%;
+}
+body{
+    overflow-x: hidden;
+    margin:0;
+    height: 100%;
+    background: rgb(0,0,0);
+}
+
+#cab{
+    height:480px;
+    width:100%;
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%,rgba(30,30,30,1) 60%, rgba(110,110,110,1) 100%);
+    justify-content: 
+    top: 0px;
+    z-index:5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#cab h1{
+    width: 40%;
+    text-align: center;
+    font-family: Menu;
+    font-size: 5em;
+    color:white;
+    z-index: 3;
+}
+
+
+#cabM{ 
+    height:30px;
+    width:100%;
+    justify-content: 
+    top: 0px;
+    z-index:5;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    position: relative;
+}
+
+#menu {
+	height:100%;
+    width: 35%;
+    font-family: Menu;
+    font-size: 1.5em;
+    z-index: 2;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+#menu ul, #menu li {
+	margin: 0 auto;
+	padding: 0;
+	list-style: none
+}
+#menu ul {
+    position: relative;
+    text-align: right;
+    display: inline-flex;
+    vertical-align: middle;
+	width: 100%;
+}
+#menu li {
+    
+    display: table-cell;
+	position: relative;
+}
+#menu a {
+	transition: .5s;
+    display: block;
+	line-height: 100%;
+	text-decoration: none;
+	color: #FFFFFF;
+}
+#menu li a:hover {
+    transition: .5s;
+	color: #0099CC;
+}
+
+
+
+
+
+/*      Mexendo em cada bloco animado        */
+.projectsContainer{
+    position: relative;
+    display: block;
+    margin-top: 6em; 
+    margin-left: 1em;
+    margin-right: 30em;
+}
+
+
+/*      Mexendo com os elementos dentro de cada bloco animado        */
+.projectsContainer .inContainer{
+    height: 300px;
+    position: relative;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.inContainer .textInContainer{
+    position: relative;
+    display: block;
+    width: 50%;
+    height: 100%;
+    z-index: 5;
+}
+
+.textInContainer h2{
+    font-family: Dos;
+    font-size: 2em;
+    text-shadow: 2px 1px black;
+    color: white;
+}
+
+.textInContainer h3{
+    font-family: Dos;
+    color:white;
+    text-align:justify;
+    word-break: break-all; 
+    word-wrap: break-word;
+    text-shadow: 2px 1px black;
+}
+
+.inContainer .allHidden{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    transition:1s;
+    clip-path: polygon(97% 0, 100% 0, 100% 29%, 24% 100%, 0 100%, 0 86%);
+    z-index: 4;
+}
+
+.allHidden:hover{
+    transition: 1s;clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%, 0 100%, 0 0);}
+
+
+
+.allHidden .btnHidden{
+    position: relative;
+    width: 99%;
+    height: 99%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    z-index: 6;
+}
+
+
+.allHidden .imageHidden{
+    position: absolute;
+    z-index: 6;
+}
+
+.imageHidden img{
+    transform-origin: 0% 0%;
+    transform: scale(0.78);
+}
+.btnHidden .btn{
+position: absolute;
+width: 17%;
+height: 17%;
+text-align: center;
+font-family: Dos;
+font-size:130%;
+color: #fff;
+background-color: #000000;
+padding: 10px 0px;
+border: solid white 7px;
+box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+transition : 298ms;
+transform: translateY(0);
+display: flex;
+justify-content: center;
+align-items: center;
+cursor: pointer;
+z-index: 10;
+}
+
+.btn:hover{
+transition : 298ms;
+transform : translateY(-0px);
+background-color: #fff;
+color: #000000;
+border: solid 7px black;
+
+}
+
+
+
+
+
+
+
+
+/*ANIMATION*/
+
