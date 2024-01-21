@@ -6,7 +6,7 @@ var height = Math.max( body.scrollHeight, body.offsetHeight,
 
 let spaceX = [];
 let spaceY = [];
-let quantidadeStars = 300;
+let quantidadeStars = 80;
 
 var star = [];
 
