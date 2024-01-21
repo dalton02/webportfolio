@@ -6,7 +6,7 @@ var height = Math.max( body.scrollHeight, body.offsetHeight,
 
 let spaceX = [];
 let spaceY = [];
-let quantidadeStars = 80;
+let quantidadeStars = 300;
 
 var star = [];
 
@@ -37,8 +37,12 @@ function loopStar(){
     star[i].style.opacity = 0.8;
         
     
-        
-    if(posY<0){
+    if(posX<0){
+        calculatePos(spaceX,spaceY);
+        star[i].style.left = spaceX[i];
+        star[i].style.top = spaceY[i];
+    }
+    else if(posY<0){
         calculatePos(spaceX,spaceY);
         star[i].style.left = spaceX[i];
         star[i].style.top = spaceY[i];

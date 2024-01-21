@@ -26,6 +26,7 @@ body{
     height: 100%;
     background: rgb(0,0,0);
     font-family: Hyper;
+    color: white;
 }
 
 #cab{
@@ -220,13 +221,78 @@ color: #000000;
 border: solid 7px black;
 
 }
+/*ABOUT ME PAGE*/
 
 
 
+.kingme{
+    
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 2em;
+    height: 900px;
+    border: 1px white solid;
+    overflow: hidden;
+    display: grid;
+    align-items: center;
+    position: relative;
+    
+}
+.kingme .bigname{
+    width: 100%;
+    height: 60%;
+    z-index: 100;
+    z-index: 2;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    background-color: red;
+}
+
+.kingme div{
+    margin-top: 100px;
+    width: 100%;
+    text-align: center;
+}
 
 
 
+#textoFoda{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 5;
+}
+#imagemTexto{
+    width: 50%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    text-align: center;
+    z-index: 5;
+    color: white;
+    font-size: 9em; 
+    
+}
+#imagemRebelde{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    width: 70%;
+    height: 70%;
+    z-index: -1;
+    
+}
 
-
-/*ANIMATION*/
+#imagemRebelde img{
+    transform-origin: 50% 100%;
+    transform: scale(0.6);
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1)0%,rgba(0,0,0,1)30%, rgba(0,0,0,0)100%);
+    
+}
 
