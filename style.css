@@ -31,7 +31,7 @@ body{
 #cab{
     height:480px;
     width:100%;
-    background: linear-gradient(0deg, rgba(0,0,0,1) 0%,rgba(30,30,30,1) 60%, rgba(110,110,110,1) 100%);
+    background: linear-gradient(0deg, rgba(0,0,0,0.1) 0%,rgba(30,30,30,1) 30%, rgba(110,110,110,1) 100%);
     z-index:5;
     display: flex;
     justify-content: center;
@@ -106,6 +106,7 @@ body{
 .projectsContainer{
     position: relative;
     display: block;
+    z-index: 0;
     margin-top: 6em; 
     margin-left: 1em;
     margin-right: 30em;
@@ -124,7 +125,8 @@ body{
     position: relative;
     display: block;
     width: 50%;
-    height: 100%;
+    height: 100%;    margin-left: 1em;
+
     z-index: 5;
 }
 
@@ -145,6 +147,8 @@ body{
 }
 
 .inContainer .allHidden{
+    box-sizing: border-box;
+    border:5px white solid;
     position: absolute;
     height: 100%;
     width: 100%;
@@ -152,6 +156,7 @@ body{
     transition:1s;
     clip-path: polygon(97% 0, 100% 0, 100% 29%, 24% 100%, 0 100%, 0 86%);
     z-index: 4;
+    overflow: hidden;
 }
 
 .allHidden:hover{
@@ -166,7 +171,14 @@ body{
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
-    z-index: 6;
+    z-index: 6;    
+}
+.btnHidden form{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
 }
 
 
@@ -177,7 +189,7 @@ body{
 
 .imageHidden img{
     transform-origin: 0% 0%;
-    transform: scale(0.78);
+    transform: scale(1,0.4);
 }
 .btnHidden .btn{
 position: absolute;
