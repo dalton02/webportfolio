@@ -6,7 +6,7 @@ var height = Math.max( body.scrollHeight, body.offsetHeight,
 
 let spaceX = [];
 let spaceY = [];
-let quantidadeStars = 300;
+let quantidadeStars = 500;
 
 var star = [];
 
@@ -34,7 +34,6 @@ function loopStar(){
     
     star[i].style.top = (posY - randomSpeedY) + "px";
     star[i].style.left = (posX - randomSpeedX)+"px";
-    star[i].style.opacity = 0.8;
         
     
     if(posX<0){
@@ -58,11 +57,13 @@ function recreate(height){
 var star = document.createElement("div");
 star.style.width = 5+"px";
 star.style.height = 2+"px";
-star.style.backgroundColor= "grey";
+star.style.backgroundColor= "yellow";
 star.style.position = "fixed";
 star.style.left = "0px";
-star.style.zIndex=-1;
+star.style.zIndex= "-1";
+star.style.opacity = .9;
 star.style.top =  height+"px";
+star.style.transform = "rotate(40deg)";
 document.body.appendChild(star);
 return star;
 }

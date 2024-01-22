@@ -32,12 +32,15 @@ body{
 #cab{
     height:480px;
     width:100%;
-    background: linear-gradient(0deg, rgba(0,0,0,0.1) 0%,rgba(30,30,30,1) 30%, rgba(110,110,110,1) 100%);
-    z-index:5;
+    background: linear-gradient(to bottom, rgba(231, 140, 36, 1) 0%,rgba(224, 213, 50, 0.5) 50%,rgba(35, 35, 189, 0.5) 95%,rgba(0, 0, 255, 0)100%),url("imagens/palm.png");
+    background-size: contain;   
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1)0%,rgba(0,0,0,1)50%,rgba(0,0,0,0)95%, rgba(0,0,0,0)100%);
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
+    overflow: hidden;
+    z-index: 2;
 }
 
 #cab h1{
@@ -48,7 +51,6 @@ body{
     color:white;
     z-index: 3;
 }
-
 
 #cabM{ 
     height:30px;
@@ -170,7 +172,7 @@ body{
     width: 99%;
     height: 99%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-end;''
     align-items: flex-end;
     z-index: 6;    
 }
@@ -190,7 +192,7 @@ body{
 
 .imageHidden img{
     transform-origin: 0% 0%;
-    transform: scale(1,0.4);
+    transform: scale(1.3,0.4);
 }
 .btnHidden .btn{
 position: absolute;
@@ -233,7 +235,7 @@ border: solid 7px black;
     height: 900px;
     border: 1px white solid;
     overflow: hidden;
-    display: grid;
+    display: block;
     align-items: center;
     position: relative;
     
@@ -247,11 +249,10 @@ border: solid 7px black;
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    background-color: red;
 }
 
 .kingme div{
-    margin-top: 100px;
+    margin-top: 10px;
     width: 100%;
     text-align: center;
 }
@@ -294,5 +295,7 @@ border: solid 7px black;
     transform: scale(0.6);
     mask-image: linear-gradient(to bottom, rgba(0,0,0,1)0%,rgba(0,0,0,1)30%, rgba(0,0,0,0)100%);
     
+}
+#descme{
 }
 
