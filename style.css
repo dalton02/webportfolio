@@ -17,6 +17,10 @@
   src: url(fontes/DOS3D.ttf);
 }
 
+@font-face{
+  font-family: Vice;
+  src: url(fontes/vicecity.otf);
+}
 html{
     height: 100%;
 }
@@ -24,33 +28,60 @@ body{
     overflow-x: hidden;
     margin:0;
     height: 100%;
-    background: rgb(0,0,0);
+    background: rgba(71,127,255,0.1);
+    background-size: cover;
+    background-blend-mode: screen;
     font-family: Hyper;
     color: white;
 }
 
 #cab{
-    height:480px;
+    height:540px;
     width:100%;
-    background: linear-gradient(to bottom, rgba(231, 140, 36, 1) 0%,rgba(224, 213, 50, 0.5) 50%,rgba(35, 35, 189, 0.5) 95%,rgba(0, 0, 255, 0)100%),url("imagens/palm.png");
-    background-size: contain;   
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,1)0%,rgba(0,0,0,1)50%,rgba(0,0,0,0)95%, rgba(0,0,0,0)100%);
+    background: linear-gradient(0deg, rgba(71,127,255,0) 0%, rgba(71,127,255,1) 70%, rgba(71,127,255,1) 100%);
+    z-index:5;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     overflow: hidden;
-    z-index: 2;
+
+}
+#cab h1{
+    font-family: Hyper;
+    font-size: 8em;
 }
 
-#cab h1{
-    width: 40%;
-    text-align: center;
-    font-family: Hyper;
-    font-size: 5em;
-    color:white;
-    z-index: 3;
+/*Ja centralizado na pagina*/
+#cabT{
+    width: 50%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   }
+
+#cabI{
+    width: 100%;
+    height: 100%;
 }
+#cabI img{
+    transform: scale(2);
+    mix-blend-mode: color-burn;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1)0%,rgba(0,0,0,1)25%,rgba(0,0,0,0)40%, rgba(0,0,0,0)100%);
+}
+
+h1{
+    font-family: Hyper;
+    font-size: 4em;
+    color:black;
+    z-index: 6;
+    text-align: center;
+}
+
+
+
+
 
 #cabM{ 
     height:30px;
@@ -94,7 +125,7 @@ body{
     display: block;
 	line-height: 100%;
 	text-decoration: none;
-	color: #FFFFFF;
+    color: black;
 }
 #menu li a:hover {
     transition: .5s;
@@ -108,28 +139,62 @@ body{
 /*      Mexendo em cada bloco animado        */
 .projectsContainer{
     position: relative;
-    display: block;
+    height: 600px;
     z-index: 0;
     margin-top: 6em; 
-    margin-left: 1em;
-    margin-right: 30em;
+    margin-bottom: 6em; 
+    margin-left: 8em; 
+    margin-right: 8em;
+    display: flex;
+    align-content: space-around;
+    column-gap: 10%;
 }
 
 
-/*      Mexendo com os elementos dentro de cada bloco animado        */
-.projectsContainer .inContainer{
-    height: 300px;
+.myProject{
+    transition: 1s;
+    width: 100%;
+    height: 100%;
     position: relative;
-    margin-bottom: 10px;
+    margin-bottom: 13%;
+}
+/*      Mexendo com os elementos dentro de cada bloco animado        */
+.inContainer{
+    
+    width: 100%;
+    height: 100%;
+    position: relative;
     overflow: hidden;
+    justify-content: center;
+    z-index: 20;
+    display: flex;
+    transform: rotate3d(0, 1, 0, 180deg);
+}
+
+.backContainer, .inContainer{
+  backface-visibility: hidden;
+}
+
+.backContainer{
+    position: absolute;
+    width:100%;
+    height: 100%;
+    top:0;
+}
+.backContainer img{
+    
+    min-width: 100%;
+    min-height: 100%;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .inContainer .textInContainer{
     position: relative;
     display: block;
-    width: 50%;
-    height: 100%;    margin-left: 1em;
-
+    width: 80%;
+    text-align: center;
+    height: 80%;   
     z-index: 5;
 }
 
@@ -151,53 +216,69 @@ body{
 
 .inContainer .allHidden{
     box-sizing: border-box;
-    border:5px white solid;
+    border:5px black solid;
     position: absolute;
     height: 100%;
     width: 100%;
     top: 0;
-    transition:1s;
-    clip-path: polygon(97% 0, 100% 0, 100% 29%, 24% 100%, 0 100%, 0 86%);
     z-index: 4;
     overflow: hidden;
 }
 
-.allHidden:hover{
-    transition: 1s;clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%, 0 100%, 0 0);}
+.justToAn{
+  position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+    border: 5px solid black;
+}
+
+.myProject:hover{
+    cursor: pointer;
+    transition:1s;
+    transform: translateY(-10%);
+}
+
 
 
 
 .allHidden .btnHidden{
     position: relative;
-    width: 99%;
-    height: 99%;
+    width: 100%;
+    height: 100%;
     display: flex;
-    justify-content: flex-end;''
-    align-items: flex-end;
-    z-index: 6;    
+    justify-content: center;
+    align-items:center;
+    z-index: 6;  
 }
 .btnHidden form{
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
+    justify-content: center;
+    align-items:flex-end;
+    margin-bottom: 10%;
 }
 
 
 .allHidden .imageHidden{
     position: absolute;
-    z-index: 6;
+    width: 100%;
+    height: 100%;    z-index: 6;
 }
 
 .imageHidden img{
+    min-width: 100%;
+    min-height: 100%;
+    max-width: 100%;
+    max-height: 100%;
     transform-origin: 0% 0%;
-    transform: scale(1.3,0.4);
-}
+    }
 .btnHidden .btn{
 position: absolute;
-width: 17%;
-height: 17%;
+width: 50%;
+height: 10%;
 text-align: center;
 font-family: Dos;
 font-size:130%;
@@ -212,7 +293,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 cursor: pointer;
-z-index: 10;
+z-index: 12;
 }
 
 .btn:hover{
@@ -229,15 +310,15 @@ border: solid 7px black;
 
 .kingme{
     
-    width: 90%;
-    margin-left: 5%;
+    width: 100%;
+    margin-left: 0%;
     margin-top: 2em;
     height: 900px;
-    border: 1px white solid;
     overflow: hidden;
-    display: block;
+    display: grid;
     align-items: center;
     position: relative;
+    color: black;
     
 }
 .kingme .bigname{
@@ -252,7 +333,7 @@ border: solid 7px black;
 }
 
 .kingme div{
-    margin-top: 10px;
+    margin-top: 100px;
     width: 100%;
     text-align: center;
 }
@@ -268,14 +349,13 @@ border: solid 7px black;
     z-index: 5;
 }
 #imagemTexto{
-    width: 50%;
+    width: 100%;
     height: 50%;
     display: flex;
     justify-content: center;
     align-items: flex-end;
     text-align: center;
     z-index: 5;
-    color: white;
     font-size: 9em; 
     
 }
@@ -295,7 +375,5 @@ border: solid 7px black;
     transform: scale(0.6);
     mask-image: linear-gradient(to bottom, rgba(0,0,0,1)0%,rgba(0,0,0,1)30%, rgba(0,0,0,0)100%);
     
-}
-#descme{
 }
 

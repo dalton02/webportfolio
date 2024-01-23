@@ -9,7 +9,18 @@
     <body>
         
         <div id="cab">
+        
+        <div id="cabT">
+         <div id="cabI">
+        <img src="imagens/palm.png"/>
+        </div>   
         <h1>PROJECTS.IO</h1>
+         
+        <div id="cabI">
+        <img src="imagens/palm.png"/>
+        </div>
+        </div>
+        
         </div>
         
         <div id="cabM">
@@ -20,9 +31,15 @@
         </ul>
         </nav>
             </div>
-        
+        <h1>MY PROJECTS</h1>
+            
         <div class="projectsContainer">
         
+            
+            
+            <div class="myProject" onclick="animation()">   
+               
+            <div class="justToAn" onclick="animation()">            
             <div class="inContainer">    
             <div class="textInContainer">
             <h2>RAYCAST ENGINE</h2>
@@ -38,7 +55,18 @@
             </div>
             </div>
             
+            <div class="backContainer">
+            <img src="imagens/card.png"/>
+                </div>
+                
+            </div>
+            </div>
             
+            
+             <div class="myProject" onclick="animation()">
+                 
+                 
+            <div class="justToAn" onclick="animation()">
             <div class="inContainer">    
             <div class="textInContainer">
             <h2>3D TRIANGLE RENDER</h2>
@@ -53,7 +81,16 @@
             </div>
             </div>
             
+            <div class="backContainer">
+            <img src="imagens/card.png"/>
+                </div>
+                
+            </div>
+            </div>
             
+            <div class="myProject"> 
+            <div class="justToAn" onclick="animation()">
+           
             <div class="inContainer">    
             <div class="textInContainer">
             <h2>SOFT BATTLE</h2>
@@ -68,19 +105,52 @@
             </div>
             </div>
 
+            <div class="backContainer">
+            <img src="imagens/card.png"/>
+                </div>
+                
+            </div>
     
-    
+            </div>
             
             
     </div>
-        
-        
+    
         
         <script>
             function openPreview(){
                 window.open("https://htmlpreview.github.io/?https://github.com/dalton02/raycasting/blob/main/pagina.html");
             }
+                
+            function animation(){
+            let index = Array.prototype.slice.call( document.getElementsByClassName('justToAn'), 0 );
+            index = index.indexOf(event.currentTarget);
+        
+            let projectSelected = document.body.getElementsByClassName("justToAn")[index];
+            
+            if(!projectSelected.style.transform){
+            projectSelected.style.transform = "rotateY(180deg)";
+            }
+            else{
+            let current = projectSelected.style.transform;
+            let actual = current.replace("rotateY(","");
+            let actual2 = actual.replace("deg)","");
+            let change;
+            if(actual2==180)
+            change = current.replace("rotateY(180deg)","rotateY(0deg)");
+            else
+            change = current.replace("rotateY(0deg)","rotateY(180deg)");
+        
+            projectSelected.style.transform = change;   
+            
+            }        
+            }
+            
+        
+            
+    
         </script>
+        
         <script src="style.js" refer></script>
         
     </body>
