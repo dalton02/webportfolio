@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <title>PROJECTS.IO</title>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="css/styleS.css">
     </head>
     <body>
         
@@ -23,140 +23,133 @@
         
         </div>
         
-        <div id="cabM">
-        <nav id='menu'>
-        <ul>
-        <li><a href='https://htmlpreview.github.io/?https://github.com/dalton02/projects.io/blob/main/about.html'>About Me</a></li>
-        <li><a href='http://'>Sexy and Stuffy</a></li>
-        </ul>
-        </nav>
-            </div>
+       
         
+        
+        <div class="containerDiv">
+        <div class="titleProject">
+        <h1>ABOUT ME</h1>
+        
+        </div>
+        
+        <div class="smallContainer">
+        <p>I'm a brazillian dude how kinda likes programming</p>
+        </div>
+        </div>
+        
+        
+        <div class="containerDiv">
+        <div class="titleProject">
+        <h1>MY SKILLS</h1>
+        
+        </div>
+        
+        <div class="smallContainer">
+            <p>Put your skills dummy :3</p>
+        </div>
+        </div>
+        <div class="containerDivP">
         
         <div class="titleProject">
         <h1>MY PROJECTS</h1>
         
         </div>
         
-            <div class="bigContainer">
+            
+        <div class="bigContainer">
+                
+                
         <div class="projectsContainer">
-        
             
             
-            <div class="myProject" onclick="animation()">   
-               
-            <div class="justToAn" onclick="animation()">            
+            
+            <div class="myProject">   
+            
+            <div class="allHidden">
+            
+            <div class="imageHidden"><img src="imagens/ray.gif" style="width:1280px" /> 
+            </div> 
+            
             <div class="inContainer">    
             <div class="textInContainer">
             <h2>RAYCAST ENGINE</h2>
             <h3>Project made in JS using just the basics of the language, its is not a enjoyable game however</h3> 
             </div>
-            <div class="allHidden">
-            <div class="imageHidden"><img src="imagens/ray.gif" style="width:1280px" /> 
-            </div> 
-            <div class="btnHidden">
+                <div class="btnContainer">
                 <form>
                     <button class="btn" onclick= "openPreview()">START</button> </form> 
             </div>
             </div>
-            </div>
             
-            <div class="backContainer">
-            <img src="imagens/js.png"/>
-                </div>
-                
             </div>
                 
             </div>
+      
+            <div class="myProject">   
             
+            <div class="allHidden">
             
-             <div class="myProject" onclick="animation()">
-                 
-                 
-            <div class="justToAn" onclick="animation()">
+            <div class="imageHidden"><img src="imagens/3d.gif" style="width:1280px" /> 
+            </div> 
+            
             <div class="inContainer">    
             <div class="textInContainer">
             <h2>3D TRIANGLE RENDER</h2>
             <h3>Project made in C++, can convert any .obj file in a mesh with triangles, letting you translate,rotate and do whatever you want</h3> 
-            </div>
-            <div class="allHidden">
-            <div class="imageHidden"><img src="imagens/3d.gif" style="width:1280px" /> 
-            </div> 
-            <div class="btnHidden">
+            </div> <div class="btnContainer">
                 <form action="https://github.com/dalton02/engine3D" target="_blank"><button class="btn">START</button> </form>    
            </div>
-            </div>
-            </div>
-            
-            <div class="backContainer">
-            <img src="imagens/cardC.png"/>
-                </div>
                 
             </div>
             </div>
+            </div>
             
-            <div class="myProject"> 
-            <div class="justToAn" onclick="animation()">
-           
+            
+      <div class="myProject">   
+            
+            <div class="allHidden">
+            
+            <div class="imageHidden"><img src="imagens/future.gif" style="width:1280px" /> 
+            </div> 
+            
             <div class="inContainer">    
             <div class="textInContainer">
             <h2>SOMETHING BATTLE</h2>
             <h3>My future PVP First Person Shooter Magic Skills Rampage Game that i someday pretend to create..</h3> 
-            </div>
-            <div class="allHidden">
-            <div class="imageHidden"><img src="imagens/future.gif" style="width:1280px" /> 
-            </div> 
-            <div class="btnHidden">
+            </div>  <div class="btnContainer">
                 <form action="https://github.com/dalton02/engine3D" target="_blank">  <button class="btn">START</button> </form> 
             </div>
-            </div>
-            </div>
-
-            <div class="backContainer">
-            <img src="imagens/cardC.png"/>
-                </div>
-                
-            </div>
-    
+          
             </div>
             
-                </div>
+            </div>
+            
+            </div>
+       
             
         </div>
         
+                </div>
+        <div class="containerDiv">
+        <div class="titleProject">
+        <h1>CONTACT</h1>
+        
+        </div>
+        
+        <div class="smallContainer">
+            <p>  Whatsapp: (88) 99744-6106</p>
+            <p>Instagram: @dalton.gomes___</p>
+        </div>
+        </div>
         
         <script>
+            
+            
+            
             function openPreview(){
                 window.open("https://htmlpreview.github.io/?https://github.com/dalton02/raycasting/blob/main/pagina.html");
             }
                 
-            function animation(){
-            let index = Array.prototype.slice.call( document.getElementsByClassName('justToAn'), 0 );
-            index = index.indexOf(event.currentTarget);
-        
-            let projectSelected = document.body.getElementsByClassName("justToAn")[index];
-            
-            if(!projectSelected.style.transform){
-            projectSelected.style.transform = "rotateY(180deg)";
-            }
-                
-            else{
-            let current = projectSelected.style.transform;
-            let actual = current.replace("rotateY(","");
-            let actual2 = actual.replace("deg)","");
-            let change;
-            if(actual2==180)
-            change = current.replace("rotateY(180deg)","rotateY(0deg)");
-            else
-            change = current.replace("rotateY(0deg)","rotateY(180deg)");
-        
-            projectSelected.style.transform = change;   
-            
-            }
-                
-                
-            }
-            
         
             
     
