@@ -46,17 +46,24 @@ body{
     overflow-x: hidden;
     margin:0;
     height: 100%;
-     font-family: Hyper;
+     font-family: Vice;
     color: white;
     background: rgb(4,4,4);    
     position: relative;
 
 }
+#animation{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: -10;
+    overflow: hidden;
+}
 
 #cab{
     height:500px;
     width:100%;
-    background: linear-gradient(180deg, rgba(20,20,20,1) 0%, rgba(7,7,7,1) 65%, rgba(2,2,2,0.98) 78%, rgba(4,4,4,0) 100%); z-index:5;
+    background: linear-gradient(180deg, rgba(12,12,12,0.5) 0%, rgba(9,9,9,0.5) 65%, rgba(8,8,8,0.0.5) 78%, rgba(4,4,4,0) 100%); z-index:5;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -65,7 +72,7 @@ body{
 
 }
 #cab h1{
-    font-family: Dos;
+    font-family: Quadrado;
     font-size: 5.2em;
     filter:     drop-shadow(1px 2px 0px black) drop-shadow(3px 10px 0px black) drop-shadow(2px 6px 0px black) 
     ;
@@ -110,10 +117,19 @@ body{
     z-index: -1;
 }
 
+/*  CONTAINERS  */
+
 .containerDiv{
     width:100%;
-    height: 80%;
+    height: 100%;
 }
+
+.containerDivS{
+    width:100%;
+    height: 90%;
+
+}
+
 .containerDivP{
     width:100%;
     height: 180%;
@@ -134,9 +150,10 @@ body{
     ;
 }
 
+
 .bigContainer{
     width: 100%;
-    height: 100%;
+    height: 80%;
     display: flex;
     justify-content: center;
     align-content: center;
@@ -144,7 +161,257 @@ body{
 }
 
 
-/*      Mexendo em cada bloco animado        */
+.skillsContainer{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-content: center;
+    align-items: center;
+}
+
+
+
+.smallContainerC{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+    align-items: center;
+}
+
+
+/*SKILL CONTAINER*/
+
+
+
+
+
+.mySkill{
+    width: 25%;
+    height: 100%; 
+    transition:1s;
+    margin-top: 1.5em;
+    transition:  all 1s;
+    
+    background: linear-gradient(0deg, rgba(52,95,180,1) 0%, rgba(25,56,116,1) 55%, rgba(25,56,116,1) 100%); z-index:5;
+ 
+    filter: grayscale(.3) drop-shadow(10px 15px black);
+    container-type: inline-size;
+    container-name: skills-c;
+}
+.mySkill:hover{
+    cursor:pointer;
+    filter: grayscale(0);
+}
+
+
+.inContainerSkill{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    
+    align-items: center;
+    transition: all 1s;
+    overflow: hidden;
+}
+
+
+
+
+.allHiddenSkill{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    align-items: center;
+
+}
+
+.imageHiddenSkill{
+    width: 60%;
+    height: 20%;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    filter: grayscale(.3) drop-shadow(0px 3px white) drop-shadow(0px -3px white)drop-shadow(3px 0px white)drop-shadow(-3px 0px white);
+    margin-top: 20px;
+}
+.imageHiddenSkill img{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+
+
+.textInContainerSkill{
+    width:85%;
+    height:100%;
+    display: flex;
+    flex-direction: column;
+    word-break: break-all;
+    text-align: left;
+    transition: all 1s;
+    margin: 0;
+    overflow: hidden;
+    
+}
+.levelSkill{
+    width: 70%;
+    height: 1vw;
+    border-radius: 10%;
+    margin-bottom: 15px; 
+    border: 1px solid white;
+    box-shadow: 0px 0px 4px 0px rgb(223,200,40);
+background: linear-gradient(90deg, rgba(223,200,40,1) 0%, rgba(223,200,40,1) 25%, rgba(255,255,255,1) 25.1%, rgba(223,200,40,1) 25.5%,
+    
+    
+    rgba(223,200,40,1) 50%, rgba(255,255,255,1) 50.1%, 
+    
+    rgba(223,200,40,1) 50.5%,
+    
+    rgba(223,200,40,1) 75%, rgba(255,255,255,1) 75.1%, 
+    
+    rgba(223,200,40,0) 75.5%, 
+    
+    rgba(223,200,40,0) 100%);
+    
+}
+
+.textInContainerSkill h2{
+    font-family: Future;
+    font-size: 110%;
+    text-align: center;
+    text-shadow: 2px 1px black;
+    color: white;
+}
+
+.textInContainerSkill h3{
+    font-family: Quadrado;
+    color:white;
+    font-size: 110%;
+    text-align: left;
+    height: auto;
+    text-shadow: 2px 1px black;
+    filter:     drop-shadow(1px 0px 0px black) drop-shadow(-1px 0px 0px black)drop-shadow(0px 1px 0px black) drop-shadow(0px -1px 0px black);
+}
+
+
+@container skills-c (max-width: 200px){
+
+.textInContainerSkill h2{
+    font-size: 70%;}
+.textInContainerSkill h3{
+    font-size: 70%;}
+
+}
+
+
+
+
+/*CONTATO*/
+
+.myContact{
+    width: 35%;
+    height: 100%; 
+    transition:  all 1s;
+    display: flex;
+    flex-direction: column;
+    container-type: inline-size;
+    container-name: contacts-c;
+}   
+.myContact:hover{
+    cursor: pointer;
+    transition: all 1.2s;
+    transform: translateY(-10px);
+}
+.imageContact{
+    width: 100%;
+    height: 35%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.5em;
+}
+.imageContact img{
+    max-height: 100%;
+    max-width: 100%;
+    
+}
+
+
+.textInContainerContact{
+    width:90%;
+    height:80%;
+    display: flex;
+    flex-direction: column;
+    word-break: break-all;
+    text-align: left;
+    transition: all 1s;
+    margin: 1em;
+    overflow: hidden;
+    
+}
+
+.textInContainerContact h2{
+    font-family: Quadrado;
+    font-size: 250%;
+    text-align: center;
+    text-shadow: 2px 1px black; 
+    filter:     drop-shadow(1px 0px 0px black) drop-shadow(-1px 0px 0px black)drop-shadow(0px 1px 0px black) drop-shadow(0px -1px 0px black);
+    color: white;
+    margin: 0;
+}
+
+.textInContainerContact h3{
+    font-family: Quadrado;
+    color:white;
+    font-size: 170%;
+    text-align: left;
+    height: auto;
+    text-shadow: 2px 1px black;
+    filter:     drop-shadow(1px 0px 0px black) drop-shadow(-1px 0px 0px black)drop-shadow(0px 1px 0px black) drop-shadow(0px -1px 0px black);
+
+    margin: 0;
+}
+
+@container contacts-c (max-width: 280px){
+
+.imageContact img{
+    max-height: 60%;
+    max-width: 60%;
+    
+}
+.textInContainerContact h2{
+    font-size: 200%;
+}    
+.textInContainerContact h3{
+    font-size: 120%;
+    }
+    
+}
+
+
+
+
+
+/*      PROJECTS       */
+
+
+
+
+
+
+
 .projectsContainer{
     position: relative;
     height: 100%;
@@ -152,7 +419,7 @@ body{
     z-index: 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
     align-content: center;
     align-items: center;
 }
@@ -162,7 +429,6 @@ body{
     width: 100%;
     height: 100%; 
     transition:1s;
-    margin-top: 1.5em;
     transition:  all 1s;
     filter: grayscale(.6);
     border: 1px solid white;
@@ -212,31 +478,53 @@ body{
 
 
 .textInContainer{
+    position: relative;
     width:50%;
     height:100%;
     transition: all 1s;
     background-color: rgba(0,0,0,.7);
     box-shadow: 2em 0px 20px 20px rgba(0,0,0,0.7);
+    container-type: inline-size;
+    container-name: projects-c;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: center;
     
 }
 
 .textInContainer h2{
     font-family: Future;
-    font-size: 2.6em;
     text-align: center;
     text-shadow: 2px 1px black;
     color: white;
+    font-size: 3.2em;
+    width: 80%;
 }
 
 .textInContainer h3{
-    margin-left: 1.1em;
+    margin: 0;
     font-family: Quadrado;
     color:white;
-    font-size: 1.5em;
+    font-size: 1.7em;
     text-align:center;
+    width: 90%;
     text-shadow: 2px 1px black;
     filter:     drop-shadow(1px 0px 0px black) drop-shadow(-1px 0px 0px black)drop-shadow(0px 1px 0px black) drop-shadow(0px -1px 0px black);
 }
+
+@container projects-c (max-width: 400px){
+
+.textInContainer h2{
+    font-size: 2.2em;
+}    
+.textInContainer h3{
+    font-size: 1.2em;
+}
+    
+}
+
 
 .btnContainer{
     width:50%;
@@ -260,7 +548,7 @@ height: 100%;
 
 text-align: center;
 font-family: Future;
-font-size:150%;
+font-size:2vmax;
 color: #fff;
 background-color: #000000;
 
