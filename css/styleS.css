@@ -704,15 +704,15 @@ color: #000000;}
     }
  
 .imageContact img{
-    max-height: 90%;
-    max-width: 90%;
+    max-height: 100%;
+    max-width: 100%;
     
 }
     .textInContainerContact h2{
-        font-size: 4vmax;
+        font-size: 4.2vmax;
     }
     .textInContainerContact h3{
-        font-size: 2.5vmax;
+        font-size: 2.6vmax;
     }
     
     .containerDiv{
@@ -746,10 +746,10 @@ color: #000000;}
         width: 70%;
     }
 .textInContainer h2{
-    font-size: 5vmax;
+    font-size: 5vh;
 }    
 .textInContainer h3{
-    font-size: 1.4vmax;
+    font-size: 1.4vh;
 }
 .myProject{
     width: 100%;
