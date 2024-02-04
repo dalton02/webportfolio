@@ -22,15 +22,179 @@
         <div class="containerDivI">
         <div class="titleProject">
         <h1>ABOUT ME</h1>
-        
         </div>
+            
         <div class="smallContainer">
            
          <div id="myPhoto"></div>
         <p>Hi, my name is Dalton Gomes Lobato, living in the "sugar region" of Cariri in Brazil, i'm very passionate about programming and learning computer paradigms and i am looking for career oportunities to amplify my curriculum and computer skills</p>
         </div>
+        <div id="menuAbout">
+        
+         <ul>
+        <li onclick="change(1)">
+        Education
+        </li>   
+        <li onclick="change(2)">
+        Experience     
+        </li>
+        </ul>
+        </div>
+        <div class="hiddenText">
+        <div class="textAbout">
+            
+           
+            <div class="myAbout">   
+            
+            <div class="allHiddenSkill">
+            
+            <div class="inContainerSkill"
+            style="
+            background: none;      
+            margin:0;"    
+            >    
+            
+            <div class="imageContact" style="background: url(imagens/UFCA.png);
+    background-size: contain; 
+    background-position: center; 
+    background-repeat: no-repeat;">
+            </div>
+            <div class="textInContainerContact"
+            style="display: flex;justify-content: center;"     
+            >
+            
+            <h2 style="text-align: center;word-break: normal;">
+        
+                UNIVERSIDADE FEDERAL DO CARIRI  
+            </h2>
+            <h3>
+            DEGREE: BACHELOR IN COMPUTER SCIENCE
+            </h3>
+            <h3>
+            PERIOD: 6º SEMESTER
+            </h3>
+            
+            </div>
+            
+            </div>
+                
+            </div>
+        
+        </div>
+            
+            
+            
+            
+            <div class="myAbout">   
+            
+            <div class="allHiddenSkill">
+            
+            <div class="inContainerSkill"
+            style="
+            background: none;      
+            margin:0;
+            "    
+            >    
+            
+            <div class="imageContact" style="background:  url(imagens/violeta.png);    background-size: contain; 
+    background-position: center; 
+    background-repeat: no-repeat;">
+            </div>
+            <div class="textInContainerContact"
+            style="display: flex;justify-content: center;">
+            
+            <h2>
+        
+                E.E.E.P Maria Violeta Arraes  
+            </h2>
+            <h3>
+            DEGREE: COMPUTER NETWORK TECHNICIAN
+            </h3>
+            <h3>
+            PERIOD: 2018-2021
+            </h3>
+            
+            </div>
+            
+            </div>
+                
+            </div>
+        
+        </div>
+            
+            
+            
+            
+        </div>
+            
+            
+            
+        <div class="textAbout" style="transform: translateY(100vh);">
+            <div class="myAbout">   
+            
+            <div class="allHiddenSkill">
+            
+            <div class="inContainerSkill"
+            style="
+            background: none;      
+            margin:0;
+            display: flex;
+            justify-content: flex-start;
+                   align-content: flex-start;
+            "    
+            >    
+            
+            <div class="imageContact" style="background:  url(imagens/UFCA.png);    background-size: contain; 
+    background-position: center; 
+    background-repeat: no-repeat;">
+            </div>
+            <div class="textInContainerContact"
+            style="display: flex;justify-content: center;">
+            
+            <h2>
+            I.T TECHNICIAN
+            </h2>
+            <h3>
+            LOCATION: DEPARTAMENT OF IT
+            </h3>
+            <h3>
+            PERIOD: 2022-2023
+            </h3>
+            <h3>
+            TASKS:HARDWARE MAINTANCE, MAINTANCE NETWORK STRUCTURE, VEYON MASTER NETWORK MANAGER
+            </h3>
+            
+            </div>
+            
+            </div>
+                
+            </div>
+        
         </div>
         
+        </div>
+            
+        </div>
+        </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
         
         <div class="containerDivS">
         <div class="titleProject">
@@ -44,7 +208,7 @@
             
             
             
-            <div class="mySkill"  style="background: linear-gradient(0deg, rgba(180,52,52,1) 0%, rgba(116,22,22,1) 55%, rgba(116,22,22,1) 100%);" >   
+            <div class="mySkill"  style="background: none;" >   
             
             <div class="allHiddenSkill">
             
@@ -253,9 +417,7 @@ background: linear-gradient(90deg, rgba(223,200,40,1) 0%, rgba(223,200,40,1) 25%
             <div class="allHiddenSkill">
             
             <div class="inContainerSkill"
-            style="
-            background: linear-gradient(0deg, rgba(52,180,52,1) 0%, rgba(22,116,22,1) 55%, rgba(22,100,22,1) 100%);
-            border: 1px solid white;       
+            style="      
             margin:0;
             justify-content: flex-end;
             justify-items: center;
@@ -293,8 +455,6 @@ background: linear-gradient(90deg, rgba(223,200,40,1) 0%, rgba(223,200,40,1) 25%
             
             <div class="inContainerSkill"
             style="
-            background: linear-gradient(0deg, rgba(182,40,152,1) 0%, rgba(135,20,110,1) 55%,  rgba(155,20,120,1) 100%);
-            border: 1px solid white;       
             margin:0;
             justify-content: center;
             justify-items: center;
@@ -332,7 +492,17 @@ background: linear-gradient(90deg, rgba(223,200,40,1) 0%, rgba(223,200,40,1) 25%
         
         <script>
             
-            
+            function change(item){
+                
+                let shut = document.body.getElementsByClassName("textAbout");
+                
+                for(let i=0;i<shut.length;i++){
+                    shut[i].style.transform = "translateY(100vh)";
+                }
+                
+                let about = document.body.getElementsByClassName("textAbout")[item-1];
+                about.style.transform = "translateY(0)";
+            }
             
             function openPreview(){
                 window.open("https://htmlpreview.github.io/?https://github.com/dalton02/raycasting/blob/main/pagina.html");

@@ -6,9 +6,9 @@ var height = Math.max( body.scrollHeight, body.offsetHeight,
 
 let spaceX = [];
 let spaceY = [];
-let quantidadeStars = 60;
-let quantidadeRains = 5;
-var quantidadeSol=1;
+let quantidadeStars = 150;
+let quantidadeRains = 4;
+var quantidadeSol=2;
 let divA = document.getElementById("animation");
 divA.style.height = height+"px";
 
@@ -26,7 +26,7 @@ for(let i=0;i<quantidadeStars;i++){
 
 for(let i=0;i<quantidadeRains;i++){
     rain[i] = rainer();
-    speedR[i]= Math.random()*14+10;    
+    speedR[i]= Math.random()*14+11;    
 }
 
 function loopStar(){
@@ -47,6 +47,7 @@ function loopStar(){
     star[i].style.left = (parseInt(posX) + 0)+"px";
     
     star[i].style.transform = "rotateZ("+(parseInt(r2)+1)+"deg)";
+        
     let limit = document.body.clientWidth;
     if(posX>limit || posY>height){
         calculatePos(spaceX,spaceY);
@@ -67,6 +68,7 @@ function loopStar(){
     rain[i].style.top = (parseInt(posY) + speedR[i]) + "px";
     rain[i].style.left = (parseInt(posX) + speedR[i])+"px";
     
+        
     let limit = document.body.clientWidth;
     
     if(posX>limit || posY>height){
@@ -98,9 +100,9 @@ star.style.zIndex=-1;
 star.style.overflow="hidden";
 star.style.top = (Math.random()*height) +"px";
 star.style.transform = "rotateZ(-43deg)";
-//star.style.borderRadius = "100%";
-//star.style.boxShadow = "0px 0px "+(parseInt(star.style.width)*3)+"px "+(parseInt(star.style.width)/7)+"px "+star.style.backgroundColor+"";
-star.style.filter = "drop-shadow(0px -30px 1px "+star.style.backgroundColor+")";
+star.style.borderRadius = "10%";
+star.style.boxShadow = "0px 2px 2px 0px "+star.style.backgroundColor+",0px 8px 3px 1px "+star.style.backgroundColor+",0px 10px 1px 1px "+star.style.backgroundColor+",0px 20px 3px 1px "+star.style.backgroundColor+ ",  0px 30px 10px 2px "+star.style.backgroundColor+
+",0px 20px 4px 1px "+star.style.backgroundColor;
 document.body.style.position = "relative";
 document.body.style.margin = "0";
 divA.appendChild(star);
