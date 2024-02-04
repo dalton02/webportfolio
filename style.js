@@ -6,8 +6,9 @@ var height = Math.max( body.scrollHeight, body.offsetHeight,
 
 let spaceX = [];
 let spaceY = [];
-let quantidadeStars = 50;
+let quantidadeStars = 60;
 let quantidadeRains = 5;
+var quantidadeSol=1;
 let divA = document.getElementById("animation");
 divA.style.height = height+"px";
 
@@ -109,35 +110,41 @@ return star;
 }
 
 function solar(i){
+
 var star = document.createElement("div");
-let randomT = (Math.random()*5.5)+0.5;
-let randomB = (Math.random()*300)+170;
-let choose = (Math.random()*100)+0;
+let randomT = (Math.random()*.2)+0.05;
+let randomB = (Math.random()*40)+25;
     
-if(choose>99)   {
-star.style.width = randomB+"px";
-star.style.height = randomB+"px";
+if(quantidadeSol>0)   {
+star.style.width = randomB+"vmax";
+star.style.height = randomB+"vmax";
 star.style.backgroundColor= "rgb(233,246,255)";
 speed[i]=1;
+    quantidadeSol--;
 }else{
 
-if(randomT<3)
+if(randomT<.1){
     speed[i]=1;
-else
+    star.style.opacity = (Math.random()*0.7)+0.1;
+}
+else{
     speed[i]=2;
-star.style.width = randomT+"px";
-star.style.height = randomT+"px";
+    star.style.opacity = (Math.random()*0.99)+0.87;
+}
+
+star.style.width = randomT+"vmax";
+star.style.height = randomT+"vmax";
 
 star.style.backgroundColor= "white";
 }
     
-star.style.opacity = (Math.random()*1)+0.9;
 star.style.position = "absolute";
 star.style.left = Math.random()*document.body.clientWidth+"px";
 star.style.zIndex=-1;
 star.style.overflow = "hidden";
+star.style.border = "none";
 star.style.borderRadius = "100%";
-star.style.boxShadow = "0px 0px "+(parseInt(star.style.width)*3)+"px "+(parseInt(star.style.width)/7)+"px "+star.style.backgroundColor+"";
+star.style.boxShadow = "0px 0px "+((parseFloat(star.style.width))*6)+"vmax "+(parseFloat(star.style.width)/6)+"vmax "+star.style.backgroundColor+"";
 star.style.top = (Math.random()*height) +"px";
 star.style.transform = "rotateZ(90deg)";
 
