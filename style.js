@@ -6,7 +6,7 @@ var height = Math.max( body.scrollHeight, body.offsetHeight,
 
 let spaceX = [];
 let spaceY = [];
-let quantidadeStars = 2500;
+let quantidadeStars = 80;
 let quantidadeRains = 7;
 var quantidadeSol=2;
 let divA = document.getElementById("animation");
