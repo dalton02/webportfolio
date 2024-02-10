@@ -37,6 +37,66 @@
   src: url(../fontes/batman.ttf);
 }
 
+/*BUTON*/
+
+#containerLang{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    height: 10%;
+}
+#changeLang{
+    width: 10%;
+    height: 100%;
+    margin-right: 10%;
+}
+    .onoffswitch {
+        position: relative; width: 100%;
+    }
+    .onoffswitch-checkbox {
+        position: absolute;
+        opacity: 0;
+        pointer-events: pointer;
+    }
+    .onoffswitch-label {
+        display: block; overflow: hidden; cursor: pointer;
+        border: 2px solid #999999; border-radius: 20px;
+    }
+    .onoffswitch-inner {
+        display: block; width: 200%; margin-left: -100%;
+        transition: margin 0.3s ease-in 0s;
+    }
+    .onoffswitch-inner:before, .onoffswitch-inner:after {
+        display: block; float: left; width: 50%; height: 50%; padding: 0; line-height: 250%;
+        margin:0;
+        font-size: 10px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+        box-sizing: border-box;
+    }
+    .onoffswitch-inner:before {
+        content: "PORTUGUÊS";
+        padding-left: 2%;
+        background-color: #1D2B2E; color: #FFFFFF;
+    }
+    .onoffswitch-inner:after {
+        content: "INGLÊS";
+        padding-right: 2%;
+        background-color: #EEEEEE; color: #999999;
+        text-align: right;
+    }
+    .onoffswitch-switch {
+        display: block; width: 10%; margin: 4%;
+        background: #FFFFFF;
+        position: absolute; top: 0; bottom: 0;
+        right: 80%;
+        border: 2px solid #999999; border-radius: 20px;
+        transition: all 0.3s ease-in 0s; 
+    }
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+        margin-left: 0;
+    }
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+        right: 0; 
+    }
 
 
 html{
@@ -82,7 +142,43 @@ body{
     
 }
 
-
+#cabLang{
+    position: fixed;
+    top:0;
+    height: 5vh;
+    width: 100%;
+    display: flex;
+    background-color:linear-gradient(180deg, rgba(12,12,12,0.5) 0%, rgba(9,9,9,0.5) 65%, rgba(8,8,8,0.0.5) 78%, rgba(4,4,4,0) 100%);
+    justify-content: flex-end;
+    align-content: center;
+    align-items: center;
+    column-gap: 5%;
+}
+.language{
+    height:80%;
+    width: auto;
+    display: flex;
+    justify-content: flex-end;
+    align-content: center;
+    align-items: center;
+}
+.language input{
+    opacity: 0;
+}
+.language label{
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(1px 2px 5px black);
+    transition: all .4s;
+}
+.language label:hover{
+    cursor: pointer;
+    filter: drop-shadow(0px 0px 5px black);
+}
+.language img{
+    max-width: 100%;
+    max-height: 100%;
+}
 
 
 .titleProject{
@@ -133,6 +229,7 @@ body{
     align-content: space-around;
     container-type: inline-size;
     container-name: global-c;
+    z-index:9;
 }
 .containerDivS{
     width:100%;
@@ -341,15 +438,14 @@ body{
     transition:1s;
     margin-top: 1.5em;
     transition:  all 1s;
-   
     filter: grayscale(.3) drop-shadow(2px 3px black);
 }
+
 .mySkill:hover{
     cursor:pointer;
-    transform: translateY(-1vmax);
+    transform: translateY(-2vw);
     filter: grayscale(0);
 }
-
 
 .inContainerSkill{
     width: 100%;
@@ -549,6 +645,7 @@ body{
 .myProject:hover{
     cursor:pointer;
     filter: grayscale(0);
+    height: 43%;
 }
 
 
@@ -898,6 +995,105 @@ color: #000000;}
     }
     
     
-    
 }
 
+.alert{
+	background-color:rgba(10, 244, 10,0.6);
+	border: 3px solid rgba(204, 0, 0,0);
+	width: 100%;
+	border-radius: 5px;
+	font-family: Future;
+    font-size: 3vmax;
+	text-align:center;
+	transition: all .7s;
+	opacity:0;
+	clip-path: polygon(50% 0, 50% 0, 50% 100%, 50% 100%);
+}
+
+.emailForm{
+    width: 90%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    transition: all 1.5s;
+
+}
+.emailForm h1{
+    text-align: center;
+    font-family: Future;
+    font-size: 5vmax;
+    filter:     drop-shadow(0px .1vmax 0px black) drop-shadow(.1vmax .2vmax 0px black) 
+    drop-shadow(0px .2vmax 0px black) drop-shadow(.1vmax .2vmax 0px black);
+}
+
+.emailForm form{
+    display: flex;
+    width: 100%;
+    height: 80%;
+    justify-content: flex-start;    
+    align-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    grid-row-gap: 10%;
+}
+
+.emailForm #mySubmit{
+    width: auto;
+	left:50%;
+    border-radius: 5px;
+    border: none;
+    background: none;
+    color: white;
+    font-family: quadrado;
+    font-size: 3vmax;    
+    background: 
+        linear-gradient(90deg, white 50%, transparent 0) repeat-x,
+        linear-gradient(90deg, white 50%, transparent 0) repeat-x;
+    background-size: 16px 1px, 16px 1px, 1px 16px, 1px 16px;
+    background-position: 0 0, 0 100%, 0 0, 100% 0;
+}
+
+.emailForm #mySubmit:hover{
+    cursor: pointer;
+    animation: outlining .3s infinite linear;
+	outline:none;
+}
+.emailForm input[type="text"]{
+    width: 60%;
+    height: 20%;
+    resize: none;
+    border-radius: 10px;
+    border:none;
+	background-color: white;
+    filter: drop-shadow(5px 5px 1px black);
+    font-family: quadrado;
+	font-size: 1.6vmax;
+    padding: 10px 10px 10px 10px;
+	outline:none;
+}
+.emailForm input[type="text"]:hover{
+	outline:none;
+}
+
+
+@keyframes outlining {
+    100% {
+        background-position: 16px 0, -16px 100%, 0 -16px, 100% 16px;
+    }
+} 
+.emailForm textarea{
+    width: 100%;
+    height: 80%;
+    resize: none;
+    border-radius: 10px;
+    border:none;
+    filter: drop-shadow(5px 5px 1px black);
+    font-family: quadrado;
+    padding: 10px 10px 10px 10px;
+    
+}
+.emailForm textarea:focus{
+    border: none;
+    outline: none;
+}
