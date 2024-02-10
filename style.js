@@ -6,9 +6,9 @@ var height = Math.max( body.scrollHeight, body.offsetHeight,
 
 let spaceX = [];
 let spaceY = [];
-let quantidadeStars = 80;
-let quantidadeRains = 7;
-var quantidadeSol=2;
+let quantidadeStars = 240;
+let quantidadeRains = 0;
+var quantidadeSol=4;
 let divA = document.getElementById("animation");
 divA.style.height = height+"px";
 
@@ -50,9 +50,7 @@ function loopStar(){
         
     let limit = document.body.clientWidth;
     if(posX>limit || posY>height){
-        calculatePos(spaceX,spaceY);
-        star[i].style.left = spaceX[i] + "px";
-        star[i].style.top = spaceY[i] + "px";
+        star[i].style.top = (-100) + "px";
     }
             
     }
@@ -115,14 +113,16 @@ function solar(i){
 
 var star = document.createElement("div");
 let randomT = (Math.random()*.2)+0.05;
-let randomB = (Math.random()*40)+25;
+let randomB = (Math.random()*20)+10;
     
 if(quantidadeSol>0)   {
 star.style.width = randomB+"vmax";
 star.style.height = randomB+"vmax";
 star.style.backgroundColor= "rgb(233,246,255)";
+star.style.top = height/quantidadeSol +"px";
+star.style.left = document.body.clientWidth/(quantidadeSol)-document.body.clientWidth/3 +"px";
 speed[i]=1;
-    quantidadeSol--;
+quantidadeSol--;
 }else{
 
 if(randomT<.1){
@@ -137,17 +137,17 @@ else{
 star.style.width = randomT+"vmax";
 star.style.height = randomT+"vmax";
 
+star.style.left = Math.random()*document.body.clientWidth+"px";
+star.style.top = (Math.random()*height) +"px";
 star.style.backgroundColor= "white";
 }
     
 star.style.position = "absolute";
-star.style.left = Math.random()*document.body.clientWidth+"px";
 star.style.zIndex=-1;
 star.style.overflow = "hidden";
 star.style.border = "none";
 star.style.borderRadius = "100%";
 star.style.boxShadow = "0px 0px "+((parseFloat(star.style.width))*6)+"vmax "+(parseFloat(star.style.width)/6)+"vmax "+star.style.backgroundColor+"";
-star.style.top = (Math.random()*height) +"px";
 star.style.transform = "rotateZ(90deg)";
 
 divA.appendChild(star);
@@ -165,3 +165,6 @@ for(let i=0;i<quantidadeStars;i++)
     
     
 }
+$("#animation").click(function(){
+	console.log("S");
+});
