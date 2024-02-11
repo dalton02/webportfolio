@@ -14,14 +14,18 @@ echo  "<script> console.log('au');</script>";
 if(isset($_POST['emailText']) && !empty($_POST['emailText']) && 
 isset($_POST['emailAddress']) && !empty($_POST['emailAddress']) &&
 isset($_POST['nameCompany']) && !empty($_POST['nameCompany'])){
+	
 $conteudo = $_POST['emailText'];
 $remetente = $_POST['emailAddress'];
 $name = $_POST['nameCompany'];
-
+$currentLang = $_POST['languageSelected'];
 $mail = new PHPMailer(true);
 
+
+$bodyPT = "Olá, meu nome é ".$name." e venho através deste email contatar você: <br/>".$conteudo."<br/>Email para contato: ".$remetente;
+$bodyEN = "Hi, my name is ".$name." and i'm here to contact you: <br/>".$conteudo."<br/>Mail for Contact: ".$remetente;
+
 try{
-echo  "<script> console.log('au');</script>";
 $meuEmail = 'dalton.gomes@aluno.ufca.edu.br';
 $mail->isSMTP();
 $mail->Host = 'smtp.gmail.com';
@@ -36,17 +40,34 @@ $mail->Port = 465;
 $mail->setFrom('dalton.gomes@aluno.ufca.edu.br','From '.$name);
 $mail->addAddress($meuEmail,$name);
 $mail->isHtml(true);
-$mail->Subject = "PROPOSTA DE EMPREGO DA PROJECTS.IO";
-$mail->Body = "Olá, meu nome é ".$name." e venho através deste email contatar você: <br/>".$conteudo."<br/>Email para contato: ".$remetente;
+$mail->Subject = "Mensagem da PROJECTS.IO";
+
+if($currentLang == "pt_BR"){
+$mail->Body = $bodyPT;
+}
+else{
+$mail->Body = $bodyEN;
+}
+
 $mail->send(); 
 
+
+$bodyPT = "Olá ".$name.", fico feliz que tenha me contatado. Em breve entrarei em contato com você";
+$bodyEN = "Hi ".$name.", i'm very happy and excited to know that you take interest in my portifolio, soon enough i will be in touch with you";
 
 //Mando uma resposta pro senhor gente boa
 $mail->setFrom('dalton.gomes@aluno.ufca.edu.br','From Dalton Gomes');
 $mail->addAddress($remetente,$name);
 $mail->isHtml(true);
 $mail->Subject = "NO-REPLY PROJECTS.IO";
-$mail->Body = "Olá, fico feliz que tenha me contatado, em breve lhe enviarei uma resposta, mas já adianto que estou ansioso pela proposta :D";
+
+if($currentLang == "pt_BR"){
+$mail->Body = $bodyPT;
+}
+else{
+$mail->Body = $bodyEN;
+}
+
 $mail->send(); 
 
  

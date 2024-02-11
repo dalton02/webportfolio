@@ -9,7 +9,7 @@
     
     <script type="text/javascript">
     
-    var currentLang = "pt_BR";  
+    var currentLang = "en_US";  
     
    
     let texto = {
@@ -44,6 +44,10 @@
         pt_BR: "EXPERIENCIA",
         en_US: "EXPERIENCE"
     },
+    titleTalk:{
+        pt_BR: "FALE COMIGO",
+        en_US: "TALK TO ME"
+    },
     infoEducation:{
         en_US:"<h3>DEGREE: BACHELOR IN COMPUTER SCIENCE </h3><h3> PERIOD: 2018-2021   </h3> ",
         pt_BR:"<h3>NIVEL: BACHALERADO EM CIÊNCIA DA COMPUTAÇÃO</h3> <h3> PERIODO: 2018-2021 </h3>"
@@ -68,6 +72,12 @@
       pt_BR:" Habilidades: <br/>-Manipulação de Memoria<br/>-Computação Gráfica<br/>-Conexão de Sockets<br/>"+         
       "<br/> Curiosidade: <br/>Minha linguagem favorita quando se trata de aprender as origens de algum algoritimo, entender a verdadeira essência dele<br/><br/> Nivel de habilidade: "
     },
+	skillsPhp:{
+	 en_US:" Habilitys: <br/> -Server Side Scripting<br/>-DataBase Manipulation<br/> -HTML Requests<br/>"+         
+      "<br/> Curiosity: When i first start writing in this language i was really confuse with her syntax<br/><br/> Skill Level: ",
+     pt_BR:" Habilidades: <br/> -Linguagem Server Side<br/>-Manipulação de banco de dados<br/> -HTML Requests<br/>"+         
+      "<br/> Curiosidade: Quando comecei a estudar PHP me senti completamente perdido com a sintaxe POG(Programação Orientada a Gambiarra)<br/><br/> Nivel de Habilidade: "    
+	},
     projectsRay:{
         en_US: "<h2>RAYCAST ENGINE</h2><h3>Project made in JS using just the basics of the language, its is not a enjoyable game however</h3> ",
         pt_BR: "  <h2>RAYCAST ENGINE</h2><h3>Projeto feito em javascript, apenas um estudo de projeções tridimensionais a partir de um ambiente 2D</h3> "
@@ -75,8 +85,40 @@
     projects3d:{
         en_US: "<h2>3D TRIANGLE ENGINE</h2><h3>Project made in JS using just the basics of the language, its is not a enjoyable game however</h3> ",
         pt_BR: "  <h2>RENDERIZADOR DE TRIANGULOS</h2><h3>Projeto feito em C++, consegue converter qualquer .obj em um mesh de triangulos,permitindo fazer translação,rotação,escalonamento.(sem uso do opengl)</h3> "
-    }
-    
+    },
+	yourName:{
+		en_US: "Put your name here",
+		pt_BR: "Coloque seu nome aqui"		
+	},
+	yourEmail:{
+		en_US: "Put your email address",
+		pt_BR: "Coloque seu email"		
+	},
+	sendToMe:{
+		en_US: "SEND TO MY EMAIL",
+		pt_BR: "ME ENVIE UM EMAIL"		
+	},
+	bodyEmail:{
+		en_US: "Type your questions/interests here",
+		pt_BR: "Mande suas perguntas aqui ou se tem desejo de me contatar"		
+	},
+	alertFill:{
+	en_US: "FILL THE FORM",
+	pt_BR: "PREENCHA O FORMULARIO"		
+	},
+	alertCaptcha:{
+	en_US: "CAPTCHA INCORRECT",
+	pt_BR: "CAPTCHA INCORRETO"		
+	},
+	alertEmailInvalid:{
+	en_US: "INVALID EMAIL",
+	pt_BR: "EMAIL INVALIDO"		
+	},
+	alertSucess:{
+	en_US: "A EMAIL HAS BEEN SENT TO YOU",
+	pt_BR: "UM EMAIL FOI ENVIADO PARA VOCÊ"		
+	}
+
         
         
     };
@@ -84,6 +126,9 @@
     function traduzir(item,lang){
         document.write(texto[item][lang]);
     }
+	function getTraduzido(item,lang){
+		return (texto[item][lang]);
+	}
     
     
     </script>
@@ -104,7 +149,7 @@
             <img src="imagens/usa.png"/>    
                 </label>
                 </div>
-            <div class="language"> <input type="checkbox" id="2" class="langswitch-checkbox" checked>
+            <div class="language"> <input type="checkbox" id="2" class="langswitch-checkbox">
             <label for="2">
                 <img src="imagens/br.png" onclick="" /></label></div>
                 </div>
@@ -383,26 +428,29 @@ background: linear-gradient(90deg, rgba(223,200,40,1) 0%, rgba(223,200,40,1) 25%
             
             <div class="allHiddenSkill">
             
-            <div class="imageHiddenSkill"><img src="imagens/cardC.png"/> 
+            <div class="imageHiddenSkill"><img src="imagens/cardP.png"/> 
             </div> 
             
             <div class="inContainerSkill">    
             
             <div class="textInContainerSkill">
-            <h3>
-            
-                Habilitys: <br/>
-                -Memory Manipulation<br/>
-                -Graphics Engines<br/>
-                -Sockets Connection<br/>
-                
-                <br/> Curiosity: <br/>
-                By far one of my favorite languages, to build algorithms in scratch i always resort to C language,
-                it just feels more welcome to the basics of learning something
-                <br/>
-                <br/> Skill Level:                
-            </h3> 
-                <div class="levelSkill"></div>
+           <h3>
+                <script>traduzir('skillsPhp',currentLang)</script> 
+				</h3>
+                <div class="levelSkill" style="
+background: linear-gradient(90deg, rgba(223,200,40,1) 0%, rgba(223,200,40,1) 25%, rgba(255,255,255,1) 25.1%, rgba(223,200,40,1) 25.5%,
+    
+    
+    rgba(223,200,40,1) 50%, rgba(255,255,255,1) 50.1%, 
+    
+    rgba(223,200,40,1) 50.5%,
+    
+    rgba(223,200,40,1) 75%, rgba(255,255,255,1) 75.1%, 
+    
+    rgba(223,200,40,0) 75.5%, 
+    
+    rgba(223,200,40,0) 100%);
+" ></div>
             </div>
                 
             </div>
@@ -448,8 +496,7 @@ background: linear-gradient(90deg, rgba(223,200,40,1) 0%, rgba(223,200,40,1) 25%
             <script>traduzir('projectsRay',currentLang);</script> 
             </div>
                 <div class="btnContainer">
-                <form>
-                    <button class="btn" onclick= "openPreview()">START</button> </form> 
+                 <form action="Projects/RayCasting/pagina.html" target="_blank"><button class="btn">START</button> </form>  
             </div>
             </div>
             
@@ -565,17 +612,24 @@ background: linear-gradient(90deg, rgba(223,200,40,1) 0%, rgba(223,200,40,1) 25%
         </div>
         </div>
             
-        <div class="smallContainerC" style="width: 100;height: 80vh;flex-direction: column;margin-bottom: 10%;margin-top: 0;">
+        <div class="smallContainerC" style="width: 100;height: 100vh;flex-direction: column;margin-bottom: 4.5%;margin-top: 0;">
             <div class="alert">A EMAIL HAS BEEN SENT TO YOU</div>
             <div class="emailForm">
-                <h1>TALK TO ME</h1>
+                <h1><script>traduzir('titleTalk',currentLang);</script></h1>
 				
-                <form id="myForm" method="POST">
+                <form id="myForm" autocomplete="off" method="POST">
 				
-					<input type="text" id="yourEmail" name="emailAddress" placeholder="youremail@gmail.com" required>
-					<input type="text" id="yourName" name="nameCompany" placeholder="Your name here" required>
-                    <textarea name="emailText" id="yourText" placeholder="Type your email here." required ></textarea>
-                    <input onclick="showAlert()" type="submit" id="mySubmit" value="SEND TO MY EMAIL">
+					<input type="text" id="yourEmail" name="emailAddress" placeholder="youremail@gmail.com">
+					<input type="text" id="yourName" name="nameCompany" placeholder="Your name here">
+                    <textarea name="emailText" id="yourText" placeholder="Type your email here."></textarea>
+					
+					<div id="containerCaptcha">
+					<input type="text"  name="yourCaptcha" id="yourCaptcha" placeholder="CAPTCHA">
+					<div id="generatedCaptcha">
+					
+					</div>
+					</div>
+                    <input type="submit" id="mySubmit" value="">
                         
                 </form>
             </div>
@@ -589,11 +643,37 @@ background: linear-gradient(90deg, rgba(223,200,40,1) 0%, rgba(223,200,40,1) 25%
         
             <div id="animation"></div>
 
+        
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
             
-       
-          
-            function change(item){
+			//TRADUZIR OS input
+			let allInputs = document.getElementsByTagName("input");
+			//2 3 and 5: email,name and button
+			allInputs[2].placeholder = getTraduzido('yourEmail',currentLang);
+			allInputs[3].placeholder = getTraduzido('yourName',currentLang);
+			allInputs[4].value = ""; //CAPTCHA
+			allInputs[5].value = getTraduzido('sendToMe',currentLang); //BUTTON
+			document.getElementsByTagName("textarea")[0].placeholder = getTraduzido('bodyEmail',currentLang);
+            
+			//GENERATE CAPTCHA
+			var myCap = document.getElementById("generatedCaptcha");
+	
+			generateCap();
+			function generateCap(){
+			let cap = "";
+			const randomchar ="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+			for (let i = 1; i < 5; i++) {
+			cap += ""+randomchar.charAt(
+            Math.random() * randomchar.length)
+			}
+			myCap.innerHTML = cap;
+			}
+			
+			
+			
+			
+			function change(item){
                 
                 let shut = document.body.getElementsByClassName("textAbout");
                 
@@ -605,9 +685,6 @@ background: linear-gradient(90deg, rgba(223,200,40,1) 0%, rgba(223,200,40,1) 25%
                 about.style.transform = "translateY(0)";
             }
             
-            function openPreview(){
-                window.open("https://htmlpreview.github.io/?https://github.com/dalton02/raycasting/blob/main/pagina.html");
-            }
             function openZap(){
                 window.open("https://wa.me/5588997446106");
             }
@@ -617,42 +694,96 @@ background: linear-gradient(90deg, rgba(223,200,40,1) 0%, rgba(223,200,40,1) 25%
 
 				let height = Math.max( body.scrollHeight, body.offsetHeight, 
                 html.clientHeight, html.scrollHeight, html.offsetHeight );
-				window.scrollTo(0, height);
+				window.scrollTo({top:height,behavior: "smooth" });
             }
 			
-			function showAlert(){
+			function showAlert(text,r,g,b){
 				let alerta = document.getElementsByClassName("alert")[0];
 				alerta.style.clipPath="polygon(0 0, 100% 0, 100% 100%, 0 100%)";
 				alerta.style.opacity = 1;
-				setTimeout(removeAlert, 5000);
+				alerta.innerHTML = text;
+				alerta.style.backgroundColor = "rgba("+r+","+g+","+b+",0.6)";
+				alerta.scrollIntoView({ behavior: "smooth" });
+
+				setTimeout(removeAlert, 3000);
 			}
             function removeAlert(){
 				let alerta = document.getElementsByClassName("alert")[0];
-				alerta.style.opacity = 0;			
+				alerta.style.opacity = 0.5;
 				alerta.style.clipPath="polygon(50% 0, 50% 0, 50% 100%, 50% 100%)";	
 				}
+			function checkValidEmail(){
+				let email = (document.getElementById("yourEmail").value).toString();
+				let nome = email.substring(0,email.indexOf("@"));
+				let dominio = email.substring(email.indexOf("@")+1,email.length);
+				if ((nome.length >=1) &&
+					(dominio.length >=3) &&
+					(nome.search("@")==-1) &&
+					(dominio.search("@")==-1) &&
+					(nome.search(" ")==-1) &&
+					(dominio.search(" ")==-1) &&
+					(dominio.search(".")!=-1) &&
+					(dominio.indexOf(".") >=1)&&
+					(dominio.lastIndexOf(".") < dominio.length - 1)) {
+						return true;
+					}
+				else{
+					return false;
+				}
+			
+			}
 	
         </script>
-        
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
+		
+		$(document).ready(function() {
+			$(window).keydown(function(event){
+				if(event.keyCode == 13) {
+				event.preventDefault();
+				return false;
+			}
+		});
+		});
 		
 		$(document).ready(function(){
 			
-			$("form").submit(function(event){
+			$("#myForm").submit(function(event){
 				event.preventDefault()
 				let email = document.getElementById("yourEmail").value
 				let texto = document.getElementById("yourText").value
 				let name = document.getElementById("yourName").value
+				let captcha = document.getElementById("yourCaptcha").value
 				
-				console.log(texto)
-				$.post("sendMail.php",{emailText:texto,emailAddress:email,nameCompany:name},function(data){
+				if(email.trim().length === 0 ||texto.trim().length === 0 ||name.trim().length === 0 || captcha.trim().length === 0){
 					
+					showAlert(getTraduzido("alertFill",currentLang),244, 10, 10)
+				}
+				
+				else{
+				if(checkValidEmail()==true){
+				if(captcha==myCap.innerHTML){
+				showAlert(getTraduzido("alertSucess",currentLang),10, 244, 10)
+				generateCap();
+				$.post("sendMail.php",{emailText:texto,emailAddress:email,nameCompany:name,languageSelected: currentLang},function(data){
+				
+				
+				})
+				
+				}
+				else{
+				showAlert(getTraduzido("alertCaptcha",currentLang),244, 10, 10)
+				}	
+				
+				}else{
+				showAlert(getTraduzido("alertEmailInvalid",currentLang),244,10, 10)
+				}
+				}
+				
+				
 				})
 				
 			})
 			
-		})
 		
 		
 		</script>
