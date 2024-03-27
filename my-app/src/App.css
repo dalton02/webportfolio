@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&display=swap');
+/*
+
+Text color: #5c481d
+Base Color: rgb(247,216,12)
+
+*/html {
+  scroll-behavior: smooth;
+}
+body{
+  margin: 0;
+  padding: 0;
+  background: rgb(247,216,12);
+  color:#006b5e;
+  font-family: "Kode Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+header{
+  position: relative;
+}
+hr{
+  outline: none;
+  background: #5c481d;
+  background-color: rgba(255,255,255,1);
+  box-shadow: 1px 1px 20px black;
+}
+
+.general{
+  width: 100vw;
+  height: 400vh;
+  background: linear-gradient(180deg, #c4fcf0 0%,#c4fcf0 50%, #006b5e 50%, #006b5e 60%, #00c9c8 82%); 
+
+}
+
+.containerHeader{
+  margin: 0;
+  width: 95vw;
+  height: 25%;
+  position: relative;
+  z-index: 999;
+  pointer-events: none;
+}
+
+.myAccounts{
+  margin-top: 5%;
+  width: 50%;
+  height: 5%;
+}
+
+.myAccounts img{
+  filter:contrast(70%);
+  cursor: pointer;
+  transition: .5s;
+  pointer-events: auto;
+}
+.myAccounts img:hover{
+  filter:contrast(100%);
+}
+
+.wrapperHeaderLeft{
+  width:45%;
+  aspect-ratio: 1/1;
+  z-index: 99;
+}
+
+.wrapperPhoto{
+  width: 90%;
+  aspect-ratio: 3/3;
+  position: relative;
+  z-index: 99;  
+}
+.toClip{
+  clip-path: url(#maskPhoto);
+  z-index: 99;
+}
+#myMoldurePhoto{
+  width: 80%;
+  aspect-ratio: 3/3;
+  background: rgb(12,39,247);
+  background: linear-gradient(180deg,#f7d80c 0%, #f7d80c 82%); 
+  position: absolute;
+  border-radius: 100%;
+  z-index: 99;
+}
+.myPhoto{
+  position: absolute;
+  object-fit: contain;
+  transform: scale(1.4) translateY(5%);
+  z-index: 100;
+ }
+.containerHeader h1{
+
+}
+.containerHeader h1:after{
+  content: "BackEnd developer";
+  font-size: 40%;
+}
+
+
+.containerBody{
+  width: 100%;
+  height: 35%;
+  overflow: hidden;
+  position: relative;
+  background-color: #006b5e;
+  clip-path: polygon(0 0, 0 0, 100% 15%, 100% 100%, 100% 100%, 0 85%);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.containerBody2{
+  width: 100vw;
+  height: 150vh;
+  overflow: hidden;
+  position: relative;
+  background-color: #303030;
+  z-index: 5;
+  clip-path: polygon(0 0, 0 0, 100% 15%, 100% 100%, 100% 100%, 0 85%);
+  pointer-events: none;
+}
+.containerCarrossel{
+  height: 60%;
+  width: 100%;
+  position: relative;
+  z-index: 9999;
+}
+
+.containerFooter{
+  width: 100vw;
+  height: 10vh;
+  font-family: 'Butler';
+  font-weight: bold;
+}
+
+.menuStatic{
+  position: fixed;
+  left:0;
+  top:0;
+  margin:0;
+  padding: 15px;
+  z-index: 99999;
+  height: 30vh;
+  width: 10vw;
+  color: #443400;
+  }
+
+li{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+}
+
+
+@media only screen and (max-width:900px){
+
+  .containerHeader{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+
+  .wrapperHeaderLeft{
+    width: 75%;
+  }
+}

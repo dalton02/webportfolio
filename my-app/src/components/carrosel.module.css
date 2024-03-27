@@ -1,0 +1,55 @@
+
+body{
+
+  z-index: 999;
+}
+/*Twisted Spot Pallete*/
+.containerProjects{
+  position: relative;
+  width: 85%;
+  height: 60%;
+  pointer-events: none;
+  transition: 1s;
+  z-index: 999;
+  color: #c4fcf0;
+}
+
+.arrowLeft{
+left:0;
+}
+i{
+  cursor: pointer;
+  position: absolute;
+}
+
+.arrows{
+  position: absolute;
+  width: 95%;
+  height: 100%;
+  z-index: 999;
+  pointer-events: auto;
+  color: #c4fcf0;
+
+}
+
+.arrowRight{
+  right:0;
+}
+.wrapperProject{
+  position: relative;
+  height: 100%;
+  width: 100%;
+  z-index: 999;
+}
+.titleProject{
+  font-size: clamp(2rem, calc(1rem + 2vw), 6rem);
+  text-align: center;
+}
+.subtitleProject{
+  font-size: clamp(1rem, calc(1rem + 1vw), 2rem);
+  text-align:left;
+}
+.divTitle{
+  width: 60%;
+  height: 100%;
+}
