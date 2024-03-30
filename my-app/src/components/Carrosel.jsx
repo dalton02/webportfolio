@@ -1,8 +1,9 @@
 import styles from './carrosel.module.css';
 import {useState,useRef,useEffect} from 'react';
 import '../CSS/framework.css';
+import iconGit from '../SVG/iconGit.svg';
 
-import Phone from '../IMG/phone.png';
+import Pokedex from '../IMG/pokeProject.png';
 
 //Props: name,size,color
 
@@ -33,7 +34,7 @@ function Carrosel(){
 	};
 
 	const car = useRef(null);
-
+/*
 	useEffect( () =>{
 
 		if(init==false)	{
@@ -47,35 +48,59 @@ function Carrosel(){
 
 		},[current]);
 
+*/
+
 
 
 	return (
 	<>
 	
-	<div className={`${styles.arrows} flex-row justify-between items-center `}>
-  <i className={styles.arrowLeft} onClick={removeCountHandler} >Back</i>
-  <i className={styles.arrowRight} onClick={addCountHandler} >Next</i>
-  </div>
-
-  <div className={`${styles.containerProjects} flex-row justify-around items-start get-full`}  ref={car}>
+	<div className={`${styles.box} color2`}>
   
-  <div className={`${styles.wrapperProject} flex-row justify-center`} styles={{
-  }}>
+	  <div className={`${styles.carrosselBox} flex-row`}>	
+	
+		 	<div className={`${styles.typeBox} flex-row justify-around content-center items-center`}>
+		 		<h1 className="normalText"></h1>
 
-  <div className={`${styles.divTitle} flex-column`}>
-  <h1 className={`${styles.titleProject} title`}>NuBank Aplicativo</h1>
-  <h2 className={`${styles.subtitleProject} subtitle`}>
-  Descrição breve falando sobre o aplicativo <br/>
-  Features:<br/>
-  - Credenciais usando SHA-245 <br/>
-  - Accesso Token via Cookies HTTPOnly
- 
-  </h2>
- 	</div>
-  <img src={Phone}/>
+		 		<div className={`${styles.projectBox} flex-column justify-end content-center items-center `}>
+		 		<div className={`${styles.filterBox}`}></div>
+		 		<img src={Pokedex}/>
+		 		<div className={`${styles.projectTitle} flex-column justify-center content-center items-center`}>
+		 		<h2 className="normalText">Pokedex WEB</h2>
+		 		<span className="tinyText flex-row justify-center items-center content-center"> 
+		 				Pokedex armazenada em Postgres e back end em express 
+		 		</span>
+		 		</div>
+		 		</div>
+
+		 		<div className={`${styles.projectBox} flex-column justify-end content-center items-center `}>
+		 		<div className={`${styles.filterBox}`}></div>
+		 		<img src={Pokedex}/>
+		 		<div className={`${styles.projectTitle} flex-column justify-center content-center items-center`}>
+		 		<h2 className="normalText">Pokedex WEB</h2>
+		 		<span className="tinyText flex-row justify-center items-center content-center"> 
+		 				Pokedex armazenada em Postgres e back end em express 
+		 		</span>
+		 		</div>
+		 		</div>
+		 		
+		 		<div className={`${styles.projectBox} flex-column justify-end content-center items-center `}>
+		 		<div className={`${styles.filterBox}`}></div>
+		 		<img src={Pokedex}/>
+		 		<div className={`${styles.projectTitle} flex-column justify-center content-center items-center`}>
+		 		<h2 className="normalText">Pokedex WEB</h2>
+		 		<span className="tinyText flex-row justify-center items-center content-center"> 
+		 				Pokedex armazenada em Postgres e back end em express 
+		 		</span>
+		 		</div>
+		 		</div>
+
+		 	</div>
+  		<div className={`${styles.typeBox} flex-row justify-around`}>
+  			
+  		</div>
   
-  </div>
-
+  	</div>
 
   </div>
 

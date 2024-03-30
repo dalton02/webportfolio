@@ -8,7 +8,8 @@ import React,{Component} from 'react';
 function FieldAsteroid(){
 
  const [asteroids, setAsteroids] = useState([
- 	{ id: 1, xPos: 100, yPos: 100, velX: 2, velY: 2, size: 200, hidden: 10 }
+ 	{ id: 1, xPos: 440, yPos: 400, velX: -0.5, velY: 0, size: 120, hidden: 999999999 },
+  { id: 1, xPos: 140, yPos: 400, velX: 0.5, velY: 0, size: 180, hidden: 999999999 }
  ]);
 
   const handleAsteroidHit = (newXPos, newYPos, newVelX, newVelY,newSize) => {

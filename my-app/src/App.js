@@ -1,15 +1,19 @@
 
 import './CSS/framework.css'; 
 import './App.css'; 
-import './Fonts/fonts.css'; 
-import FieldAsteroid from './components/FieldAsteroid.jsx';
-import Carrosel from './components/Carrosel.jsx';
+import './CSS/fonts.css'; 
+import { useInView, animated } from '@react-spring/web'
 import iconGit from './SVG/iconGit.svg';
 import iconInsta from './SVG/iconInsta.svg';
 import iconLinkedin from './SVG/iconLinkedin.svg';
 import React, { useState, useEffect, useRef } from 'react';
 import Me from './IMG/me.png';
-
+import FieldAsteroid from './components/FieldAsteroid.jsx';
+import Carrosel from './components/Carrosel.jsx';
+import Habilitys from './components/Habilitys.jsx';
+import Languages from './components/Languages.jsx';
+import Hero from './components/Hero.jsx';
+import Container from './components/Container.jsx';
 
 function App() {
 
@@ -48,61 +52,59 @@ function App() {
 
     <div className="general flex-column justify-start items-center content-center">
     
-    <ul className="menuStatic flex-column justify-around content-start items-start">
-    <li onClick={ () => goTo(0)  }>Begin</li>
-    <li onClick={ () => goTo(1)  }>Projects</li>
-    <li onClick={ () => goTo(2)  }>About</li>
-    </ul>
+    <Container 
+    WGG='1800px' HGG='700px'
+    WG='1400px'  HG='600px'
+    WM='1200px'  HM='700px'
+    WP='800px' HP='500px'
+    WPP='400px'  HPP='400px'
+    backColor='#fff6ff' backColorAnt='#fff6ff'
+    backEndColor='54%'
+    >
+    <Hero/>
+    </Container>
 
-    <header className="flex-row justify-around content-start items-center containerHeader" ref={hero}>
-    
-  <div className="wrapperHeaderLeft flex-column justify-center content-center items-center">
-  <div className="wrapperPhoto">
-    <div className="toClip flex-row justify-center items-end get-full">
-   <img className="myPhoto get-full"  src={Me} alt="Me"/>
-   <div id="myMoldurePhoto"></div>
-    </div>
-    </div>
-    <div className="myAccounts normalText flex-row justify-around">
-    <img src={iconGit}/><img src={iconLinkedin}/><img src={iconInsta}/>
-    </div>
-    </div>  
 
-    <h1 className="title flex-column justify-center items-center">
-    Dalton Gomes Lobato
-    </h1>
-    
+    <Container 
+    WGG='1800px' HGG='700px'
+    WG='1400px'  HG='600px'
+    WM='1200px'  HM='600px'
+    WP='800px' HP='1200px'
+    WPP='400px'  HPP='800px'
+    backColor='#1f1926' backColorAnt='#fff6ff' backEndColor='0%'
+    >
+    <h1 className="title color2">O que ofereço?</h1>
+    <Habilitys/>
+    </Container>
 
-    </header>
-  
 
-    <div className="containerBody flex-column justify-center items-center" ref={projects}>
-    <div className="containerCarrossel flex-row justify-center items-center">
+    <Container 
+    WGG='1800px' HGG='900px'
+    WG='1400px'  HG='800px'
+    WM='1200px'  HM='800px'
+    WP='800px' HP='1200px'
+    WPP='400px'  HPP='600px'
+    backColor='#1f1926' backColorAnt='#1f1926' backEndColor='54%'
+   
+    >
+    <h1 className="title color2">Linguagens utilizadas</h1>
+    <Languages/>
+    </Container>
+
+    <Container 
+    WGG='1800px' HGG='900px'
+    WG='1400px'  HG='800px'
+    WM='1200px'  HM='700px'
+    WP='800px' HP='1200px'
+    WPP='400px'  HPP='600px'
+    backColor='#4b4453' backColorAnt='#1f1926' backEndColor='70%'
+   
+    >
+    <h1 className="title color2">Meus projetos</h1>
     <Carrosel/>
-    </div>
-    </div>
-
-    <div className="containerBody2 flex-column justify-start items-center" ref={showcase}>
-    </div>
-
-    
-    <footer className="containerFooter flex-column justify-center items-center content-center">
-    @powered by React
-    </footer>
+    </Container>
 
 
- <FieldAsteroid/>
-
-    <svg viewport="0 0 1 1">
-    <defs>
-    <clipPath id="maskPhoto" clipPathUnits="objectBoundingBox"> 
-         <path d="M 0.1 0.599
-               A 0.4 0.4, 0, 1, 0, 0.9, 0.599 
-               A 0.01 1, 0, 1, 0, 0.1, 0.7
-               Z"/>  
-    </clipPath>
-    </defs>
-    </svg>
     </div>
     </>
   );
