@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/webportfolio/static/css/main.53828374.css",
-    "main.js": "/webportfolio/static/js/main.731d3a2d.js",
+    "main.css": "/webportfolio/static/css/main.3a5bf85c.css",
+    "main.js": "/webportfolio/static/js/main.678de84c.js",
     "static/media/me.png": "/webportfolio/static/media/me.f3c4649cac2cc9ccad85.png",
     "static/media/pokeProject.png": "/webportfolio/static/media/pokeProject.c48ce50d984cf9afb80f.png",
     "static/media/Comfortaa-Regular.ttf": "/webportfolio/static/media/Comfortaa-Regular.886fcced57daea5944e7.ttf",
@@ -31,11 +31,11 @@
     "static/media/desempenho.svg": "/webportfolio/static/media/desempenho.b3ab0092ee8b13f6351f5a4c94a0853c.svg",
     "index.html": "/webportfolio/index.html",
     "static/media/iconLinkedin.svg": "/webportfolio/static/media/iconLinkedin.27a3f479ca1bbb0ceef19e395081fb94.svg",
-    "main.53828374.css.map": "/webportfolio/static/css/main.53828374.css.map",
-    "main.731d3a2d.js.map": "/webportfolio/static/js/main.731d3a2d.js.map"
+    "main.3a5bf85c.css.map": "/webportfolio/static/css/main.3a5bf85c.css.map",
+    "main.678de84c.js.map": "/webportfolio/static/js/main.678de84c.js.map"
   },
   "entrypoints": [
-    "static/css/main.53828374.css",
-    "static/js/main.731d3a2d.js"
+    "static/css/main.3a5bf85c.css",
+    "static/js/main.678de84c.js"
   ]
 }
