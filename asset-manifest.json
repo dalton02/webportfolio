@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/webportfolio/static/css/main.7af9bcb2.css",
-    "main.js": "/webportfolio/static/js/main.79751187.js",
+    "main.css": "/webportfolio/static/css/main.1314b62e.css",
+    "main.js": "/webportfolio/static/js/main.13ddfc16.js",
     "static/media/me.png": "/webportfolio/static/media/me.f3c4649cac2cc9ccad85.png",
     "static/media/voxel.png": "/webportfolio/static/media/voxel.cfd52e397d5cd3f89272.png",
     "static/media/pokeProject.png": "/webportfolio/static/media/pokeProject.c48ce50d984cf9afb80f.png",
@@ -36,11 +36,11 @@
     "static/media/desempenho.svg": "/webportfolio/static/media/desempenho.b3ab0092ee8b13f6351f5a4c94a0853c.svg",
     "index.html": "/webportfolio/index.html",
     "static/media/iconLinkedin.svg": "/webportfolio/static/media/iconLinkedin.27a3f479ca1bbb0ceef19e395081fb94.svg",
-    "main.7af9bcb2.css.map": "/webportfolio/static/css/main.7af9bcb2.css.map",
-    "main.79751187.js.map": "/webportfolio/static/js/main.79751187.js.map"
+    "main.1314b62e.css.map": "/webportfolio/static/css/main.1314b62e.css.map",
+    "main.13ddfc16.js.map": "/webportfolio/static/js/main.13ddfc16.js.map"
   },
   "entrypoints": [
-    "static/css/main.7af9bcb2.css",
-    "static/js/main.79751187.js"
+    "static/css/main.1314b62e.css",
+    "static/js/main.13ddfc16.js"
   ]
 }
