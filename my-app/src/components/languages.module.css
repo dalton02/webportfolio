@@ -1,26 +1,11 @@
 .box{
   width: 60%;
-  height: 70%;
+  height: 100%;
   position: relative;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap:5%;
   align-items: flex-start;
   align-content:flex-start;
   flex-wrap: wrap;
-  z-index: 99999;
  }
-
-@media only screen and (max-width:800px){
-
-
-}
-
-@media only screen and (max-width:400px){
-
- .box{
-  gap: 2%;
- }
-
-}

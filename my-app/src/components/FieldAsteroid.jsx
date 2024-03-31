@@ -5,11 +5,15 @@ import React,{Component} from 'react';
 //Props: name,size,color
 
 
-function FieldAsteroid(){
+function FieldAsteroid(props){
+
+  const initialS = [120,130,100,100];
 
  const [asteroids, setAsteroids] = useState([
- 	{ id: 1, xPos: 440, yPos: 400, velX: -0.5, velY: 0, size: 120, hidden: 999999999 },
-  { id: 1, xPos: 140, yPos: 400, velX: 0.5, velY: 0, size: 180, hidden: 999999999 }
+ 	{ id: 1, xPos: 440, yPos: 450, velX: -0, velY: 0, size: initialS[0], hidden: 999999999 },
+  { id: 1, xPos: 100, yPos: 450, velX: 0, velY: 0, size: initialS[1], hidden: 9999999 },
+  { id: 1, xPos: 1200, yPos: 750, velX: 0, velY: 0, size: initialS[2], hidden: 9999999 },
+  { id: 1, xPos: 1200, yPos: 1350, velX: 1, velY: 0, size: initialS[3], hidden: 31}
  ]);
 
   const handleAsteroidHit = (newXPos, newYPos, newVelX, newVelY,newSize) => {
@@ -25,7 +29,6 @@ function FieldAsteroid(){
 
 		<>
 		{asteroids.map( (asteroid,index) =>
-
 		<Asteroid  
     key = {index}
     id = {asteroid.id}

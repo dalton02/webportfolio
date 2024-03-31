@@ -1,6 +1,6 @@
  .imgBox{
-  position: relative;
-  width: 16%;
+  position: absolute;
+  width: 17%;
   border-radius: 100%;
   box-shadow: inset 0px 0px 0px 13px rgba(0,0,0,0.75);
   aspect-ratio: 1 / 1;
@@ -10,9 +10,11 @@
   justify-content: center;
   align-items: center;
   align-content: center;
-  transition: clip-path calc(var(--delay) + 400ms) ease-in,
+  transition: clip-path calc(  calc(var(--delay)*2) + 700ms) ease-in,
   box-shadow 140ms linear;
- 
+  animation: wiggle calc(var(--delay) + 5500ms) normal infinite linear;
+  top: var(--y);
+  left: var(--x);
  }
  .imgBox img{
   position: absolute;
@@ -44,26 +46,31 @@
   clip-path: circle(1%);
 }
 
+@keyframes wiggle{
+     0% {
+        transform: scale(1) translate(0,0); 
+    }
+    50% {
+         transform: scale(1) translate(0,4%);  
+    }
+    100% {
+        transform: scale(1) translate(0,0);
+    }  
+}
 
 
 @media only screen and (max-width:800px){
- .imgBox img{
-  position: relative;
-  object-fit: contain;
-  min-width: 70%;
-  min-height: 70%;
-  max-width: 70%;
-  max-height:70%;
- }
  .imgBox{
-  width: 29%;
+ box-shadow: inset 0px 0px 0px 5px rgba(0,0,0,0.75);
+ width: 24%;
  }
 
 }
 
 @media only screen and (max-width:400px){
  .imgBox{
-    width: 32%;
-    box-shadow: inset 0px 0px 0px 8px rgba(0,0,0,0.75);
+    box-shadow: inset 0px 0px 0px 3px rgba(0,0,0,0.75);
+    width: 35%;
   }
+  
 }

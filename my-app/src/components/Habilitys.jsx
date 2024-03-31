@@ -144,10 +144,9 @@ function Habilitys(){
 		 
 		 	<animated.div className={`${styles.projectTitle} normalText`} ref={text2} style={springsT2}>
 		 			 		
-			<h2  className='subTitle'>Serviços ADS</h2>
+			<h2  className='subTitle'>Sites Responsivos</h2>
 		 		<span className='normalText'> 
-		 				Ajudando dar um boost na publicidade de sua webpage, anunciando para as 
-		 				midias sociais mais famosas
+        Seu site com design responsivo para todos os dispositivos e plataformas
 		 		</span>
 		 	</animated.div>
 		 	

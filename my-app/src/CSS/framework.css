@@ -22,7 +22,7 @@
 }
 @media only screen and (max-width:900px){
   .title{
-    font-size: 3rem;
+    font-size: 2.5rem;
   }
   .subTitle{
     font-size: 1.5rem;
@@ -37,7 +37,7 @@
 
 @media only screen and (max-width:600px){
   .title{
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
   .subTitle{
     font-size: 1.5rem;
@@ -52,7 +52,7 @@
 
 @media only screen and (max-width:400px){
   .title{
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
   .subTitle{
     font-size: 1rem;

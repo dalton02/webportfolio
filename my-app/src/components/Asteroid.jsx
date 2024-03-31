@@ -2,9 +2,12 @@ import styles from './asteroid.module.css';
 import Rock from '../SVG/rock1.svg'
 import {useState,useRef,useEffect} from 'react';
 import React,{Component} from 'react';
+
 //Props: name,size,color
 
 
+
+  
 class Asteroid extends Component{
 
 	constructor(props){
@@ -169,7 +172,8 @@ class Asteroid extends Component{
 	'--size': `${size}px`,
 	'--time': `${vel}s`,
 	'left': `${xPos}px`,
-	'top': `${yPos}px`
+	'top': `${yPos}px`,
+	'--screen': `${window.innerWidth}`
 	}}
 
 	onMouseDown={this.handleMouseDown}

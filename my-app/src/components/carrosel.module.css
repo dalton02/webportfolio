@@ -1,74 +1,66 @@
+.carrosel{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
+  overflow: hidden;
 
+}
 .box{
-  width: 100%;
+  width: 300%;
   height: 100%;
-  position: relative;
-  overflow: hidden;
-}
-.typeBox{
-  width: 100%;
-  height: 100%;
-}
-.typeBox h1{
   position: absolute;
-  top:0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  align-content: center;
+  transition: all 1s;
 }
-.projectBox{
-  height: 80%;
-  aspect-ratio: 4/6;
-  border-radius: 20% 20% 20% 20% / 14% 14% 10% 10% ;
-  overflow: hidden;
-  position: relative;
-  pointer-events: auto;
+
+.controller{
+  width: 100%;
+  height: 10%;
+  display: flex;
+  top: 0;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+  align-content: center;
+  color: #fef7ff;
+}
+.controller i{
   cursor: pointer;
-  z-index: 10;
+  pointer-events: auto;
+  border: solid #fef7ff;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  z-index: 9999;
 }
-.filterBox{
-  z-index: 10;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  transition: 1s;
+.controller i:nth-child(1){
+  transform: rotate(135deg);
 }
-.projectBox:hover .projectTitle{
-  transform: translateY(0%);
-}
-.projectBox:hover .filterBox{
-  background: rgba(0,0,0,.5);
-}
-.projectBox img{
-  position: absolute;
-  object-fit: contain;
-  min-width: 100%;
-  min-height: 100%;
-  max-width: 120%;
-  max-height: 120%;
-  z-index: 0;
-}
-.projectBox h2{
-  color: white;
-  -webkit-text-stroke: 1px black;
-  margin: 0;
-}
-span{
-  margin: 0;
-  text-align: center;
-  color: black;
+.controller i:nth-child(2){
+  transform: rotate(-45deg);
 }
 
-.projectTitle{
-  position: absolute;
-  background: linear-gradient(0deg, rgba(100,30,233,1) 0%, rgba(156,137,179,0) 100%); 
-  width: 100%;
-  height: 80%;
-  transform: translateY(80%);
-  transition: 1s;
-  z-index: 15;
+@media only screen and (min-width:1400px){
+  .controller{
+    font-size: 2rem;
+  }
 }
-/*Translate in (100/quantity of boxs)%*/
-
-.carrosselBox{
-  position: absolute;
-  width: 200%;
-  height: 100%;
+@media only screen and (max-width:600px){
+  .controller{
+    font-size: 1rem;
+  }
+}
+@media only screen and (max-width:400px){
+ .controller{
+    font-size: .8rem;
+  }
 }

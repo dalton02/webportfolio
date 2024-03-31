@@ -54,7 +54,7 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
 
 @media only screen and (max-width:1000px){
 .box{
-  width: 70%;
+  width: 65%;
   justify-content: center;
 }
 }
@@ -75,7 +75,7 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
     z-index: 999999;
   }
   .projectImg{
-    height: 40%;
+    height: 20%;
   }  
     .projectTitle{
     z-index: 99999;
@@ -103,10 +103,10 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
     width: 90%;
   }
   .projectTitle{
-    height: 60%;
+    height: 49%;
   }
   .projectImg{
-    height: 30%;
+    height: 25%;
   }
 
 }

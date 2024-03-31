@@ -4,10 +4,9 @@ import '../CSS/fonts.css';
 import React from 'react'
 
 const Container = ({children,...props}) => {
-	console.log(props.WGG);
 
 return(
-
+	<>
 	<div 
 	style={{
 		'--sizeWGG': props.WGG,
@@ -20,6 +19,8 @@ return(
   		'--sizeHP': props.HP,
   		'--sizeWPP':props.WPP,
   		'--sizeHPP':props.HPP,
+  		'--sizeWXP':props.WXP,
+  		'--sizeHXP':props.HXP,
   		'--backColor':props.backColor,
   		'--backColorAnt':props.backColorAnt,
   		'--backEndColor':props.backEndColor
@@ -29,9 +30,12 @@ return(
 	className={styles.container}
 	>
 		<div className={styles.children}>{children}</div>
-
-	<div className={styles.background}></div>
+		
+	<div className={styles.background}></div>		
 	</div>
+
+	</>
+
 );
 }
 

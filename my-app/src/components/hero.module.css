@@ -20,10 +20,23 @@
   transition: .5s;
   pointer-events: auto;
   animation: popUp 1.2s ease-in-out normal;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 100%;
+  min-height: 100%;
 }
 .myAccounts img:hover{
   filter:contrast(100%);
 }
+.myAccounts a{
+  height: 100%;
+  width: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
 
 .wrapperHeaderLeft{
   width:46%;
@@ -56,7 +69,7 @@ svg{
   position: absolute;
   object-fit: contain;
   z-index: 1000;
-  animation: minhaEntrada 1.5s ease-in-out normal;
+  transform: scale(0.7) translate(-45%,65%) rotateZ(-30deg);
   transition: all 1.5s;
  }
 .divH1{
@@ -115,6 +128,13 @@ svg{
   transform: translateY(-5px);
 }
 
+.show{
+  transform: scale(1.6) translate(0,0%) rotateZ(0deg);
+}
+.hidden{
+  transform: scale(0.7) translate(-45%,65%) rotateZ(-30deg);
+}
+
 
 @media only screen and (max-width:1100px){
  
@@ -127,7 +147,7 @@ svg{
   }
   .containerHeader{
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     align-content: center;
   }
@@ -137,19 +157,19 @@ svg{
 }
 
 
-
-@media only screen and (max-width:800px){
-
-}
-
 @media only screen and (max-width:600px){
 
   .wrapperHeaderLeft{
-    height: 50%;
+    height: 60%;
   }
   .animationH1{
 height: 2.2rem;
   }
+
+.title::after{
+  height: 1px;
+ }
+
 }
 
 

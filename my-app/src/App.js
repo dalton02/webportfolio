@@ -14,20 +14,12 @@ import Habilitys from './components/Habilitys.jsx';
 import Languages from './components/Languages.jsx';
 import Hero from './components/Hero.jsx';
 import Container from './components/Container.jsx';
-
 function App() {
 
-    const width = document.body.clientWidth;
-    const height = document.body.clientHeight;
-
-
-    const hero = useRef(null);
-    const projects = useRef(null);
-    const showcase = useRef(null);
-
+    
+/*
     function goTo(pos){
 
-        console.log(pos);
         if(pos===0)
         hero.current.scrollIntoView({
             behavior: "smooth",
@@ -46,18 +38,18 @@ function App() {
             block: "center"
           });
     }
-  
+  */
   return (
     <>
 
-    <div className="general flex-column justify-start items-center content-center">
-    
+    <div className="general">
     <Container 
     WGG='1800px' HGG='700px'
     WG='1400px'  HG='600px'
-    WM='1200px'  HM='700px'
-    WP='800px' HP='500px'
-    WPP='400px'  HPP='400px'
+    WM='1366px'  HM='650px'
+    WP='800px' HP='600px'
+    WPP='600px'  HPP='600px'
+    WXP='400px'  HXP='600px'
     backColor='#fff6ff' backColorAnt='#fff6ff'
     backEndColor='54%'
     >
@@ -68,43 +60,48 @@ function App() {
     <Container 
     WGG='1800px' HGG='700px'
     WG='1400px'  HG='600px'
-    WM='1200px'  HM='600px'
+    WM='1366px'  HM='600px'
     WP='800px' HP='1200px'
-    WPP='400px'  HPP='800px'
+    WPP='600px'  HPP='1200px'
+    WXP='400px'  HXP='1200px'
     backColor='#1f1926' backColorAnt='#fff6ff' backEndColor='0%'
     >
+    
     <h1 className="title color2">O que ofereço?</h1>
     <Habilitys/>
+
     </Container>
 
 
     <Container 
-    WGG='1800px' HGG='900px'
-    WG='1400px'  HG='800px'
-    WM='1200px'  HM='800px'
-    WP='800px' HP='1200px'
-    WPP='400px'  HPP='600px'
+    WGG='1800px' HGG='1100px'
+    WG='1400px'  HG='1200px'
+    WM='1366px'  HM='1600px'
+    WP='800px' HP='1600px'
+    WPP='600px'  HPP='1200px'
+    WXP='400px'  HXP='1200px'
     backColor='#1f1926' backColorAnt='#1f1926' backEndColor='54%'
    
     >
     <h1 className="title color2">Linguagens utilizadas</h1>
     <Languages/>
+
     </Container>
 
     <Container 
     WGG='1800px' HGG='900px'
-    WG='1400px'  HG='800px'
-    WM='1200px'  HM='700px'
-    WP='800px' HP='1200px'
-    WPP='400px'  HPP='600px'
-    backColor='#4b4453' backColorAnt='#1f1926' backEndColor='70%'
+    WG='1400px'  HG='900px'
+    WM='1366px'  HM='700px'
+    WP='800px' HP='600px'
+    WPP='600px'  HPP='800px'
+    WPXP='400px'  HXP='600px'
+    backColor='#1f1926' backColorAnt='#1f1926' backEndColor='70%'
    
     >
-    <h1 className="title color2">Meus projetos</h1>
+    <h1 className="title color2">Meus projetos </h1>
     <Carrosel/>
     </Container>
-
-
+    
     </div>
     </>
   );

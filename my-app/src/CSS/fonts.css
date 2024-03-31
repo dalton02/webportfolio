@@ -22,10 +22,18 @@
 
 @font-face {
     font-family: 'Font5';
-    src: url('../Fonts/Blunt.otf') format("opentype");;
+    src: url('../Fonts/Blunt.otf') format("opentype");
 }
 
 @font-face {
     font-family: 'Font6';
     src: url('../Fonts/ZTGatha-SemiBold.ttf');
+}
+@font-face {
+    font-family: 'FontProjectTitle';
+    src: url('../Fonts/FerroRosso.ttf');
+}
+@font-face {
+    font-family: 'FontProjectSubTitle';
+    src: url('../Fonts/Lemands.ttf');
 }

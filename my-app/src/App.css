@@ -1,6 +1,9 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  
 }
 body{
   font-family: "Kode Mono", monospace;
@@ -9,10 +12,12 @@ body{
   font-style: normal;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   align-content: center;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  margin: 0;
 
 }
 

@@ -6,32 +6,13 @@ import '../CSS/fonts.css';
 import Me from '../IMG/me.png'
 import iconGit from '../SVG/iconGit.svg';
 import iconInsta from '../SVG/iconInsta.svg';
-import iconLinkedin from '../SVG/iconLinkedin.svg';
+import iconCV from '../SVG/iconCV.svg';
 //Props: name,size,color
 
 function Hero(){
 	
-    const [minhaFoto,animPhoto] = useInView( ()=>({
-      config:{
-        duration:280,
-        tension:2000,
-        friction:2000
-      },
-      from: {
-        scale: 1,
-        rotate:-45,
-        y: 400,
-        x:-200,
-      },
-      to: {
-        scale: 1.4,
-        rotate:0,
-        y:5,
-        x:0
-    },
-    }),{
-      rootMargin: '0% 0%',
-    });
+    const [minhaFoto,animPhoto] = useInView();
+
      const [icon1,animIcon1] = useInView( ()=>({
       config:{
         duration:200,
@@ -80,6 +61,17 @@ function Hero(){
     });
 
 
+  useEffect(() => {
+    if (animPhoto) {
+      minhaFoto.current.classList.add(`${styles.show}`);
+      minhaFoto.current.classList.remove(`${styles.hidden}`);
+    } else {
+      minhaFoto.current.classList.add(`${styles.hidden}`);
+      minhaFoto.current.classList.remove(`${styles.show}`);
+    }
+
+    }, [animPhoto]);
+
 	return (
 	<>
 	 
@@ -90,16 +82,18 @@ function Hero(){
             <div className={`${styles.toClip} flex-row justify-center items-end get-full`}>
                 
                 <animated.img className={`${styles.myPhoto} get-full`} src={Me} alt="Me" 
-                ref={minhaFoto} style={animPhoto}/>
+                ref={minhaFoto}/>
 
                     <div  className={`${styles.myMoldurePhoto} bgC`} ></div>
                 
                 </div>
             </div>
         <div className={`${styles.myAccounts} normalText flex-row justify-around`}>
-            <animated.img src={iconGit} ref={icon1} style={animIcon1}/>
-            <animated.img src={iconLinkedin} ref={icon2} style={animIcon2}/>
-            <animated.img src={iconInsta} ref={icon3} style={animIcon3}/>
+            <a href="https://github.com/dalton02" target="_blank"><animated.img src={iconGit} ref={icon1} style={animIcon1}/></a>
+            <a  href="../PDF/curriculo.pdf" download><animated.img src={iconCV} ref={icon2} style={animIcon2}/></a>
+            <a href="https://www.instagram.com/dalton.gomes___/" target="_blank">
+              <animated.img src={iconInsta} ref={icon3} style={animIcon3}/>
+            </a>
         </div>
         </div>
         <div className={`${styles.divH1} flex-column justify-center items-center content-center`}>

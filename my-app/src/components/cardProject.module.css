@@ -1,0 +1,250 @@
+.projectBox{
+    background: #fef7ff;
+    width: 800px;
+    border-radius: 1% 1% 1% 1% / 1% 1% 1% 1%  ;
+    aspect-ratio: 6/3;
+    transition: all .5s;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    align-content: center;
+    position: relative;
+    overflow: hidden;
+    z-index: 9999999;
+    box-shadow: 0x 0x 10x 15px white;
+    animation: float 1.3s linear infinite;
+}
+.projectHead{
+    top: 0;
+    width: 100%;
+    height: 10%;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+    z-index: 10;
+    background: #fef7ff;
+    color: black;
+}
+.projectHead h4{
+    margin-left: 3%;
+    font-size: 1rem;
+}
+
+.projectImg{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+.projectImg img{
+    position: relative;
+    max-width: 100%;
+    max-height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+.borderFake{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0px 0px 0px 20px #fef7ff;
+  z-index: 9;
+}
+.projectTitle{
+    height: 60%;
+    width: 100%; 
+    background: white;
+    color:black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    z-index: 8;
+}
+.titleLeft{
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;   
+
+}
+.titleRight{
+    width: 30%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+.projectTitle h2{
+  font-family: "FontProjectTitle", monospace;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-size: 2.8rem;
+
+  margin: 0;
+  margin-left: 5%;
+}
+.projectTitle h3{
+
+  font-family: "Kode Mono", monospace;
+
+    margin: 0;
+    font-size: 1rem;
+    margin-left: 5%;  
+    margin-bottom: 5%;
+    letter-spacing: 1px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+    gap: 1%;
+}
+.titleRight a{
+    padding: 2px 50px 2px 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    font-size: 1.5rem;
+    border: 3px solid black;
+    cursor: pointer;
+    font-family: "Font2", monospace;
+    transition: all .4s;
+    text-decoration: none;
+    color: black;
+}
+.titleRight a:hover{
+    color: white;
+    background: black;
+    border-color: transparent;
+}
+
+@media only screen and (min-width:1400px){
+    .projectBox{
+        width: 1000px;
+    }
+
+}
+@media only screen and (max-width:800px){
+
+    .projectBox{
+    width: 600px;
+    aspect-ratio: 6/3;
+    }
+    .projectTitle h2{
+        font-size: 1.8rem;
+    }
+    .projectTitle h3{
+        font-size: .8rem;
+    }
+    .titleRight a{
+        font-size: 1.3rem;
+    }
+}
+
+
+@media only screen and (max-width:600px){
+
+    .projectBox{
+    width: 400px;
+    aspect-ratio: 4/6;
+    border-radius: 1% 1% 1% 1% / 1% 1% 1% 1%  ;
+    }
+    .projectTitle h2{
+        font-size: 3rem;
+    }
+    .projectTitle h3{
+        font-size: 1rem;
+    }
+.projectTitle{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 10%;
+    align-items: center;
+    align-content: center;
+}
+.titleLeft{
+    width: 100%;
+    height: 40%;
+    justify-content: center;   
+    align-items: center;
+    align-content: center;
+    text-align: center;
+}
+.titleRight{
+    width: 100%;
+    height: 40%;
+    justify-content: center;
+    align-items: center;
+}
+    .projectHead h4{
+        font-size: .8rem;
+        margin-left: 6%;    
+    }
+
+
+}
+
+@media only screen and (max-width:400px){
+    .projectBox{
+    width: 300px;
+    aspect-ratio: 4/6;
+    }
+    .projectTitle h2{
+        font-size: 2.1rem;
+    }
+    .projectTitle h3{
+        font-size: 0.9rem;
+    }
+    .titleRight a{
+        padding: 0;
+        width: 40%;
+        height: 25%;
+        font-size: 1rem;
+    }
+.borderFake{
+     box-shadow: inset 0px 0px 0px 15px #fef7ff;
+}
+
+}
+
+
+@keyframes float{
+    0%{
+        top: 20px;
+    }
+    50%{
+        top: 0px;
+    }
+    100%{
+        top: 20px;
+    }
+
+}
+
+
+.show{
+
+    transform: translate(0) scale(1) rotateZ(0deg);
+  
+}
+.hidden{
+    transform: translate(0) scale(0) rotateZ(-40deg);
+
+}
