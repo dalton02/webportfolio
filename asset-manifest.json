@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/webportfolio/static/css/main.4a7766c9.css",
-    "main.js": "/webportfolio/static/js/main.8de58fed.js",
+    "main.js": "/webportfolio/static/js/main.d6c7ea49.js",
     "static/media/me.png": "/webportfolio/static/media/me.33be0ce1bd853176e641.png",
     "static/media/voxel.png": "/webportfolio/static/media/voxel.cfd52e397d5cd3f89272.png",
     "static/media/Comfortaa-Regular.ttf": "/webportfolio/static/media/Comfortaa-Regular.886fcced57daea5944e7.ttf",
@@ -37,10 +37,10 @@
     "index.html": "/webportfolio/index.html",
     "static/media/iconLinkedin.svg": "/webportfolio/static/media/iconLinkedin.27a3f479ca1bbb0ceef19e395081fb94.svg",
     "main.4a7766c9.css.map": "/webportfolio/static/css/main.4a7766c9.css.map",
-    "main.8de58fed.js.map": "/webportfolio/static/js/main.8de58fed.js.map"
+    "main.d6c7ea49.js.map": "/webportfolio/static/js/main.d6c7ea49.js.map"
   },
   "entrypoints": [
     "static/css/main.4a7766c9.css",
-    "static/js/main.8de58fed.js"
+    "static/js/main.d6c7ea49.js"
   ]
 }
