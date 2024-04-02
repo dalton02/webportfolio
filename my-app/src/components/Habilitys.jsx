@@ -129,7 +129,7 @@ function Habilitys(){
 		 	<animated.div className={`${styles.projectTitle} normalText`} ref={text1} style={springsT}>
 		 	<h2  className='subTitle'>Segurança WEB</h2>
 		 		<span  className='normalText'> 
-		 				Serviços oferecendo proteção extrema ao servidor contra 
+		 				Serviços oferecendo proteção extrema ao seu servidor contra 
 		 				ataques maliciosos e furto de dados
 		 		</span>
 		 	</animated.div>
@@ -160,9 +160,9 @@ function Habilitys(){
 		 
 		 	<animated.div className={`${styles.projectTitle} normalText`} ref={text3} style={springsT3}>
 		 	
-		<h2 className='subTitle'>Boost Performance</h2>
+		<h2 className='subTitle'>Aplicações escalaveis</h2>
 		 		<span className='normalText'> 
-		 				Com seu servidor escalado você vai esquecer problemas de sobrecarregamento de acessos do usuario
+		 				Construo soluções digitais robustas e flexíveis, prontas para escalar conforme sua empresa cresce
 		 		</span>
 
 		 	</animated.div>
