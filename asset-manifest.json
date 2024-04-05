@@ -1,13 +1,14 @@
 {
   "files": {
     "main.css": "/webportfolio/static/css/main.4a7766c9.css",
-    "main.js": "/webportfolio/static/js/main.7964b4a2.js",
+    "main.js": "/webportfolio/static/js/main.7032dd8f.js",
     "static/media/me.png": "/webportfolio/static/media/me.33be0ce1bd853176e641.png",
     "static/media/voxel.png": "/webportfolio/static/media/voxel.cfd52e397d5cd3f89272.png",
     "static/media/Comfortaa-Regular.ttf": "/webportfolio/static/media/Comfortaa-Regular.886fcced57daea5944e7.ttf",
     "static/media/Retrow.ttf": "/webportfolio/static/media/Retrow.6f8784da3896cbbd7f9f.ttf",
     "static/media/ZTGatha-SemiBold.ttf": "/webportfolio/static/media/ZTGatha-SemiBold.cf2ecd3f850d9bf0b2a2.ttf",
     "static/media/ray.png": "/webportfolio/static/media/ray.26279b69d22d9d40ad82.png",
+    "static/media/curriculo.pdf": "/webportfolio/static/media/curriculo.493a9119368363ff9ff5.pdf",
     "static/media/BebasNeue-Regular.ttf": "/webportfolio/static/media/BebasNeue-Regular.c501e16fa3f0781f9d73.ttf",
     "static/media/Rublack.otf": "/webportfolio/static/media/Rublack.c135a66cd52d0db29c95.otf",
     "static/media/FerroRosso.ttf": "/webportfolio/static/media/FerroRosso.161dd133ba45cb0f46fd.ttf",
@@ -37,10 +38,10 @@
     "index.html": "/webportfolio/index.html",
     "static/media/iconLinkedin.svg": "/webportfolio/static/media/iconLinkedin.27a3f479ca1bbb0ceef19e395081fb94.svg",
     "main.4a7766c9.css.map": "/webportfolio/static/css/main.4a7766c9.css.map",
-    "main.7964b4a2.js.map": "/webportfolio/static/js/main.7964b4a2.js.map"
+    "main.7032dd8f.js.map": "/webportfolio/static/js/main.7032dd8f.js.map"
   },
   "entrypoints": [
     "static/css/main.4a7766c9.css",
-    "static/js/main.7964b4a2.js"
+    "static/js/main.7032dd8f.js"
   ]
 }
