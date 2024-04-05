@@ -7,6 +7,7 @@ import Me from '../IMG/me.png'
 import iconGit from '../SVG/iconGit.svg';
 import iconInsta from '../SVG/iconInsta.svg';
 import iconCV from '../SVG/iconCV.svg';
+import Curriculo from '../PDF/curriculo.pdf';
 //Props: name,size,color
 
 function Hero(){
@@ -90,7 +91,7 @@ function Hero(){
             </div>
         <div className={`${styles.myAccounts} normalText flex-row justify-around`}>
             <a href="https://github.com/dalton02" target="_blank"><animated.img src={iconGit} ref={icon1} style={animIcon1}/></a>
-            <a  href="../PDF/curriculo.pdf" download><animated.img src={iconCV} ref={icon2} style={animIcon2}/></a>
+            <a  href={Curriculo} download="curriculo.pdf"><animated.img src={iconCV} ref={icon2} style={animIcon2}/></a>
             <a href="https://www.instagram.com/dalton.gomes___/" target="_blank">
               <animated.img src={iconInsta} ref={icon3} style={animIcon3}/>
             </a>
