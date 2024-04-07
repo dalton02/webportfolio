@@ -1,9 +1,10 @@
 {
   "files": {
     "main.css": "/webportfolio/static/css/main.4a7766c9.css",
-    "main.js": "/webportfolio/static/js/main.7032dd8f.js",
+    "main.js": "/webportfolio/static/js/main.7e5dfb22.js",
     "static/media/me.png": "/webportfolio/static/media/me.33be0ce1bd853176e641.png",
     "static/media/voxel.png": "/webportfolio/static/media/voxel.cfd52e397d5cd3f89272.png",
+    "static/media/me.webp": "/webportfolio/static/media/me.b334f8f06e331170f953.webp",
     "static/media/Comfortaa-Regular.ttf": "/webportfolio/static/media/Comfortaa-Regular.886fcced57daea5944e7.ttf",
     "static/media/Retrow.ttf": "/webportfolio/static/media/Retrow.6f8784da3896cbbd7f9f.ttf",
     "static/media/ZTGatha-SemiBold.ttf": "/webportfolio/static/media/ZTGatha-SemiBold.cf2ecd3f850d9bf0b2a2.ttf",
@@ -38,10 +39,10 @@
     "index.html": "/webportfolio/index.html",
     "static/media/iconLinkedin.svg": "/webportfolio/static/media/iconLinkedin.27a3f479ca1bbb0ceef19e395081fb94.svg",
     "main.4a7766c9.css.map": "/webportfolio/static/css/main.4a7766c9.css.map",
-    "main.7032dd8f.js.map": "/webportfolio/static/js/main.7032dd8f.js.map"
+    "main.7e5dfb22.js.map": "/webportfolio/static/js/main.7e5dfb22.js.map"
   },
   "entrypoints": [
     "static/css/main.4a7766c9.css",
-    "static/js/main.7032dd8f.js"
+    "static/js/main.7e5dfb22.js"
   ]
 }
