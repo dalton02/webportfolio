@@ -3,7 +3,7 @@ import {useState,useRef,useEffect} from 'react';
 import { useInView, animated } from '@react-spring/web'
 import '../CSS/framework.css';
 import '../CSS/fonts.css';
-import Me from '../IMG/me.png'
+import Me from '../IMG/me.webp'
 import iconGit from '../SVG/iconGit.svg';
 import iconInsta from '../SVG/iconInsta.svg';
 import iconCV from '../SVG/iconCV.svg';
