@@ -33,7 +33,9 @@ function CardProject(props){
 			</div>
 
 			<div className={`${styles.projectImg}`}>
-			<img src={props.img}/>
+			<img src={props.img} style={
+			{'--y':`${props.y}`,}
+		  }/>
 			<div className={`${styles.borderFake}`}></div>
 			</div>
 			<div className={`${styles.projectTitle}`}>

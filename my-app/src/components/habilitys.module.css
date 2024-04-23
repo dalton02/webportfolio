@@ -7,8 +7,9 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
   position: relative;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   z-index: 999999;
+  gap: 10px;
  }
 
 .projectBox{
@@ -75,11 +76,11 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
     z-index: 999999;
   }
   .projectImg{
-    height: 20%;
+    height: 30%;
   }  
     .projectTitle{
     z-index: 99999;
-    height: 50%;
+    height: 60%;
     }
   
 .projectImg img{
@@ -94,7 +95,7 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
 }
 
 
-@media only screen and (max-width:400px){
+@media only screen and (max-width:600px){
   .box{
     width: 80%;
   }
@@ -104,6 +105,21 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
   }
   .projectTitle{
     height: 49%;
+  }
+  .projectImg{
+    height: 25%;
+  }
+}
+@media only screen and (max-width:400px){
+  .box{
+    width: 80%;
+  }
+
+  .projectBox{
+    width: 90%;
+  }
+  .projectTitle{
+    height: 55%;
   }
   .projectImg{
     height: 25%;

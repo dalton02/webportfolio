@@ -10,21 +10,20 @@ function CardLanguage(props){
 
 
   useEffect(() => {
-    if (inView) {
+    /*if (inView) {
       myAnim.current.classList.add(`${styles.show}`);
       myAnim.current.classList.remove(`${styles.hidden}`);
     } else {
       myAnim.current.classList.add(`${styles.hidden}`);
       myAnim.current.classList.remove(`${styles.show}`);
     }
-
+		*/
   	}, [inView]);
+
 
 	return (
 	  <animated.div className={`${styles.imgBox}`} ref={myAnim} style={
 	  {'--delay':`${props.delay}`,
-		'--y':`${props.y}`,
-		'--x':`${props.x}`,
 		}
 
 		}>

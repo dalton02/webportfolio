@@ -127,10 +127,10 @@ function Habilitys(){
 		<div className={`${styles.projectBox}`}>
 		 
 		 	<animated.div className={`${styles.projectTitle} normalText`} ref={text1} style={springsT}>
-		 	<h2  className='subTitle'>Segurança WEB</h2>
+		 	<h2  className='subTitle'>WEB Full-Stack</h2>
 		 		<span  className='normalText'> 
-		 				Serviços oferecendo proteção extrema ao seu servidor contra 
-		 				ataques maliciosos e furto de dados
+		 				Dominio na criação de interfaces envolventes e a implementação de lógica de negócios 
+            robusta em projetos web. Experiência nas mais recentes tecnologias.
 		 		</span>
 		 	</animated.div>
 		 	
@@ -144,10 +144,10 @@ function Habilitys(){
 		 
 		 	<animated.div className={`${styles.projectTitle} normalText`} ref={text2} style={springsT2}>
 		 			 		
-			<h2  className='subTitle'>Sites Responsivos</h2>
+			<h2  className='subTitle'>Engenharia de Software Orientada a Objeto</h2>
 		 		<span className='normalText'> 
-        Seu site com design responsivo para todos os dispositivos e plataformas
-		 		</span>
+        Experiência com linguagens orientadas a objetos como Java, C#, ou Python, 
+        aplicação de princípios SOLID, design patterns, e frameworks como Spring (Java) ou .NET (C#).</span>
 		 	</animated.div>
 		 	
 		 	<animated.div className={`${styles.projectImg}`} ref={item2}  style={springs2}>
@@ -160,10 +160,11 @@ function Habilitys(){
 		 
 		 	<animated.div className={`${styles.projectTitle} normalText`} ref={text3} style={springsT3}>
 		 	
-		<h2 className='subTitle'>Aplicações escalaveis</h2>
+		<h2 className='subTitle'>Desenvolvimento de sistemas distribuídos</h2>
 		 		<span className='normalText'> 
-		 				Construo soluções digitais robustas e flexíveis, prontas para escalar conforme sua empresa cresce
-		 		</span>
+		 				Implementação de sistemas distribuídos escaláveis e tolerantes a falhas, coordenando a 
+            comunicação entre microsserviços e garantindo a consistência de dados distribuídos. 
+           </span>
 
 		 	</animated.div>
 		 	

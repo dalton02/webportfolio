@@ -5,6 +5,7 @@ import CardProject from './CardProject.jsx';
 import Engine from '../IMG/engine.png';
 import Ray from '../IMG/ray.png';
 import Voxel from '../IMG/voxel.png';
+import Chat from '../IMG/livechat.png';
 
 //Props: name,size,color
 
@@ -41,17 +42,17 @@ function Carrosel(){
 				<div className={`${styles.controller}`}>
 				
 				<i onClick={removeCountHandler}></i> 
-				Projetos de Computação Grafica
+				Acesse meu acervo
 				<i onClick={addCountHandler}></i>
 				
 				</div>
 				<div className={`${styles.box}`} ref={car}>
 
-					<CardProject img={Ray} title="RayCaster Engine" language="Javascript" 
-					link="http://projectsio.000.pe/Projects/RayCasting/pagina.html?"/>
-					<CardProject img={Voxel} title="Voxel Terrain Generator" language="Javascript" 
+					<CardProject img={Chat} y="18%" title="Live Chat App" language="Socket.io" 
+					link="https://github.com/dalton02/LIVE_CHAT"/>
+					<CardProject img={Voxel} y="10%" title="Voxel Terrain Generator" language="Javascript" 
 					link="http://projectsio.000.pe/Projects/Voxel/pagina.html?"/>
-					<CardProject img={Engine} title="3D Game Engine" language="C++"
+					<CardProject img={Engine} y="10%" title="3D Game Engine" language="C++"
 					link="https://github.com/dalton02/engine3D"
 
 					/>

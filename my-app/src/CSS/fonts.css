@@ -37,3 +37,7 @@
     font-family: 'FontProjectSubTitle';
     src: url('../Fonts/Lemands.ttf');
 }
+@font-face{
+    font-family: 'Font7';
+    src: url('../Fonts/upheavtt.ttf');
+}

@@ -1,6 +1,5 @@
  .imgBox{
-  position: absolute;
-  width: 17%;
+  width:30%;
   border-radius: 100%;
   box-shadow: inset 0px 0px 0px 13px rgba(0,0,0,0.75);
   aspect-ratio: 1 / 1;
@@ -13,9 +12,7 @@
   transition: clip-path calc(  calc(var(--delay)*2) + 700ms) ease-in,
   box-shadow 140ms linear;
   animation: wiggle calc(var(--delay) + 5500ms) normal infinite linear;
-  top: var(--y);
-  left: var(--x);
- }
+  }
  .imgBox img{
   position: absolute;
   object-fit: contain;
@@ -62,7 +59,7 @@
 @media only screen and (max-width:800px){
  .imgBox{
  box-shadow: inset 0px 0px 0px 5px rgba(0,0,0,0.75);
- width: 24%;
+ width: 20%;
  }
 
 }

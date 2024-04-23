@@ -1,6 +1,6 @@
 
 .title{
-  font-size: 2.75rem;
+  font-size: 3rem;
   z-index: 5;
 }
 .subTitle{
@@ -113,7 +113,9 @@
   align-items: flex-end;
 }
 
-
+.overHidden{
+  overflow: hidden;
+}
 .text-center{
   text-align: center;
 }

@@ -1,8 +1,7 @@
 .projectBox{
     background: #fef7ff;
-    width: 800px;
-    border-radius: 1% 1% 1% 1% / 1% 1% 1% 1%  ;
-    aspect-ratio: 6/3;
+    width: 650px;
+    aspect-ratio: 6/4.2;
     transition: all .5s;
     display: flex;
     flex-direction: column;
@@ -13,7 +12,7 @@
     overflow: hidden;
     z-index: 9999999;
     box-shadow: 0x 0x 10x 15px white;
-    animation: float 1.3s linear infinite;
+    animation: float 1s linear infinite;
 }
 .projectHead{
     top: 0;
@@ -51,6 +50,7 @@
     min-width: 100%;
     min-height: 100%;
     object-fit: cover;
+    margin-top: var(--y);
     z-index: 1;
 }
 .borderFake{
@@ -134,12 +134,6 @@
     border-color: transparent;
 }
 
-@media only screen and (min-width:1400px){
-    .projectBox{
-        width: 1000px;
-    }
-
-}
 @media only screen and (max-width:800px){
 
     .projectBox{
@@ -227,13 +221,13 @@
 
 @keyframes float{
     0%{
-        top: 20px;
+        top: 10px;
     }
     50%{
         top: 0px;
     }
     100%{
-        top: 20px;
+        top: 10px;
     }
 
 }

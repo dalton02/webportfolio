@@ -11,6 +11,7 @@ body{
   font-weight: 200;
   font-style: normal;
   display: flex;
+  place-items: center;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -22,7 +23,7 @@ body{
 }
 
 h1{
-  font-family: 'Font4';
+  font-family: 'Font7';
   letter-spacing: 5px;
   top: 0;
   margin-top: 5%;

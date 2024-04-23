@@ -42,7 +42,6 @@ function App() {
   return (
     <>
 
-    <div className="general">
     <Container 
     WGG='1800px' HGG='700px'
     WG='1400px'  HG='600px'
@@ -58,43 +57,44 @@ function App() {
 
 
     <Container 
-    WGG='1800px' HGG='700px'
-    WG='1400px'  HG='600px'
-    WM='1366px'  HM='600px'
-    WP='800px' HP='1200px'
-    WPP='600px'  HPP='1200px'
-    WXP='400px'  HXP='1200px'
-    backColor='#1f1926' backColorAnt='#fff6ff' backEndColor='0%'
-    >
-    
-    <h1 className="title color2">O que ofereço?</h1>
-    <Habilitys/>
-
-    </Container>
-
-
-    <Container 
-    WGG='1800px' HGG='1100px'
-    WG='1400px'  HG='1200px'
-    WM='1366px'  HM='1600px'
-    WP='800px' HP='1600px'
-    WPP='600px'  HPP='1200px'
-    WXP='400px'  HXP='1200px'
+    WGG='1800px' HGG='800px'
+    WG='1400px'  HG='800px'
+    WM='1366px'  HM='800px'
+    WP='800px' HP='1000px'
+    WPP='600px'  HPP='900px'
+    WXP='400px'  HXP='580px'
     backColor='#1f1926' backColorAnt='#1f1926' backEndColor='54%'
    
     >
-    <h1 className="title color2">Linguagens utilizadas</h1>
+    <h1 className="title color2">Especialidades</h1>
     <Languages/>
 
     </Container>
 
     <Container 
-    WGG='1800px' HGG='900px'
-    WG='1400px'  HG='900px'
+    WGG='1800px' HGG='700px'
+    WG='1400px'  HG='700px'
+    WM='1366px'  HM='900px'
+    WP='800px' HP='1300px'
+    WPP='600px'  HPP='1500px'
+    WXP='400px'  HXP='1500px'
+    backColor='#1f1926' backColorAnt='#fff6ff' backEndColor='0%'
+    >
+    
+    <h1 className="title color2">Áreas de dominio</h1>
+    <Habilitys/>
+
+    </Container>
+
+
+
+    <Container 
+    WGG='1800px' HGG='700px'
+    WG='1400px'  HG='700px'
     WM='1366px'  HM='700px'
-    WP='800px' HP='600px'
-    WPP='600px'  HPP='800px'
-    WPXP='400px'  HXP='600px'
+    WP='800px' HP='700px'
+    WPP='600px'  HPP='700px'
+    WPXP='400px'  HXP='700px'
     backColor='#1f1926' backColorAnt='#1f1926' backEndColor='70%'
    
     >
@@ -102,7 +102,6 @@ function App() {
     <Carrosel/>
     </Container>
     
-    </div>
     </>
   );
 }
