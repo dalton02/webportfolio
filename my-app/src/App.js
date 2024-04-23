@@ -88,12 +88,12 @@ function App() {
 
 
     <Container 
-    WGG='1800px' HGG='700px'
-    WG='1400px'  HG='700px'
-    WM='1366px'  HM='700px'
-    WP='800px' HP='700px'
-    WPP='600px'  HPP='700px'
-    WPXP='400px'  HXP='700px'
+    WGG='1800px' HGG='850px'
+    WG='1400px'  HG='850px'
+    WM='1366px'  HM='850px'
+    WP='800px' HP='850px'
+    WPP='600px'  HPP='900px'
+    WPXP='400px'  HXP='900px'
     backColor='#1f1926' backColorAnt='#1f1926' backEndColor='70%'
    
     >

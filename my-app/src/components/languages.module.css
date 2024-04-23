@@ -81,4 +81,8 @@
 height: 40%;
 }
 
+.distros img{
+  max-width: 16%;
+  max-height: 100%;
+}
 }

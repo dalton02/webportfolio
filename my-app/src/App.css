@@ -12,14 +12,13 @@ body{
   font-style: normal;
   display: flex;
   place-items: center;
+  min-width: 320px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   align-content: center;
-  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   margin: 0;
-
 }
 
 h1{

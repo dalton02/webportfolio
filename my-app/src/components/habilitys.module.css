@@ -80,7 +80,7 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
   }  
     .projectTitle{
     z-index: 99999;
-    height: 60%;
+    height: 70%;
     }
   
 .projectImg img{
@@ -104,10 +104,10 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
     width: 90%;
   }
   .projectTitle{
-    height: 49%;
+    height: 65%;
   }
   .projectImg{
-    height: 25%;
+    height: 30%;
   }
 }
 @media only screen and (max-width:400px){
@@ -119,10 +119,10 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
     width: 90%;
   }
   .projectTitle{
-    height: 55%;
+    height: 60%;
   }
   .projectImg{
-    height: 25%;
+    height: 28%;
   }
 
 }
