@@ -1,7 +1,8 @@
 .projectBox{
     background: #fef7ff;
     width: 650px;
-    aspect-ratio: 6/4.2;
+    border-radius: 5%;
+    aspect-ratio: 6/4;
     transition: all .5s;
     display: flex;
     flex-direction: column;

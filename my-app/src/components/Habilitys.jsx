@@ -3,10 +3,9 @@ import {useState,useRef,useEffect} from 'react';
 import { useInView, animated } from '@react-spring/web'
 import '../CSS/framework.css';
 import '../CSS/fonts.css';
-import Stonks from '../SVG/stonks.svg'
-import Security from '../SVG/security.svg'
-import Performance from '../SVG/desempenho.svg'
-import Ads from '../SVG/ads.svg'
+import System from '../SVG/system.svg'
+import Web from '../SVG/web.svg'
+import Terminal from '../SVG/terminal.svg'
 
 //Props: name,size,color
 
@@ -135,7 +134,7 @@ function Habilitys(){
 		 	</animated.div>
 		 	
 		 	<animated.div className={`${styles.projectImg}`} ref={item1} style={springs}>
-		 	<img src={Security}/>
+		 	<img src={Web}/>
 		 	</animated.div>
 		
 		</div>
@@ -151,7 +150,7 @@ function Habilitys(){
 		 	</animated.div>
 		 	
 		 	<animated.div className={`${styles.projectImg}`} ref={item2}  style={springs2}>
-		 	<img src={Ads}/>
+		 	<img src={System}/>
 		 	</animated.div>
 		
 		</div>	
@@ -169,7 +168,7 @@ function Habilitys(){
 		 	</animated.div>
 		 	
 		 	<animated.div className={`${styles.projectImg}`} ref={item3}  style={springs3}>
-		 	<img src={Performance}/>
+		 	<img src={Terminal}/>
 		 	</animated.div>
 		
 		</div>	

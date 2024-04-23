@@ -13,6 +13,15 @@
   --cor: #1f1926;
   filter: drop-shadow(0px 0px 10px var(--cor)) drop-shadow(0px 0px 10px var(--cor)) drop-shadow(0px 0px 10px var(--cor)) drop-shadow(0px 0px 10px var(--cor));
 }
+
+.floating::after{
+  content: "";
+  z-index: 50000;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0px 0px 10px 6px #1f1926;
+}
 .clip{
   width: 100%;
   height: 100%;

@@ -8,7 +8,6 @@ import iconInsta from './SVG/iconInsta.svg';
 import iconLinkedin from './SVG/iconLinkedin.svg';
 import React, { useState, useEffect, useRef } from 'react';
 import Me from './IMG/me.png';
-import FieldAsteroid from './components/FieldAsteroid.jsx';
 import Carrosel from './components/Carrosel.jsx';
 import Habilitys from './components/Habilitys.jsx';
 import Languages from './components/Languages.jsx';
