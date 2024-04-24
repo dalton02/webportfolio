@@ -12,6 +12,7 @@
   transition: clip-path calc(  calc(var(--delay)*2) + 700ms) ease-in,
   box-shadow 140ms linear;
   animation: wiggle calc(var(--delay) + 5500ms) normal infinite linear;
+  z-index:999999;
   }
  .imgBox img{
   position: absolute;
