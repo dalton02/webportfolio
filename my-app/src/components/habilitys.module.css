@@ -9,7 +9,7 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
   flex-direction: row;
   justify-content: center;
   z-index: 999999;
-  gap: 100px;
+  gap: 70px;
  }
 
 .projectBox{
