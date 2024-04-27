@@ -143,7 +143,7 @@ function Habilitys(){
 		 
 		 	<animated.div className={`${styles.projectTitle} normalText`} ref={text2} style={springsT2}>
 		 			 		
-			<h2  className='subTitle'>Engenharia de Software Orientada a Objeto</h2>
+			<h2  className='subTitle'>Engenharia de POO</h2>
 		 		<span className='normalText'> 
         Experiência com linguagens orientadas a objetos como Java, C#, ou Python, 
         aplicação de princípios SOLID, design patterns, e frameworks como Spring (Java) ou .NET (C#).</span>
@@ -159,7 +159,7 @@ function Habilitys(){
 		 
 		 	<animated.div className={`${styles.projectTitle} normalText`} ref={text3} style={springsT3}>
 		 	
-		<h2 className='subTitle'>Desenvolvimento de sistemas distribuídos</h2>
+		<h2 className='subTitle'>Sistemas distribuídos</h2>
 		 		<span className='normalText'> 
 		 				Implementação de sistemas distribuídos escaláveis e tolerantes a falhas, coordenando a 
             comunicação entre microsserviços e garantindo a consistência de dados distribuídos. 

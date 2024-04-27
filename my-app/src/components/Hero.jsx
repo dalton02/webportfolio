@@ -102,7 +102,7 @@ function Hero(){
         <h1 className={`${styles.title} color1 flex-column content-center items-center`} 
         >Dalton Gomes Lobato</h1>
         </div>
-        <h2 className={`${styles.subTitle} subTitle`}>Fullstack Developer</h2>
+        <h2 className={`${styles.subTitle}`}>Fullstack Developer</h2>
         
         </div>  
 

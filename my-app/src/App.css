@@ -1,15 +1,22 @@
+html, body {
+
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden; 
+}
 
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  
 }
+
 body{
   font-family: "Kode Mono", monospace;
   font-optical-sizing: auto;
   font-weight: 200;
   font-style: normal;
+  margin: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
@@ -18,12 +25,13 @@ body{
   align-items: center;
   align-content: center;
   -webkit-overflow-scrolling: touch;
-  margin: 0;
+  
 }
 
 h1{
   font-family: 'Font7';
   letter-spacing: 5px;
   top: 0;
-  margin-top: 5%;
+  margin-top: 10%;
 }
+

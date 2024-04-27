@@ -32,10 +32,10 @@
   justify-content: center;
 }
 .clip span{
-  font-size: 2.8rem;
   text-align: center;
   font-family: 'Font2';
   margin-bottom: 5%;
+  font-size: 2.4rem;
 }
 .distros{
   gap: 50px;
@@ -43,7 +43,7 @@
   justify-content: center;
 }
 .distros img{
-  min-width: 13%;
+  min-width: 18%;
   min-height: 50%;
   max-width: 23%;
   max-height: 100%;
@@ -62,16 +62,18 @@
 
 
 @media only screen and (max-width:800px){
+
   .overView{
     width: 100%;
     height: 40%;
   }
   .clip{
     gap:10%;
+    justify-content: flex-end;
   }
   .clip span{
-    font-size: 1.8rem;
     margin:0;
+  font-size: 1.8rem;
   }
   .floating{
     position: absolute;
@@ -83,12 +85,20 @@
 }
 
 @media only screen and (max-width:400px){
+
 .floating{
-height: 40%;
+height: 60%;
 }
 
+  .clip span{
+    margin:0;
+  font-size: 1.2rem;
+  }
 .distros img{
-  max-width: 16%;
+  min-width: 12%;
+  min-height: 100%;
+  max-width: 12%;
   max-height: 100%;
 }
+
 }

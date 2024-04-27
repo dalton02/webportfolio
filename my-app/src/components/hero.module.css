@@ -104,6 +104,8 @@ svg{
   font-size: 3rem;
   position: relative;
   font-family: "Kode Mono",monospace;
+  word-break: break-all;
+
 
 }
 .title::after{
@@ -123,6 +125,7 @@ svg{
   pointer-events: auto;
   transition: all 1s;
   cursor: pointer;
+  font-size: 1.5rem;
   color: black;
 }
 .subTitle:hover{
@@ -161,12 +164,15 @@ svg{
   .title{
     font-size: 2.5rem;
   }
+.subTitle{
+  font-size: 1.5rem;
+}
 }
 
 @media only screen and (max-width:600px){
 
   .wrapperHeaderLeft{
-    height: 60%;
+    height: 50%;
   }
   .animationH1{
 height: 2.2rem;
@@ -177,8 +183,11 @@ height: 2.2rem;
  }
 
  .title{
-    font-size: 2rem;
+    font-size: 1.2rem;
   }
+.subTitle{
+  font-size: .8rem;
+}
 }
 
 

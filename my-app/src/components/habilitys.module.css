@@ -9,11 +9,11 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
   flex-direction: row;
   justify-content: center;
   z-index: 999999;
-  gap: 10px;
+  gap: 100px;
  }
 
 .projectBox{
-  width: 30%;
+  width: 100%;
   height: 70%;
   display: flex;
   flex-direction: column;
@@ -25,9 +25,12 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
 
 .projectTitle{
   width: 100%;
-  height: 66%;
+  height: 70%;
   color:#fffade;
   text-align: center;
+}
+.projectTitle h2{
+  font-weight: 900;
 }
 .projectTitle span{
   color: #fffade;
@@ -35,7 +38,7 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
 .projectImg{
   position: relative;
   width: 100%;
-  height: 30%;
+  height: 25%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -53,12 +56,6 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
 }
 
 
-@media only screen and (max-width:1000px){
-.box{
-  width: 65%;
-  justify-content: center;
-}
-}
 
 
 @media only screen and (max-width:800px){
@@ -68,19 +65,19 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
   align-items: center;
   align-content: center;
   justify-content: flex-start;
-  gap:5%;
+  gap:50px;
  } 
   .projectBox{
     height: 30%;
-    width: 70%;
+    width: 100%;
     z-index: 999999;
   }
   .projectImg{
-    height: 30%;
+    height: 25%;
   }  
     .projectTitle{
     z-index: 99999;
-    height: 70%;
+    height: 55%;
     }
   
 .projectImg img{
@@ -95,34 +92,20 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
 }
 
 
-@media only screen and (max-width:600px){
-  .box{
-    width: 80%;
-  }
-
-  .projectBox{
-    width: 90%;
-  }
-  .projectTitle{
-    height: 65%;
-  }
-  .projectImg{
-    height: 30%;
-  }
-}
 @media only screen and (max-width:400px){
   .box{
     width: 80%;
+    gap: 0px;
   }
 
   .projectBox{
-    width: 90%;
+    width: 60%;
   }
   .projectTitle{
-    height: 60%;
+    height: 50%;
   }
   .projectImg{
-    height: 28%;
+    height: 20%;
   }
 
 }

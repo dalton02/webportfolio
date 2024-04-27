@@ -61,7 +61,7 @@ function App() {
     WM='1366px'  HM='800px'
     WP='800px' HP='1000px'
     WPP='600px'  HPP='900px'
-    WXP='400px'  HXP='580px'
+    WXP='400px'  HXP='700px'
     backColor='#1f1926' backColorAnt='#1f1926' backEndColor='54%'
    
     >
@@ -74,7 +74,7 @@ function App() {
     WGG='1800px' HGG='700px'
     WG='1400px'  HG='700px'
     WM='1366px'  HM='900px'
-    WP='800px' HP='1300px'
+    WP='800px' HP='1500px'
     WPP='600px'  HPP='1500px'
     WXP='400px'  HXP='1500px'
     backColor='#1f1926' backColorAnt='#fff6ff' backEndColor='0%'
