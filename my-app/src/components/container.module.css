@@ -1,7 +1,6 @@
 
 .container{
   width: 100%;
-  width: var(--sizeWM);
   height: var(--sizeHM);
   display: flex;
   flex-direction: column;
@@ -31,19 +30,17 @@
   z-index: 0;
 }
 
-@media only screen and (min-width:1800px){
+@media only screen and (min-width:2800px){
   
   .container{
-    width: var(--sizeWGG);
     height: var(--sizeHGG);
   }
 
 }
 
-@media only screen and (min-width:1400px){
+@media only screen and (min-width:2000px){
 
   .container{
-    width: var(--sizeWG);
     height: var(--sizeHG);
   }
 
@@ -52,7 +49,6 @@
 @media only screen and (max-width:800px){
 
   .container{
-    width: var(--sizeWP);
     height: var(--sizeHP);
   }  
 
@@ -60,7 +56,6 @@
 
 @media only screen and (max-width:600px){
   .container{
-    width: var(--sizeWPP);
     height: var(--sizeHPP);
   }
 }

@@ -13,6 +13,7 @@ import Habilitys from './components/Habilitys.jsx';
 import Languages from './components/Languages.jsx';
 import Hero from './components/Hero.jsx';
 import Container from './components/Container.jsx';
+import About from './components/About.jsx';
 function App() {
 
     
@@ -42,12 +43,12 @@ function App() {
     <>
 
     <Container 
-    WGG='1800px' HGG='700px'
-    WG='1400px'  HG='600px'
-    WM='1366px'  HM='650px'
-    WP='800px' HP='600px'
-    WPP='600px'  HPP='600px'
-    WXP='400px'  HXP='600px'
+    HGG='1000px'
+    HG='1000px'
+    HM='750px'
+    HP='600px'
+    HPP='600px'
+    HXP='500px'
     backColor='#fff6ff' backColorAnt='#fff6ff'
     backEndColor='54%'
     >
@@ -56,12 +57,26 @@ function App() {
 
 
     <Container 
-    WGG='1800px' HGG='800px'
-    WG='1400px'  HG='800px'
-    WM='1366px'  HM='800px'
-    WP='800px' HP='1000px'
-    WPP='600px'  HPP='900px'
-    WXP='400px'  HXP='700px'
+    HGG='800px'
+    HG= '800px'
+    HM='600px'
+    HP='600px'
+    HPP='450px'
+    HXP='450px'
+    backColor='#1f1926' backColorAnt='#1f1926' backEndColor='70%'
+   
+    >
+    <h1 className="title color2">Sobre mim</h1>
+    <About/>
+    </Container>
+    
+    <Container 
+    HGG='1200px'
+    HG='1200px'
+    HM='950px'
+    HP='1000px'
+    HPP='700px'
+    HXP='700px'
     backColor='#1f1926' backColorAnt='#1f1926' backEndColor='54%'
    
     >
@@ -71,12 +86,12 @@ function App() {
     </Container>
 
     <Container 
-    WGG='1800px' HGG='700px'
-    WG='1400px'  HG='700px'
-    WM='1366px'  HM='900px'
-    WP='800px' HP='1500px'
-    WPP='600px'  HPP='1500px'
-    WXP='400px'  HXP='1500px'
+    HGG='1000px'
+    HG='1000px'
+    HM='900px'
+    HP='1500px'
+    HPP='1500px'
+    HXP='1500px'
     backColor='#1f1926' backColorAnt='#fff6ff' backEndColor='0%'
     >
     
@@ -88,19 +103,21 @@ function App() {
 
 
     <Container 
-    WGG='1800px' HGG='850px'
-    WG='1400px'  HG='850px'
-    WM='1366px'  HM='850px'
-    WP='800px' HP='850px'
-    WPP='600px'  HPP='900px'
-    WPXP='400px'  HXP='900px'
+    HGG='1000px'
+    HG='1000px'
+    HM='850px'
+    HP='850px'
+    HPP='900px'
+    HXP='900px'
     backColor='#1f1926' backColorAnt='#1f1926' backEndColor='70%'
    
     >
     <h1 className="title color2">Meus projetos </h1>
     <Carrosel/>
     </Container>
-    
+
+
+
     </>
   );
 }

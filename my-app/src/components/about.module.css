@@ -1,0 +1,62 @@
+/*
+Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
+*/
+.box{
+  width: 80%;
+  height: 90%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  z-index: 999999;
+  gap: 10% ;
+  background: #1f1926;
+  font-size: 1.3rem;
+ }
+
+ .box img{
+  max-height: 60%;
+  max-width: 60%;
+
+ }
+
+b{
+  margin: 0;
+  padding: 0;
+
+}
+p{
+  text-align: center;
+  font-weight: 100;
+}
+
+
+@media only screen and (min-width:2000px){
+  p{
+    font-size: 1.8rem;
+  }
+  .box{
+    gap: 0;
+  }
+
+}
+
+@media only screen and (max-width:800px){
+  p{
+    font-size: 1rem;
+  }
+  .box{
+    width: 90%;
+  }
+}
+
+@media only screen and (max-width:400px){
+  p{
+    font-size: .8rem;
+  }
+  .box{
+    width: 90%;
+  }
+}

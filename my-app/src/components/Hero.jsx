@@ -5,7 +5,7 @@ import '../CSS/framework.css';
 import '../CSS/fonts.css';
 import Me from '../IMG/me.webp'
 import iconGit from '../SVG/iconGit.svg';
-import iconInsta from '../SVG/iconInsta.svg';
+import iconLink from '../SVG/linkedin.svg';
 import iconCV from '../SVG/iconCV.svg';
 import Curriculo from '../PDF/curriculo.pdf';
 //Props: name,size,color
@@ -62,17 +62,6 @@ function Hero(){
     });
 
 
-  useEffect(() => {
-    if (animPhoto) {
-      minhaFoto.current.classList.add(`${styles.show}`);
-      minhaFoto.current.classList.remove(`${styles.hidden}`);
-    } else {
-      minhaFoto.current.classList.add(`${styles.hidden}`);
-      minhaFoto.current.classList.remove(`${styles.show}`);
-    }
-
-    }, [animPhoto]);
-
 	return (
 	<>
 	 
@@ -92,17 +81,19 @@ function Hero(){
         <div className={`${styles.myAccounts} normalText flex-row justify-around`}>
             <a href="https://github.com/dalton02" target="_blank"><animated.img src={iconGit} ref={icon1} style={animIcon1}/></a>
             <a  href={Curriculo} download="curriculo.pdf"><animated.img src={iconCV} ref={icon2} style={animIcon2}/></a>
-            <a href="https://www.instagram.com/dalton.gomes___/" target="_blank">
-              <animated.img src={iconInsta} ref={icon3} style={animIcon3}/>
+            <a href="https://www.linkedin.com/in/dalton-gomes/" target="_blank">
+              <animated.img src={iconLink} ref={icon3} style={animIcon3}/>
             </a>
         </div>
         </div>
+        
         <div className={`${styles.divH1} flex-column justify-center items-center content-center`}>
-        <div className={`${styles.animationH1} flex-row justify-end items-center content-center`}>
-        <h1 className={`${styles.title} color1 flex-column content-center items-center`} 
-        >Dalton Gomes Lobato</h1>
-        </div>
-        <h2 className={`${styles.subTitle}`}>Fullstack Developer</h2>
+          <div className={`${styles.animationH1} flex-row justify-end items-center content-center`}>
+            <h1 className={`${styles.title} color1 flex-column content-center items-center`} 
+              >Dalton Gomes Lobato</h1>
+          </div>
+    
+          <h2 className={`${styles.subTitle}`}>Desenvolvedor FullStack</h2>
         
         </div>  
 

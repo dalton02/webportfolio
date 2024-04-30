@@ -9,7 +9,7 @@
 .box{
   z-index: 5;
   width: 60%;
-  height: 28%;
+  height: 34%;
   position: absolute;
   display: flex;
   justify-content: center;
@@ -24,7 +24,7 @@
 .box2{
   z-index: 5;
   width: 60%;
-  height: 28%;
+  height: 34%;
   position: absolute;
   display: flex;
   justify-content: center;
@@ -40,7 +40,7 @@
 
 @keyframes slide{
 0%{
-  transform: translateX(calc(-103%*var(--dir)));
+  transform: translateX(calc(-105%*var(--dir)));
 }
 100%{
 
@@ -55,5 +55,38 @@
 100%{
 
   transform: translateX(calc(100%*var(--dir)));
+}
+}
+
+@media only screen and (max-width:1100px){
+
+.box{
+  width: 100%;
+}
+.box2{
+
+  width: 100%;
+}
+}
+@media only screen and (max-width:800px){
+
+.box{
+  width: 60%;
+}
+.box2{
+
+  width: 60%;
+}
+}
+
+
+@media only screen and (max-width:400px){
+
+.box{
+  width: 85%;
+}
+.box2{
+
+  width: 85%;
 }
 }

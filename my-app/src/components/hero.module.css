@@ -68,8 +68,8 @@ svg{
 .myPhoto{
   position: absolute;
   object-fit: contain;
-  z-index: 1000;
-  transform: scale(0.7) translate(-45%,65%) rotateZ(-30deg);
+  z-index: 1000;  
+  transform: scale(1.6) translate(0,0%) rotateZ(0deg);
   transition: all 1.5s;
  }
 .divH1{
@@ -106,7 +106,6 @@ svg{
   font-family: "Kode Mono",monospace;
   word-break: break-all;
 
-
 }
 .title::after{
   content: '';
@@ -132,13 +131,18 @@ svg{
   transform: translateY(-5px);
 }
 
-.show{
-  transform: scale(1.6) translate(0,0%) rotateZ(0deg);
-}
-.hidden{
-  transform: scale(0.7) translate(-45%,65%) rotateZ(-30deg);
-}
 
+@media only screen and (min-width:2000px){
+    .title{
+      font-size: 5rem;
+    }
+    .animationH1{
+      height: 5.2rem;
+    }
+    .subTitle{
+      font-size: 2rem;
+    }
+}
 
 @media only screen and (max-width:1100px){
  
@@ -172,7 +176,7 @@ svg{
 @media only screen and (max-width:600px){
 
   .wrapperHeaderLeft{
-    height: 50%;
+    height: 60%;
   }
   .animationH1{
 height: 2.2rem;
@@ -186,7 +190,7 @@ height: 2.2rem;
     font-size: 1.2rem;
   }
 .subTitle{
-  font-size: .8rem;
+  font-size: .9rem;
 }
 }
 
@@ -207,3 +211,6 @@ height: 2.2rem;
   from { transform: translateY(500%); }
   to { transform: translateY(0%);}
 }
+
+
+

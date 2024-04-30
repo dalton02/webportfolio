@@ -9,17 +9,11 @@ return(
 	<>
 	<div 
 	style={{
-		'--sizeWGG': props.WGG,
   		'--sizeHGG': props.HGG,
-  		'--sizeWG': props.WG,
   		'--sizeHG': props.HG,
-  		'--sizeWM': props.WM,
   		'--sizeHM': props.HM,
-  		'--sizeWP': props.WP,
   		'--sizeHP': props.HP,
-  		'--sizeWPP':props.WPP,
   		'--sizeHPP':props.HPP,
-  		'--sizeWXP':props.WXP,
   		'--sizeHXP':props.HXP,
   		'--backColor':props.backColor,
   		'--backColorAnt':props.backColorAnt,
