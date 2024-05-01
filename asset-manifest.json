@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/webportfolio/static/css/main.831920fe.css",
-    "main.js": "/webportfolio/static/js/main.f81c910e.js",
+    "main.css": "/webportfolio/static/css/main.ec001282.css",
+    "main.js": "/webportfolio/static/js/main.938507be.js",
     "static/media/me.png": "/webportfolio/static/media/me.33be0ce1bd853176e641.png",
     "static/media/voxel.png": "/webportfolio/static/media/voxel.cfd52e397d5cd3f89272.png",
     "static/media/me.webp": "/webportfolio/static/media/me.b334f8f06e331170f953.webp",
@@ -22,9 +22,7 @@
     "static/media/mongo.svg": "/webportfolio/static/media/mongo.b94eb039e409b7eb10634a09b5a385a9.svg",
     "static/media/ruby.svg": "/webportfolio/static/media/ruby.d2035fbb0c8ffc3aace20145c22fa61d.svg",
     "static/media/post.svg": "/webportfolio/static/media/post.a324397f2ee8046edcdd50ebae87a113.svg",
-    "static/media/linux.svg": "/webportfolio/static/media/linux.19f629fe379e9fdc0855b9c768dfb6aa.svg",
     "static/media/php.svg": "/webportfolio/static/media/php.295b2a7519991aa35a26bc2369969fa7.svg",
-    "static/media/mac.svg": "/webportfolio/static/media/mac.02d57257d0d06432d32c17cf27aa9bc4.svg",
     "static/media/mysql.svg": "/webportfolio/static/media/mysql.489db3076364cc30d90e979144eb2354.svg",
     "static/media/node.svg": "/webportfolio/static/media/node.dfa1903025c66bb30165686bcf0f078a.svg",
     "static/media/svelte.svg": "/webportfolio/static/media/svelte.9f46dfa80d3573d907de94d0b3fa9c48.svg",
@@ -43,15 +41,14 @@
     "static/media/iconCV.svg": "/webportfolio/static/media/iconCV.3da93c852a95befbf1cb5b8f30c006b9.svg",
     "static/media/iconGit.svg": "/webportfolio/static/media/iconGit.04be58c17b3d5e9744424d414240dd85.svg",
     "index.html": "/webportfolio/index.html",
-    "static/media/windows.svg": "/webportfolio/static/media/windows.0e35508b03705d8e1bd2405303cefc90.svg",
     "static/media/terminal.svg": "/webportfolio/static/media/terminal.997fe25c6d720542723129902157781f.svg",
     "static/media/iconLinkedin.svg": "/webportfolio/static/media/iconLinkedin.27a3f479ca1bbb0ceef19e395081fb94.svg",
     "static/media/linkedin.svg": "/webportfolio/static/media/linkedin.27a3f479ca1bbb0ceef19e395081fb94.svg",
-    "main.831920fe.css.map": "/webportfolio/static/css/main.831920fe.css.map",
-    "main.f81c910e.js.map": "/webportfolio/static/js/main.f81c910e.js.map"
+    "main.ec001282.css.map": "/webportfolio/static/css/main.ec001282.css.map",
+    "main.938507be.js.map": "/webportfolio/static/js/main.938507be.js.map"
   },
   "entrypoints": [
-    "static/css/main.831920fe.css",
-    "static/js/main.f81c910e.js"
+    "static/css/main.ec001282.css",
+    "static/js/main.938507be.js"
   ]
 }
