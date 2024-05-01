@@ -1,92 +1,61 @@
+:root{
+  --gap:20px;
+}
 .content{
   width: 100%;
   height: 100%;
   position: relative;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
-}
+  justify-content: center;
+  gap:var(--gap);
+ }
 .box{
   z-index: 5;
-  width: 60%;
-  height: 34%;
+  width: 100%;
+  height: 100%;
   position: absolute;
   display: flex;
-  justify-content: center;
+  justify-content:center;
   align-items: flex-start;
-  align-content:flex-start; 
-  gap:20px;
+  align-content:flex-start;
   flex-direction: row;
-  animation: 11s slideOriginal linear infinite;
+  animation: 13s slideBack linear infinite;
   animation-delay: var(--delay);
   
+  gap:var(--gap);
   }
 .box2{
   z-index: 5;
-  width: 60%;
-  height: 34%;
+  width: 100%;
+  height: 100%;
   position: absolute;
   display: flex;
-  justify-content: center;
+  justify-content:center;
   align-items: flex-start;
   align-content:flex-start; 
-  gap:20px;
-  flex-direction: row;
-  transform: translateX(-100%);
-  animation: 11s slide linear infinite;
-  animation-delay: var(--delay); 
+  flex-direction: row;  
+  animation: 13s slideOriginal linear infinite;
+  animation-delay: var(--delay);
+  gap:var(--gap);
 }
 
 
-@keyframes slide{
+
+@keyframes slideBack{
 0%{
-  transform: translateX(calc(-105%*var(--dir)));
+  transform: translateX(0%);
 }
 100%{
-
-  transform: translateX(0%);
+  transform: translateX(calc( (100% + var(--gap)) * var(--dir) ));
 }
 }
 
 @keyframes slideOriginal{
 0%{
-  transform: translateX(0%);
+  transform: translateX(calc( (-100% - var(--gap)) * var(--dir) ));
 }
 100%{
-
-  transform: translateX(calc(100%*var(--dir)));
-}
-}
-
-@media only screen and (max-width:1100px){
-
-.box{
-  width: 100%;
-}
-.box2{
-
-  width: 100%;
-}
-}
-@media only screen and (max-width:800px){
-
-.box{
-  width: 60%;
-}
-.box2{
-
-  width: 60%;
-}
-}
-
-
-@media only screen and (max-width:400px){
-
-.box{
-  width: 85%;
-}
-.box2{
-
-  width: 85%;
+  transform: translateX(0%);
 }
 }

@@ -28,8 +28,8 @@ function About(){
 	<>
 	
 	<animated.div className={`${styles.box} color2 normalText`} ref={text} style={springs}>
-  <p>Saudações, meu nome é <b>Dalton Gomes Lobato</b>, tenho 21 anos e sou desenvolvedor fullstack, 
-  atualmente curso <b>Ciência da Computação</b> na Universidade Federal do Cariri. Tenho como objetivo construir não apenas aplicativos e serviços web, 
+  <p>Saudações, meu nome é Dalton Gomes Lobato, tenho 21 anos e sou desenvolvedor fullstack, 
+  atualmente curso Ciência da Computação na Universidade Federal do Cariri. Tenho como objetivo construir não apenas aplicativos e serviços web, 
   mas trazer uma experiência inesquecivel para o usuário</p>
 	<img src={Penguin}/>
 

@@ -61,7 +61,7 @@ function App() {
     HG= '800px'
     HM='600px'
     HP='600px'
-    HPP='450px'
+    HPP='600px'
     HXP='450px'
     backColor='#1f1926' backColorAnt='#1f1926' backEndColor='70%'
    
@@ -71,12 +71,26 @@ function App() {
     </Container>
     
     <Container 
-    HGG='1200px'
-    HG='1200px'
-    HM='950px'
-    HP='1000px'
-    HPP='700px'
-    HXP='700px'
+    HGG='1000px'
+    HG='1000px'
+    HM='700px'
+    HP='1450px'
+    HPP='1450px'
+    HXP='1450px'
+    backColor='#1f1926' backColorAnt='#fff6ff' backEndColor='0%'
+    >
+    
+    <h1 className="title color2">Áreas de dominio</h1>
+    <Habilitys/>
+
+    </Container>
+    <Container 
+    HGG='880px'
+    HG='980px'
+    HM='700px'
+    HP='600px'
+    HPP='600px'
+    HXP='500px'
     backColor='#1f1926' backColorAnt='#1f1926' backEndColor='54%'
    
     >
@@ -85,20 +99,6 @@ function App() {
 
     </Container>
 
-    <Container 
-    HGG='1000px'
-    HG='1000px'
-    HM='900px'
-    HP='1500px'
-    HPP='1500px'
-    HXP='1500px'
-    backColor='#1f1926' backColorAnt='#fff6ff' backEndColor='0%'
-    >
-    
-    <h1 className="title color2">Áreas de dominio</h1>
-    <Habilitys/>
-
-    </Container>
 
 
 
@@ -107,8 +107,8 @@ function App() {
     HG='1000px'
     HM='850px'
     HP='850px'
-    HPP='900px'
-    HXP='900px'
+    HPP='850px'
+    HXP='750px'
     backColor='#1f1926' backColorAnt='#1f1926' backEndColor='70%'
    
     >

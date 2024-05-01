@@ -13,7 +13,6 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
   z-index: 999999;
   gap: 10% ;
   background: #1f1926;
-  font-size: 1.3rem;
  }
 
  .box img{
@@ -30,6 +29,7 @@ b{
 p{
   text-align: center;
   font-weight: 100;
+  font-size: 1.3rem;
 }
 
 

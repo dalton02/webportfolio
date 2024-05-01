@@ -19,9 +19,6 @@ import Docker from '../SVG/docker.svg';
 import Ruby from '../SVG/ruby.svg';
 import Go from '../SVG/go.svg';
 import CS from '../SVG/cS.svg';
-import linux from '../SVG/linux.svg';
-import windows from '../SVG/windows.svg';
-import mac from '../SVG/mac.svg';
 
 import CardLanguage from './CardLanguage.jsx';
 import SliderBox from './SliderBox.jsx';
@@ -32,34 +29,22 @@ function Languages(){
 
     const screen = useScreenSize();
     //Organizando os cards para dois tipos de tela pra ficar bonito
-    const array1 = [C,Go,Rust,CS,Phyton];
-    const array2 = [Jquery,Mongo,Node,ReactL,Svelte];
-    const array3 = [Java,Ruby,Sql,Post,Docker];
+    const array1 = [Go,Rust,CS,Phyton,Java, Ruby, Docker, C];
+    const array2 = [Jquery,Mongo,Node,ReactL,Svelte, Sql, Post, Php];
     
 	return (
 	<>
     
-    <div className={`flex-row get-full justify-end overHidden ${styles.fullBox}`}>
-    <div className={`${styles.overView}`}>
-    <div className={`${styles.clip}`}>
-    <span>Trabalho para todas as plataformas</span>
-
-    <div className={`flex-row ${styles.distros}`}>
-    <img src={linux}/>
-    <img src={mac}/>
-    <img src={windows}/>
-    
-    </div>
-    </div>
-    </div>
-    
-    <div className={`flex-column get-full ${styles.floating}`}>
-    <SliderBox cards={array1} direction='1' delay='.3s'/>
-    <SliderBox cards={array2} direction='-1' delay='.2s'/>
-    <SliderBox cards={array3} direction='1' delay='.1s'/>
-    </div>
-
-    
+    <div className={`flex-column get-full ${styles.box}`}>
+        <div className={`flex-column ${styles.about}`}>
+        <p>Desenvolvimento de software nas mais diversas linguagens assim como expertise na criação de containers 
+        utilizando Docker, proporcionando soluções de hospedagem mais flexíveis e eficientes.
+        </p>
+        </div>
+        <div className={`flex-column ${styles.floating}`}>
+        <SliderBox cards={array1} direction='1' delay='.3s'/>
+        <SliderBox cards={array2} direction='-1' delay='.3s'/>
+        </div>
     </div>
     
     </>

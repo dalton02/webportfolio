@@ -1,112 +1,77 @@
 
-
-.fullBox{
-  overflow: hidden;
-  position: relative;
-}
-.overView{
-  width: 65%;
-  height: 100%;
-  position: absolute;
-  left:0;
-  z-index: 10;
-  --cor: #1f1926;
-  filter: drop-shadow(0px 0px 10px var(--cor)) drop-shadow(0px 0px 10px var(--cor)) drop-shadow(0px 0px 10px var(--cor)) drop-shadow(0px 0px 10px var(--cor));
-}
- 
-.floating{
-  width: 100%;
-  height: 100%;
-}
-.floating::after{
-  content: "";
-  z-index: 50000;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  box-shadow: inset 0px 0px 10px 6px #1f1926;
-  pointer-events: none;
-}
-.clip{
-  width: 100%;
-  height: 100%;
-  background: var(--cor);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.clip span{
-  text-align: center;
-  font-family: 'Font2';
-  margin-bottom: 5%;
-  font-size: 2.4rem;
-}
-.distros{
-  gap: 50px;
-  margin-bottom: 10%;
-  justify-content: center;
-}
-.distros img{
-  min-width: 18%;
-  min-height: 50%;
-  max-width: 23%;
-  max-height: 100%;
-  filter:grayscale(70%);
-}
-.distros img:hover{
-  cursor: pointer;
-  transition: all 1s;
-  filter: grayscale(0%);
-}
 .box{
-  display: flex;
-  flex-direction: column;
-  background: red;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  gap:50px;
 }
-
-
-@media only screen and (max-width:800px){
-
-  .overView{
-    width: 100%;
-    height: 45%;
-  }
-  .clip{
-    gap:10%;
-    justify-content: flex-end;
-  }
-  .clip span{
-    margin:0;
-  font-size: 1.8rem;
-  }
-  .floating{
-    position: absolute;
-    bottom: 0;
-    height: 55%;
-    width: 185%;
-  }
-
+.about{
+  width: 80%;
+  z-index: 999;
 }
-
-@media only screen and (max-width:400px){
-
-  .overView{
-    width: 100%;
-    height: 40%;
-  }
 .floating{
-height: 55%;
+  width: 90%;
+  height: 70%;
+  align-items: center;
+  align-content: center;
+  clip-path: polygon(15% 0, 85% 0, 85% 100%, 15% 100%);
+  overflow: hidden;
+}
+.floating:after{
+  content: "";
+  width: 70%;
+  height:100%;
+  position: absolute;
+  box-shadow: inset 0px -170px 60px 130px #1f1926;
+
+  z-index: 99;
 }
 
-  .clip span{
-    margin:0;
-  font-size: 1.3rem;
+
+p{
+  text-align: center;
+  font-weight: 100;
+}
+
+@media only screen and (max-width: 1000px){
+  .floating{
+    width: 120%;
+    height: 70%;
   }
-.distros img{
-  min-width: 18%;
-  min-height: 100%;
-  max-width: 18%;
-  max-height: 100%;
+
+.floating:after{
+  width: 100%;
+}
 }
 
+
+@media only screen and (max-width: 800px){
+  .floating{
+    width: 100%;
+    height: 50%;
+  }
+}
+
+
+@media only screen and (max-width: 600px){
+  .floating{
+    width: 170%;
+    height: 100%;
+    clip-path: polygon(30% 0, 70% 0, 70% 100%, 30% 100%);
+  
+  }
+
+  .floating:after{
+  width: 130%;
+  }
+}
+
+
+@media only screen and (max-width: 400px){
+  .floating{
+    width: 220%;
+    height: 50%;
+    clip-path: polygon(30% 0, 70% 0, 70% 100%, 30% 100%);
+  
+  }
 }
