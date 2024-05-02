@@ -1,8 +1,8 @@
 .projectBox{
     background: #fef7ff;
-    width: 650px;
-    border-radius: 5%;
-    aspect-ratio: 6/4.5;
+    width: 660px;
+    border-radius: 1%;
+    aspect-ratio: 6/4;
     transition: all .5s;
     display: flex;
     flex-direction: column;
@@ -14,6 +14,7 @@
     z-index: 9999999;
     box-shadow: 0x 0x 10x 15px white;
     animation: float 1s linear infinite;
+  pointer-events: auto;
 }
 .projectHead{
     top: 0;
@@ -137,8 +138,9 @@
 @media only screen and (max-width:800px){
 
     .projectBox{
-    width: 600px;
-    aspect-ratio: 6/5;
+    width: 420px;
+    aspect-ratio: 4/6;
+    border-radius: 1% 1% 1% 1% / 1% 1% 1% 1%  ;
     }
     .projectTitle h2{
         font-size: 1.8rem;
@@ -148,14 +150,46 @@
     }
     .titleRight a{
         font-size: 1.3rem;
+    }.projectTitle h2{
+        font-size: 3rem;
     }
+    .projectTitle h3{
+        font-size: 1rem;
+    }
+.projectTitle{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 10%;
+    align-items: center;
+    align-content: center;
+}
+.titleLeft{
+    width: 100%;
+    height: 40%;
+    justify-content: center;   
+    align-items: center;
+    align-content: center;
+    text-align: center;
+}
+.titleRight{
+    width: 100%;
+    height: 40%;
+    justify-content: center;
+    align-items: center;
+}
+    .projectHead h4{
+        font-size: .8rem;
+        margin-left: 6%;    
+    }
+
 }
 
 
 @media only screen and (max-width:600px){
 
     .projectBox{
-    width: 400px;
+    width: 340px;
     aspect-ratio: 4/6;
     border-radius: 1% 1% 1% 1% / 1% 1% 1% 1%  ;
     }
@@ -197,8 +231,8 @@
 
 @media only screen and (max-width:400px){
     .projectBox{
-    width: 300px;
-    aspect-ratio: 4/6;
+    width: 260px;
+    aspect-ratio: 4/6.3;
     }
     .projectTitle h2{
         font-size: 2.1rem;

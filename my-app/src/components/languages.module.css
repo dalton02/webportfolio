@@ -7,17 +7,19 @@
 }
 .about{
   width: 80%;
+  height: 20%;
   z-index: 999;
 }
 .floating{
   width: 90%;
-  height: 70%;
+  height: 80%;
   align-items: center;
   align-content: center;
   clip-path: polygon(15% 0, 85% 0, 85% 100%, 15% 100%);
   overflow: hidden;
 }
 .floating:after{
+  pointer-events: none;
   content: "";
   width: 70%;
   height:100%;

@@ -57,10 +57,10 @@ function App() {
 
 
     <Container 
-    HGG='800px'
-    HG= '800px'
-    HM='600px'
-    HP='600px'
+    HGG='820px'
+    HG= '820px'
+    HM='700px'
+    HP='700px'
     HPP='600px'
     HXP='450px'
     backColor='#1f1926' backColorAnt='#1f1926' backEndColor='70%'
@@ -87,7 +87,7 @@ function App() {
     <Container 
     HGG='880px'
     HG='980px'
-    HM='700px'
+    HM='800px'
     HP='600px'
     HPP='600px'
     HXP='500px'
@@ -105,10 +105,10 @@ function App() {
     <Container 
     HGG='1000px'
     HG='1000px'
-    HM='850px'
-    HP='850px'
-    HPP='850px'
-    HXP='750px'
+    HM='800px'
+    HP='800px'
+    HPP='750px'
+    HXP='640px'
     backColor='#1f1926' backColorAnt='#1f1926' backEndColor='70%'
    
     >

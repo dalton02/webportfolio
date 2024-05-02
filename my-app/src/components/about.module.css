@@ -7,11 +7,11 @@ Pensamento do DESIGNER: Deixe tudo pegando 80% da tela
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   align-content: center;
   z-index: 999999;
-  gap: 10% ;
+  gap: 5%;
   background: #1f1926;
  }
 

@@ -42,7 +42,7 @@ function Carrosel(){
 				<div className={`${styles.controller}`}>
 				
 				<i onClick={removeCountHandler}></i> 
-				Acesse meu acervo
+				
 				<i onClick={addCountHandler}></i>
 				
 				</div>
