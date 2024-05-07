@@ -7,7 +7,7 @@
 }
 .about{
   width: 80%;
-  height: 20%;
+  height: 30%;
   z-index: 999;
 }
 .floating{
@@ -33,6 +33,8 @@
 p{
   text-align: center;
   font-weight: 100;
+    text-align: justify;
+    text-align-last: center;
 }
 
 @media only screen and (max-width: 1000px){
@@ -58,13 +60,13 @@ p{
 @media only screen and (max-width: 600px){
   .floating{
     width: 170%;
-    height: 100%;
+    height: 50%;
     clip-path: polygon(30% 0, 70% 0, 70% 100%, 30% 100%);
   
   }
 
   .floating:after{
-  width: 130%;
+  width: 100%;
   }
 }
 

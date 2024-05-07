@@ -2,46 +2,19 @@
 import './CSS/framework.css'; 
 import './App.css'; 
 import './CSS/fonts.css'; 
-import { useInView, animated } from '@react-spring/web'
-import iconGit from './SVG/iconGit.svg';
-import iconInsta from './SVG/iconInsta.svg';
-import iconLinkedin from './SVG/iconLinkedin.svg';
-import React, { useState, useEffect, useRef } from 'react';
-import Me from './IMG/me.png';
 import Carrosel from './components/Carrosel.jsx';
 import Habilitys from './components/Habilitys.jsx';
 import Languages from './components/Languages.jsx';
 import Hero from './components/Hero.jsx';
 import Container from './components/Container.jsx';
 import About from './components/About.jsx';
+import  FieldAsteroid from './components/FieldAsteroid.jsx';
 function App() {
 
     
-/*
-    function goTo(pos){
-
-        if(pos===0)
-        hero.current.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-        
-        if(pos===1)  
-        projects.current.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-          });
-        
-        if(pos===2)
-        showcase.current.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-          });
-    }
-  */
   return (
     <>
-
+    <FieldAsteroid/>
     <Container 
     HGG='1000px'
     HG='1000px'
@@ -75,8 +48,8 @@ function App() {
     HG='1000px'
     HM='700px'
     HP='1450px'
-    HPP='1450px'
-    HXP='1450px'
+    HPP='1550px'
+    HXP='1550px'
     backColor='#1f1926' backColorAnt='#fff6ff' backEndColor='0%'
     >
     

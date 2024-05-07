@@ -1,9 +1,8 @@
 import styles from './cardProject.module.css';
-import {useState,useRef,useEffect} from 'react';
-import { useInView, animated } from '@react-spring/web'
+import {useEffect} from 'react';
+import {useInView} from '@react-spring/web'
 import '../CSS/framework.css';
 import '../CSS/fonts.css';
-import iconGit from '../SVG/iconGit.svg';
 
 function CardProject(props){
 
@@ -15,7 +14,6 @@ function CardProject(props){
     if (inView) {
       myAnim.current.classList.add(`${styles.show}`);
       myAnim.current.classList.remove(`${styles.hidden}`);
-      console.log("A");
     } 
 
     else {

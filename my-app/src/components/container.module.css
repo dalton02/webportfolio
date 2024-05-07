@@ -9,6 +9,7 @@
   color: white;
   z-index: 30;
   position: relative;
+  background: none;
 }
 .children{
   width: 100%;
@@ -20,6 +21,7 @@
   align-items: center;
   align-content: center;
   position: relative; /* Adicionado */
+  pointer-events: none;
 }
 
 .background{
@@ -28,6 +30,7 @@
   height: 100%;
   background: linear-gradient(180deg, var(--backColorAnt) 0%, var(--backColor) var(--backEndColor));
   z-index: 0;
+  pointer-events: none;
 }
 
 @media only screen and (min-width:2800px){
