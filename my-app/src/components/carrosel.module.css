@@ -4,15 +4,15 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content:center;
   align-items: center;
   align-content: center;
-  overflow: hidden;
-
+  margin: 0;
+  padding: 0;
 }
 .box{
   pointer-events: none;
-  width: 300%;
+  width: 400%;
   height: 100%;
   position: absolute;
   display: flex;
@@ -21,7 +21,8 @@
   align-items: center;
   align-content: center;
   transition: all 1s;
-  top: -10px;
+  left: 0%;
+
 }
 
 .controller{

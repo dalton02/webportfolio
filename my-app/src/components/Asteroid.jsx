@@ -46,8 +46,10 @@ class Asteroid extends Component{
   		){
 		
   		if(this.state.spawn==true){
+		  
 		  this.props.onAsteroidHit(this.state.xPos,this.state.yPos, 
 		  this.state.velX*1.8,this.state.velY*1.8,this.state.size,this.props.id);
+			
 			}
 
 			this.animate();

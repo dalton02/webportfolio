@@ -1,24 +1,27 @@
 import Asteroid from './Asteroid.jsx'
-import {useState} from 'react';
-//Props: name,size,color
-
+import React, { Component } from 'react';
+import {useState,useEffect} from 'react';
 
 function FieldAsteroid(props){
 
- const [asteroids, setAsteroids] = useState([
- 	{ id: 1, xPos: 400, yPos: 520, velX: -1, velY: 0.1, size: 100, hidden: 999 },
+  const backup = [
+  { id: 1, xPos: 300, yPos: 520, velX: 14, velY: -0.5, size: 100, hidden: 999 },
   { id: 1, xPos: 100, yPos: 450, velX: 0, velY: 0, size: 170, hidden: 99999 },
   { id: 1, xPos: 1200, yPos: 750, velX: 0, velY: 0, size: 110, hidden: 9999999 },
-  { id: 1, xPos: 1200, yPos: 2150, velX: 1, velY: 0, size: 120, hidden: 99999}
- ]);
-
+  { id: 1, xPos: 1200, yPos: 2150, velX: 1, velY: 0, size: 120, hidden: 99999},
+  { id: 1, xPos: 1200, yPos: 3150, velX: 1, velY: 0, size: 150, hidden: 99999},
+  ];
+ const [asteroids, setAsteroids] = useState(backup);
+ 
   const handleAsteroidHit = (newXPos, newYPos, newVelX, newVelY,newSize) => {
     // Adiciona os novos asteroides à lista de asteroides
     setAsteroids(prevAsteroids => [
       ...prevAsteroids,
-      { id: prevAsteroids.length + 1, xPos: newXPos, yPos: newYPos, velX: newVelX, velY: newVelY, size: newSize, hidden: 10 }
+      { id: prevAsteroids.length + 1, xPos: newXPos, yPos: newYPos, velX: newVelX, velY: newVelY, size: newSize, hidden: 99999 }
     ]);
   };
+
+
 
 	return(
 
