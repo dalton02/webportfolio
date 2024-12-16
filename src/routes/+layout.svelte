@@ -10,7 +10,6 @@
 
 <svelte:head>
   <title>Portfolio</title>
-  <link rel="manifest" href="{base}/manifest.json">
 </svelte:head>
 
 <div class="fixed flex w-screen justify-center h-screen top-0 left-0 z-50 pointer-events-none">

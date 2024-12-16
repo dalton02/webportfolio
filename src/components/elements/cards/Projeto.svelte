@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from '$app/paths';
     import ButtonCursor from '$components/assets/lego/ButtonCursor.svelte';
     import LinkCursor from '$components/assets/lego/LinkCursor.svelte';
     import SvgIcon from '$components/assets/media/SvgIcon.svelte';
@@ -97,7 +98,7 @@ border border-white/20 transition-all duration-300 hover:bg-white/20">
       <LinkCursor className="w-1/2 bg-white/20 text-white rounded-lg px-3 py-2 text-xs font-medium transition duration-300 gap-2
         ease-in-out hover:bg-white/30 flex items-center justify-center h-9 max-h-9"
         href={about.link} target="_blank">
-        <SvgIcon src="/icons/git.svg" fill="white" cssStyle="w-5" />
+        <SvgIcon src="{base}/icons/git.svg" fill="white" cssStyle="w-5" />
         Github
       </LinkCursor>
     </div>
