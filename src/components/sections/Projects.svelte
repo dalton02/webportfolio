@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { base } from "$app/paths";
+
 
     import ButtonCursor from "$components/assets/lego/ButtonCursor.svelte";
     import SelectInfo from "$components/assets/select/SelectInfo.svelte";
@@ -79,11 +81,11 @@
 <div class="flex flex-col items-center justify-start p-24 h-screen" bind:this={containerDiv}>
     <div class="flex gap-3 justify-center w-full items-center {visibleText ? "scale-100" : "scale-[.3]"}">
         <ButtonCursor className="rotate-[90deg] p-2 hover:-translate-x-1 ease-in-out" onClick={prev}>
-            <img src="/icons/arrow.svg" alt="" class:shake={shakeLeft}/>
+            <img src="{base}/icons/arrow.svg" alt="" class:shake={shakeLeft}/>
         </ButtonCursor>
         <b class="text-[24px] text-white">Visualize um projeto</b>
         <ButtonCursor className="rotate-[-90deg] p-2 hover:translate-x-1 ease-in-out" onClick={next}>
-            <img src="/icons/arrow.svg" alt="" class:shake={shakeRight}/>
+            <img src="{base}/icons/arrow.svg" alt="" class:shake={shakeRight}/>
         </ButtonCursor>
     
     </div>
