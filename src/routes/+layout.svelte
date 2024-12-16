@@ -1,7 +1,5 @@
 <script>
   import "../app.css";
-  import { theme } from "$lib/settings/userPreferences";
-  import dev from "$lib/settings/dev";
   import LayoutToast from "$components/assets/toast/LayoutToast.svelte";
   import Mouse from "$components/elements/window/Mouse.svelte";
   import PopMouse from "$components/sections/pops/PopMouse.svelte";
@@ -11,10 +9,8 @@
 </script>
 
 <svelte:head>
-  <title>{dev.getTitleUrl()}</title>
+  <title>Portfolio</title>
   <link rel="manifest" href="/manifest.json">
-  <meta name="color-scheme" content={$theme == 'dark' ? 'light dark' : $theme}/>
-  <link rel="stylesheet" href={`/src/${$theme}.css`}/>
   <!-- Meta tags e ícones específicos para dispositivos Apple -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
