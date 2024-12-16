@@ -78,8 +78,8 @@
 
 </script>
 
-<div class="flex flex-col items-center justify-start p-8 lg:p-24 h-svh" bind:this={containerDiv}>
-    <div class="flex lg:flex-row flex-col gap-3 justify-center w-full items-center {visibleText ? "scale-100" : "scale-[.3]"}">
+<div class="flex flex-col items-center justify-center p-8 lg:p-24 h-svh" bind:this={containerDiv}>
+    <div class="flex lg:flex-row flex-col gap-3 justify-center w-full items-center duration-[600ms] {visibleText ? "scale-100" : "scale-[.1]"}">
         <ButtonCursor className="rotate-[90deg] lg:flex hidden p-2 hover:-translate-x-1 ease-in-out" onClick={prev}>
             <img src="{base}/icons/arrow.svg" alt="" class:shake={shakeLeft}/>
         </ButtonCursor>
@@ -89,7 +89,7 @@
         </ButtonCursor>
     </div>
 
-    <div class="flex lg:hidden gap-3">
+    <div class="flex lg:hidden gap-3 duration-[600ms] {visibleText ? "scale-100" : "scale-[.1]"}">
       <ButtonCursor className="rotate-[90deg] p-2 hover:-translate-x-1 ease-in-out" onClick={prev}>
         <img src="{base}/icons/arrow.svg" alt="" class:shake={shakeLeft}/>
       </ButtonCursor>
@@ -98,7 +98,7 @@
       </ButtonCursor>
     </div>
 
-    <div class="h-full flex items-center justify-center w-screen {visibleCards ? "scale-100" : "scale-[.2]"}" bind:this={containerCards}>        
+    <div class="h-[500px] flex items-center justify-center w-screen duration-[600ms] {visibleCards ? "scale-100" : "scale-[.1]"}" bind:this={containerCards}>        
       {#key currentProject}
         <div class="flex absolute" in:fly={{x:2000*direction,duration:600}} out:fly={{x:2000*-direction,duration:600}}>
           <Projeto about={infoPortfolio.projects[currentProject]}/>

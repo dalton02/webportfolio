@@ -12,7 +12,7 @@
   </script>
   
   
-  <button class="{mouseState.state.haveCustomCursor ? "cursor-none" : ""} {className}" onclick={onClick} style={style} title={title}>
+  <button class="{mouseState.state.haveCustomCursor ? "lg:cursor-none" : ""} {className}" onclick={onClick} style={style} title={title}>
     {@render children?.()}
   </button>
   

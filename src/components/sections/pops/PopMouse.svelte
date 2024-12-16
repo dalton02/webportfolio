@@ -20,6 +20,9 @@
   
 
   onMount(()=>{
+    if(window.innerWidth<900){
+      return;
+    }
     if(!localStorage.getItem("username")) setTimeout(()=>pop.pop(),2000);
     else{
         mouseState.state.nameCursor = localStorage.getItem("username");

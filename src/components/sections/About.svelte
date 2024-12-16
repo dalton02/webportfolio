@@ -7,7 +7,7 @@
 </script>
 
 
-<div class="relative overflow-hidden left-0 flex items-center justify-center w-full text-white min-h-screen" bind:this={containerDiv}>
+<div class="relative overflow-hidden left-0 flex items-center justify-center w-full text-white h-svh" bind:this={containerDiv}>
 
     <TextSublime/>
 
