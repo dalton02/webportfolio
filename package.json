@@ -1,6 +1,6 @@
 {
-	"name": "pinaculo-digital",
-	"version": "0.0.1",
+	"name": "portfolio",
+	"version": "1.2.0",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
