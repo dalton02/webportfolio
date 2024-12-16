@@ -11,6 +11,7 @@
   import SelectInfo from "$components/assets/select/SelectInfo.svelte";
   import Projeto from "$components/elements/cards/Projeto.svelte";
   import Projects from "$components/sections/Projects.svelte";
+  import { base } from "$app/paths";
 
   let containerAbout = $state<HTMLDivElement>();
   let containerEmpresas = $state<HTMLDivElement>()
@@ -66,11 +67,11 @@
 
       <button onclick={()=>{infoPortfolio.language = "PT-BR";}} 
         class="{mouseState.state.haveCustomCursor ? "hover:cursor-none" : ""} hover:scale-105">
-        <img class="h-[30px]" src="/icons/brasil.svg" alt=""/>
+        <img class="h-[30px]" src="{base}/icons/brasil.svg" alt=""/>
       </button>
       
       <button onclick={()=>{infoPortfolio.language = "EN-US";}} class="{mouseState.state.haveCustomCursor ? "hover:cursor-none" : ""} hover:scale-105">
-        <img class="h-[30px]" src="/icons/usa.svg" alt=""/>
+        <img class="h-[30px]" src="{base}/icons/usa.svg" alt=""/>
       </button>
     
     </div>

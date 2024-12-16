@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from "$app/paths";
   import infoPortfolio from "$lib/localData/portifolio.svelte";
   import { onMount } from "svelte";
   
@@ -38,7 +39,7 @@
 
   <div class="flex flex-col gap-0 justify-center np:w-full items-center duration-300 w-full absolute p-4 np:p-6 text-[#FEFEFE] 
   {visible ? "scale-100" : "scale-0"}" bind:this={logoCompany} >
-          <img class="w-[300px] np:w-[180px]" src={infoPortfolio.jobs[companyIndex].icon} alt=""/>
+          <img class="w-[300px] np:w-[180px]" src={base+infoPortfolio.jobs[companyIndex].icon} alt=""/>
           <h1 class="text-32 m-0 mt-6 np:text-24">{infoPortfolio.jobs[companyIndex].name}</h1>
           <h2 class="text-24 m-0 np:text-18">{infoPortfolio.jobs[companyIndex].role}</h2>
           <p class="text-18 mt-6 text-center np:text-14"> {infoPortfolio.jobs[companyIndex].about} </p>
