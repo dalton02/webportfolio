@@ -17,7 +17,7 @@
 </script>
 
 
-<div class="flex lg:flex-row flex-col justify-start items-start relative p-8 lg:p-24 h-svh np:gap-4" bind:this={containerDiv}>
+<div class="flex lg:flex-row flex-col justify-start items-start relative p-8 lg:p-24 h-svh np:gap-4 " bind:this={containerDiv}>
     
       <div class="flex justify-center items-center   relative h-[80%] lg:h-full w-full lg:w-1/2">
         <EmpresaBack bind:this={containerInfo}/>
