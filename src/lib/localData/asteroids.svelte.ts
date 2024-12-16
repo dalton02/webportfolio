@@ -1,8 +1,10 @@
+import { base } from "$app/paths";
+
 class Asteroids{
 
     asteroids = $state([]);
     type = $state("")
-    list = ["/icons/xicara.svg","","/icons/c++.svg","/icons/linux.svg"]
+    list = [base+"/icons/xicara.svg","",base+"/icons/c++.svg",base+"/icons/linux.svg"]
 
 
     constructor(qtd:number){
