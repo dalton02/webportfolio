@@ -1,6 +1,3 @@
-import validateInputs from "../sanitizers/validateFormats";
-
-
 class Observer{
 
     signal = $state<{tipo:string,data:any}>({

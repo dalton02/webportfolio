@@ -53,7 +53,6 @@
         positions.push({x:((x/window.innerWidth)*100),y:((y/window.innerHeight)*100),scale:scale});
     }
     positions=positions
-    console.log(positions)
   })
 
 

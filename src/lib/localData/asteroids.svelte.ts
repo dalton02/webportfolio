@@ -7,14 +7,14 @@ class Asteroids{
 
     constructor(qtd:number){
         for(let i=0;i<qtd;i++){
-            const [initX,initY] = this.newPositions();
+            const [initX,initY] = [Math.random()*(-1000),Math.random()*(4000)];
             const opacity = Math.random()*0.5+0.2;
             this.asteroids.push({
                 initX: initX,
-                initY: Math.random()*(4000),
+                initY: initY,
                 vX: Math.random()*2+1,
                 x: initX,
-                y:Math.random()*(4000),
+                y: initY,
                 width:Math.random()*5+3,
                 opacity:opacity,
                 transition: true

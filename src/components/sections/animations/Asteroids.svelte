@@ -2,12 +2,9 @@
 
 <script lang="ts">
   import asteroidsHandle from "$lib/localData/asteroids.svelte";
-  import Asteroids from "$lib/localData/asteroids.svelte";
-
 
   animationCycle()
   function animationCycle(){
-      const speed = 4;
       for(let i in asteroidsHandle.asteroids){
           asteroidsHandle.asteroids[i].x+=asteroidsHandle.asteroids[i].vX;  
       }
@@ -15,9 +12,11 @@
   }
 
   $effect(()=>{
-    for(let i in asteroidsHandle.asteroids){
-      if(asteroidsHandle.asteroids[i].x>window.innerWidth){
-        asteroidsHandle.resetPosition(parseInt(i) )
+    if(window!==undefined && window!==null){
+      for(let i in asteroidsHandle.asteroids){
+        if(asteroidsHandle.asteroids[i].x>window.innerWidth){
+          asteroidsHandle.resetPosition(parseInt(i) )
+        }
       }
     }
   })
