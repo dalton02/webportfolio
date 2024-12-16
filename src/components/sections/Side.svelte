@@ -37,7 +37,7 @@ import FocusBlock from "$components/assets/lego/FocusBlock.svelte";
 <FocusBlock className="relative " containersWithinFocus={[]} bind:viewObject={showSide}>
 
     <button onclick={()=>showSide=true} class="top-0 left-0 z-10 p-1">
-        <img src="/icons/ham.svg" alt="">
+        <img src="{base}/icons/ham.svg" alt="">
     </button>
     <DropBlock isDrop={showSide} className="top-[40px] flex flex-col overflow-hidden absolute left-[10%] bg-black-200 text-white border border-[white] rounded-xl">
         {#each infoPortfolio.menuList as list,i}
