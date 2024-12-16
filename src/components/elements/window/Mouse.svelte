@@ -41,7 +41,7 @@
             </defs>
           </svg>
         
-          <span class="bg-slate-200 p-1 rounded-xl translate-x-4 absolute translate-y-1">
+          <span class="bg-slate-200 p-1 px-4 text-[12px] rounded-xl translate-x-4 absolute translate-y-[2px]">
             {mouseState.state.nameCursor}    
           </span>
     </div>
