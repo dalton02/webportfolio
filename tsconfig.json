@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "$components/*": ["src/components/*"],
+      "$lib/*": ["src/lib/*"],
+      "$static/*": ["static/*"],
+    }
+  },
+  "exclude": ["node_modules", "dist"],
+  "extends": "./.svelte-kit/tsconfig.json"
+}
