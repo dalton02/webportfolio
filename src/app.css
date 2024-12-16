@@ -1,8 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import '$app/paths';
 
-
+body{
+  overflow-x: hidden;
+}
 
 @font-face {
   font-family: 'Gotham';
@@ -22,7 +25,7 @@
 }
 @font-face {
   font-family: 'Gotham' ;
-  src: url('/fonts/Gotham/Gotham-Black.otf') format('opentype');
+  src: url('${base}/fonts/Gotham/Gotham-Black.otf') format('opentype');
   font-weight: 700;
 }
 

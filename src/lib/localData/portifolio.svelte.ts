@@ -100,28 +100,7 @@ class InfoPortfolio{
                 icon: "/icons/facebook.svg",
                 name: "Facebook .Inc",
                 role:   this.language=="PT-BR" ? "Engenheiro DevOps" : "DevOps Engineer",
-                about: this.language=="PT-BR" ? "Eu sabo engenhar" : "I know engineer",
-                background: "#039BE5"
-            },
-            {
-                icon: "/icons/facebook.svg",
-                name: "Facebook .Inc",
-                role:   this.language=="PT-BR" ? "Engenheiro DevOps" : "DevOps Engineer",
-                about: this.language=="PT-BR" ? "Eu sabo engenhar" : "I know engineer",
-                background: "#039BE5"
-            },
-            {
-                icon: "/icons/facebook.svg",
-                name: "Facebook .Inc",
-                role:   this.language=="PT-BR" ? "Engenheiro DevOps" : "DevOps Engineer",
-                about: this.language=="PT-BR" ? "Eu sabo engenhar" : "I know engineer",
-                background: "#039BE5"
-            },
-            {
-                icon: "/icons/facebook.svg",
-                name: "Facebook .Inc",
-                role:   this.language=="PT-BR" ? "Engenheiro DevOps" : "DevOps Engineer",
-                about: this.language=="PT-BR" ? "Eu sabo engenhar" : "I know engineer",
+                about: this.language=="PT-BR" ? "Sim eu trabalhei no facebook" : "I know engineer",
                 background: "#039BE5"
             },
             {

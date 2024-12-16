@@ -17,9 +17,7 @@
   <LayoutToast/>
 </div>
 <PopMouse/>
-<div class="relative overflow-x-hidden bg-[#090A15] {mouseState.state.haveCustomCursor ? "cursor-none" : ""}">
-
+<div class="relative overflow-x-hidden w-screen bg-[#090A15] {mouseState.state.haveCustomCursor ? "cursor-none" : ""}">
   <slot/>
   <Mouse/>
 </div>
-

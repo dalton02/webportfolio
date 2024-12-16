@@ -17,13 +17,14 @@
 </script>
 
 
-<div class="flex flex-row np:justify-center np:flex-col relative p-24 min-h-screen np:gap-4 z-40" bind:this={containerDiv}>
+<div class="flex lg:flex-row flex-col relative p-8 lg:p-24 h-svh np:gap-4 z-40" bind:this={containerDiv}>
     
-      <div class="flex justify-center items-center relative w-1/2">
+      <div class="flex justify-center items-center   relative h-[80%] lg:h-full w-full lg:w-1/2">
         <EmpresaBack bind:this={containerInfo}/>
       </div>
-      <div class="flex gap-8 flex-wrap z-10 w-1/2 np:w-full np:pt-5 np:overflow-x-auto np:flex-nowrap np:justify-start np:pb-5 
-      items-center justify-center content-center">
+      <div class="flex flex-row lg:justify-center lg:items-center gap-4 lg:gap-8 lg:flex-wrap overflow-x-auto overflow-y-hidden 
+      lg:overflow-visible  lg:h-full w-full lg:w-1/2
+      p-4 lg:p-0">
             {#each infoPortfolio.jobs as company,index}
                   <EmpresaCard on:ativado={()=>swip(index)} index={index+1} 
                   ativo={index==currentCompany ? true : false} src={company.icon} companyName={company.name} bgFull="#ED0C32"/>

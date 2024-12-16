@@ -15,7 +15,7 @@ class Asteroids{
                 vX: Math.random()*2+1,
                 x: initX,
                 y: initY,
-                width:Math.random()*5+3,
+                width:Math.random()*3+1,
                 opacity:opacity,
                 transition: true
             })

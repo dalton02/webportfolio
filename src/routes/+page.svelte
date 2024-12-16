@@ -52,13 +52,13 @@
 {/if}
 
 
-<div class="fixed top-0 left-0 h-[200] p-8 pl-20 pr-20 flex justify-between items-center gap-4 w-screen text-black z-50">
+<div class="fixed top-0 left-0 h-[200] p-8 pl-20 pr-20 justify-between items-center gap-4 w-screen text-black z-50 hidden lg:flex ">
 
-    <ul class="flex gap-8 text-white items-center justify-around">
+    <ul class="gap-8 text-white items-center justify-around flex">
       {#each infoPortfolio.menuList as list,i}
         <Item redirect={()=>{redirect(i)}} info={list}/>
       {/each}
-      <ButtonCursor className="hover:rotate-45 ease-in-out p-3 px-1 duration-500" onClick={randomAsteroid}>
+      <ButtonCursor className="hover:rotate-45 ease-in-out p-3 px-3 duration-500" onClick={randomAsteroid}>
         ?
       </ButtonCursor>
     </ul>

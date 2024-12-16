@@ -43,10 +43,11 @@ import { createEventDispatcher, onMount } from "svelte";
    
 </script>
 
-<ButtonCursor onClick={toggleAtivo} className="flex flex-col items-center justify-center flex-shrink-0 w-[240px] h-[150px] np:w-[150px] np:h-[100px] rounded-lg  
-hover:-translate-y-2 hover:rotate-6 {isVisible ? "scale-100 rotate-0" : "scale-0 rotate-45"}" 
+<ButtonCursor onClick={toggleAtivo} className="flex flex-col items-center justify-center flex-shrink-0 
+lg:w-[240px] lg:h-[150px] w-[150px] h-[100px] 
+rounded-lg  hover:-translate-y-2 hover:rotate-6 {isVisible ? "scale-100 rotate-0" : "scale-0 rotate-45"}" 
 style="background:white;transition:all {800+(index*200)}ms" title={companyName}>
-    <img class="w-[50px]" src={base+src} alt=""  bind:this={cardContainer} />
+    <img class="w-[40px] lg:w-[50px]" src={base+src} alt=""  bind:this={cardContainer} />
 </ButtonCursor>
 
 

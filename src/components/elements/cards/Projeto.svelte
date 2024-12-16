@@ -92,27 +92,9 @@ border border-white/20 transition-all duration-300 hover:bg-white/20">
       </ul>
     </div>
 
-    <div class="flex justify-between items-center space-x-2 mt-3">
-      <ButtonCursor className="flex-1 bg-white/10 text-white/90 rounded-lg px-3 py-2 text-xs font-medium transition 
-      duration-300 ease-in-out hover:bg-white/20 flex items-center justify-center border border-white/20 h-9 max-h-9"
-      onClick={()=>{}}>
-        <svg
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          fill="none"
-          class="h-4 w-4 mr-1"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            stroke-width="2"
-            stroke-linejoin="round"
-            stroke-linecap="round"
-          ></path>
-        </svg>
-        Help
-      </ButtonCursor>
-      <LinkCursor className="flex-1 bg-white/20 text-white rounded-lg px-3 py-2 text-xs font-medium transition duration-300 gap-2
+    <div class="flex justify-end items-center space-x-2 mt-3">
+    
+      <LinkCursor className="w-1/2 bg-white/20 text-white rounded-lg px-3 py-2 text-xs font-medium transition duration-300 gap-2
         ease-in-out hover:bg-white/30 flex items-center justify-center h-9 max-h-9"
         href={about.link} target="_blank">
         <SvgIcon src="/icons/git.svg" fill="white" cssStyle="w-5" />
