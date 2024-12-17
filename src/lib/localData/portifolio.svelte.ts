@@ -3,6 +3,27 @@ class InfoPortfolio{
 
     language = $state("PT-BR");
 
+
+programming = ["php","java","docker","react","svelte","typescript"]
+tools = ["jest","nestjs"]
+countrys = $derived([
+    {
+        icon:"br",
+        value:"100",
+        status:this.language==="PT-BR" ? "Natural" : "Natural"
+    },
+    {
+        icon:"it",
+        value:"20",
+        status:this.language==="PT-BR" ? "Iniciante" : "Beginner"
+    },
+    {
+        icon:"us",
+        value:"90",
+        status:this.language==="PT-BR" ? "Proeficiente" : "Expert"
+    }
+])
+
     habilitys = $derived([
         {
         title: "Manipulação de banco de dados e otimização de recursos",
@@ -45,10 +66,13 @@ class InfoPortfolio{
             label: this.language=="PT-BR" ? "Sobre" :"About",
         },
         {
+            label: this.language=="PT-BR" ? "Habilidades" :"Skills",
+        },
+        {
             label: this.language=="PT-BR" ? "Carreira" :"Career",
         },
         {
-            label: this.language=="PT-BR" ? "Habilidades" :"Skills",
+            label: this.language=="PT-BR" ? "Projetos" :"Projects",
         },
     ])
 

@@ -13,16 +13,18 @@
   import Projects from "$components/sections/Projects.svelte";
   import { base } from "$app/paths";
   import Side from "$components/sections/Side.svelte";
+  import TextSublime from "$components/sections/animations/TextSublime.svelte";
+  import Skills from "$components/sections/Skills.svelte";
 
   let containerAbout = $state<HTMLDivElement>();
   let containerEmpresas = $state<HTMLDivElement>()
   let containerProjects= $state<HTMLDivElement>();
-  
+  let containerSkills = $state<HTMLDivElement>()
 
   
 </script>
 
-<Side  containerAbout={containerAbout} containerEmpresas={containerEmpresas} containerProjects={containerProjects}/>
+<Side  containerAbout={containerAbout} containerEmpresas={containerEmpresas} containerSkills={containerSkills} containerProjects={containerProjects}/>
 {#if browser}
   <div class="absolute overflow-hidden w-full h-full z-0">
     <Asteroids/>
@@ -32,8 +34,13 @@
 
 
 
-<div class="lg:hidden flex"></div>
+
+
+<div class="relative left-0 flex items-center justify-center w-screen text-white h-svh ">
+  <TextSublime/>
+</div>
 
 <About bind:containerDiv={containerAbout}/>
+<Skills bind:containerDiv={containerSkills}/>
 <Empresas bind:containerDiv={containerEmpresas}/>
 <Projects bind:containerDiv={containerProjects}/>

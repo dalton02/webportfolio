@@ -12,7 +12,7 @@ import FocusBlock from "$components/assets/lego/FocusBlock.svelte";
   import Item from "./list/Item.svelte";
 
     let showSide = $state<boolean>()
-    let {containerAbout,containerEmpresas,containerProjects} = $props();
+    let {containerAbout,containerEmpresas,containerProjects,containerSkills} = $props();
     function redirect(index){
         showSide=false;
         switch(index){
@@ -20,12 +20,14 @@ import FocusBlock from "$components/assets/lego/FocusBlock.svelte";
             containerAbout.scrollIntoView({ behavior: 'smooth' });
             break;
             case 1:
-            containerEmpresas.scrollIntoView({ behavior: 'smooth' });
+            containerSkills.scrollIntoView({ behavior: 'smooth' });
             break;
             case 2:
+            containerEmpresas.scrollIntoView({ behavior: 'smooth' });
+            break;
+            case 3:
             containerProjects.scrollIntoView({ behavior: 'smooth' });
             break;
-            
             default:
             break;
         }
@@ -52,7 +54,7 @@ import FocusBlock from "$components/assets/lego/FocusBlock.svelte";
 
 
 
-<header class="fixed top-0 left-0 h-[200] p-8 pl-20 pr-20 justify-between items-center gap-4 w-screen text-black z-50 hidden lg:flex ">
+<header class="fixed top-0 left-0 h-[200] p-4 pl-20 pr-20 bg-[rgba(9,10,21,.2)] backdrop-blur-[2px] justify-between items-center gap-4 w-screen text-black z-50 hidden lg:flex ">
 
     <ul class="gap-8 text-white items-center justify-around flex">
       {#each infoPortfolio.menuList as list,i}

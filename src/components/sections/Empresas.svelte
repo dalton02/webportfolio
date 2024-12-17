@@ -1,6 +1,8 @@
 <script lang="ts">
 
-    import EmpresaBack from "$components/elements/cards/EmpresaBack.svelte";
+    import Titulo from "$components/assets/text/Titulo.svelte";
+  import WrapperDefault from "$components/assets/wrapper/WrapperDefault.svelte";
+import EmpresaBack from "$components/elements/cards/EmpresaBack.svelte";
     import EmpresaCard from "$components/elements/cards/EmpresaCard.svelte";
     import infoPortfolio from "$lib/localData/portifolio.svelte";
   
@@ -16,22 +18,25 @@
 
 </script>
 
+<WrapperDefault  bind:container={containerDiv}>
 
-<div class="flex lg:flex-row flex-col justify-start items-start relative p-8 lg:p-24 h-lvh np:gap-4 " bind:this={containerDiv}>
-    
-      <div class="flex justify-center items-center   relative h-[80%] lg:h-full w-full lg:w-1/2">
-        <EmpresaBack bind:this={containerInfo}/>
-      </div>
-      <div class="flex lg:flex-col xl:flex-row lg:justify-center lg:items-center gap-4  overflow-x-auto overflow-y-hidden 
-      lg:overflow-visible  lg:h-full lg:w-1/2 w-full
-      p-4 lg:p-0">
-            {#each infoPortfolio.jobs as company,index}
-                  <EmpresaCard on:ativado={()=>swip(index)} index={index+1} 
-                  ativo={index==currentCompany ? true : false} src={company.icon} companyName={company.name} bgFull="#ED0C32"/>
-            {/each}
-      </div>
+  <Titulo titulo="Carreira"/>
+  <div class="flex lg:flex-row flex-col justify-start items-start relative p-8 w-full flex-grow lg:p-24 np:gap-4 ">
+
+    <div class="flex justify-center items-center   relative h-[80%] lg:h-full w-full lg:w-1/2">
+      <EmpresaBack bind:this={containerInfo}/>
+    </div>
+    <div class="flex lg:flex-col xl:flex-row lg:justify-center lg:items-center gap-4  overflow-x-auto overflow-y-hidden 
+    lg:overflow-visible  lg:h-full lg:w-1/2 w-full
+    p-4 lg:p-0">
+          {#each infoPortfolio.jobs as company,index}
+                <EmpresaCard on:ativado={()=>swip(index)} index={index+1} 
+                ativo={index==currentCompany ? true : false} src={company.icon} companyName={company.name} bgFull="#ED0C32"/>
+          {/each}
+    </div>
 
 </div>
+</WrapperDefault>
 
 
 
