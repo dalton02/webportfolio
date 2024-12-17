@@ -7,7 +7,7 @@
 
 
 
-<div class="flex flex-col justify-center items-center w-full relative p-8 lg:p-24 h-lvh np:gap-4 {className}"
+<div class="flex flex-col flex-grow justify-center items-center w-full relative p-4 lg:p-24 min-h-lvh np:gap-4 {className}"
 bind:this={container}>
     {@render children?.()}
 </div>

@@ -21,7 +21,9 @@
 
 <WrapperDefault bind:container={containerDiv}>
     <Titulo titulo="Linguagens"/>
-    <div class="flex  gap-4 justify-center mb-12">
+
+    <div class="flex justify-start items-center h-[50svh] flex-col">
+    <div class="flex  gap-4 justify-center mb-12 flex-wrap">
         {#each ["Criação","Ferramentas","Estrangeira"] as op}
             {@render botao(op)}
         {/each}
@@ -44,7 +46,7 @@
         {/if}
     </div>
 
-    <div class="flex flex-col text-white  mt-12 px-56">
+    <div class="flex flex-col text-white  mt-12 lg:px-56 ">
 
         {#if estado==="Criação"}
         Procuro eficiência ao desenvolver seu sistema, tenho experiência e especialização como:
@@ -67,6 +69,7 @@
         {:else}
             Falar algo sobre proeficiencia da lingua depois
         {/if}
+    </div>
     </div>
 
 

@@ -21,13 +21,13 @@ import EmpresaBack from "$components/elements/cards/EmpresaBack.svelte";
 <WrapperDefault  bind:container={containerDiv}>
 
   <Titulo titulo="Carreira"/>
-  <div class="flex lg:flex-row flex-col justify-start items-start relative p-8 w-full flex-grow lg:p-24 np:gap-4 ">
+  <div class="flex lg:flex-row flex-col justify-start items-center relative p-8 w-full flex-grow lg:p-24 gap-4 ">
 
-    <div class="flex justify-center items-center   relative h-[80%] lg:h-full w-full lg:w-1/2">
+    <div class="flex justify-center items-center h-[550px]  relative lg:h-full w-full lg:w-[40vw]">
       <EmpresaBack bind:this={containerInfo}/>
     </div>
     <div class="flex lg:flex-col xl:flex-row lg:justify-center lg:items-center gap-4  overflow-x-auto overflow-y-hidden 
-    lg:overflow-visible  lg:h-full lg:w-1/2 w-full
+    lg:overflow-visible  lg:h-full lg:w-[40vw] w-full
     p-4 lg:p-0">
           {#each infoPortfolio.jobs as company,index}
                 <EmpresaCard on:ativado={()=>swip(index)} index={index+1} 
