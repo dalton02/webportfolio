@@ -16,7 +16,7 @@
 </script>
 
 <div class="flex flex-row justify-center items-center hover:bg-blue-500 hover:bg-opacity-40 duration-500 relative w-12 h-12 rounded-full overflow-hidden">
-    <img class="object-cover {icon!="/icons/camera.svg" ? 'w-full' : 'w-3/5'}" src={icon}/>
+    <img class="object-cover {icon!="/icons/camera.svg" ? 'w-full' : 'w-3/5'}" alt="" src={icon}/>
     <MediaHandler getBase64={true} on:fileChangeEvent={fileUpload}/>
 </div>
 
