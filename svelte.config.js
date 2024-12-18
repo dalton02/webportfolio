@@ -5,9 +5,11 @@ const dev =  process.argv.includes('dev')
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({
+			fallback: '404.html'
+		}),
 		paths: {
-			base: dev ? '' : "/webportfolio",
+			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
 		},
 		alias: {
 			$components: resolve('src/components'),
