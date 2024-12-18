@@ -47,7 +47,7 @@
 lg:w-[240px] lg:h-[150px] w-[150px] h-[100px] 
 rounded-lg  hover:lg:-translate-y-2 hover:lg:rotate-6 {isVisible ? "scale-100 rotate-0" : "scale-0 rotate-45"}" 
 style="background:white;transition:all {800+(index*200)}ms" title={companyName}>
-    <img class="w-[40px] lg:w-[50px]" src={base+src} alt=""  bind:this={cardContainer} />
+    <img class="w-[40px] lg:w-[50px]" src={src} alt=""  bind:this={cardContainer} />
 </ButtonCursor>
 
 
