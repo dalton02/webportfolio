@@ -153,7 +153,7 @@ class InfoPortfolio{
     jobs = $derived(
         [
             {
-                icon: `${base}/icons/dti.webp`,    
+                icon: `${base}/icons/pinaculo.svg`,    
                 name: "Pinaculo Digital",
                 role:  this.language=="PT-BR" ? "Desenvolvedor FullStack" : "FullStack Engineer",
                 about: this.PTUSAIT(
