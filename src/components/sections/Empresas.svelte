@@ -30,9 +30,9 @@ import EmpresaBack from "$components/elements/cards/EmpresaBack.svelte";
 <WrapperDefault  bind:container={containerDiv}>
 
   <Titulo titulo={tituloLang}/>
-  <div class="flex lg:flex-row flex-col justify-start items-center relative p-2 w-full flex-grow lg:p-24 gap-4 ">
+  <div class="flex lg:flex-row flex-col justify-start items-center relative p-2 w-full flex-grow gap-4 ">
 
-    <div class="flex justify-center items-center h-[380px]  relative lg:h-full w-full lg:w-[60%]">
+    <div class="flex justify-center items-center h-[400px]  relative lg:h-full w-full lg:w-[60%]">
       <EmpresaBack bind:this={containerInfo}/>
     </div>
     <div class="flex lg:flex-col md:flex-wrap xl:flex-row lg:justify-center lg:items-center gap-4  overflow-x-auto overflow-y-hidden 

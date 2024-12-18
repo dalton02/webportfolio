@@ -153,26 +153,21 @@ class InfoPortfolio{
     jobs = $derived(
         [
             {
-                icon: "/icons/pinaculo.svg",    
+                icon: `${base}/icons/pinaculo.svg`,    
                 name: "Pinaculo Digital",
                 role:  this.language=="PT-BR" ? "Desenvolvedor FullStack" : "FullStack Engineer",
-                about: this.language=="PT-BR" ? 
-                    "Especializa-se no desenvolvimento de aplicações web robustas com expertise tanto em tecnologias front-end quanto back-end. Apaixonado por criar soluções escaláveis e otimizar experiências de usuário usando frameworks e ferramentas modernas."
-                    :"Specializes in developing robust web applications with expertise in both front-end and back-end technologies. Passionate about building scalable solutions and optimizing user experiences using modern frameworks and tools.",
+                about: this.PTUSAIT(
+                `Responsável pelo desenvolvimento de aplicações web, das quais minhas responsabilidades incluíam desde a criação de Progressive Web Apps (PWA) e Multi-Page Applications (MPA) utilizando frameworks como SvelteKit e Next.js,  como a arquitetura e implementação de endpointes utilizando o NestJS, garantindo que as APIs atendam às necessidades de integração e escalabilidade dos projetos, e a configuração e esquematização de banco de dados.`,
+                `Responsible for the development of web applications, my responsibilities included the creation of Progressive Web Apps (PWA) and Multi-Page Applications (MPA) using frameworks such as SvelteKit and Next.js, the architecture and implementation of endpoints using NestJS, ensuring that the APIs met the integration and scalability needs of the projects, and the configuration and schematization of databases.`,
+                ""), 
                 background: "#ED0C32"
             },
             {
-                icon: "/icons/facebook.svg",
-                name: "Facebook .Inc",
-                role:   this.language=="PT-BR" ? "Engenheiro DevOps" : "DevOps Engineer",
-                about: this.language=="PT-BR" ? "Sim eu trabalhei no facebook" : "I know engineer",
-                background: "#039BE5"
-            },
-            {
-                icon: "/icons/facebook.svg",
-                name: "Facebook .Inc",
-                role:   this.language=="PT-BR" ? "Engenheiro DevOps" : "DevOps Engineer",
-                about: this.language=="PT-BR" ? "Eu sabo engenhar" : "I know engineer",
+                icon: `${base}/images/dti.webp`,
+                name: this.PTUSAIT("Departamento da Tecnologia da Informação","Department of Information Technology",""),
+                role:   this.PTUSAIT("Estágiario","Intern",""),
+                about: this.PTUSAIT("Responsável por atender chamados técnicos pelo campus da UFCA, tal como auxiliava na manutenção e instalação do cabeamento de internet.",
+                "Responsible for answering technical calls on the UFCA campus, as well as helping with the maintenance and installation of internet cabling.",""),
                 background: "#039BE5"
             },
             ]
