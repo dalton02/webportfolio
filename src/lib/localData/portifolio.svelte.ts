@@ -1,28 +1,39 @@
+import { base } from "$app/paths";
+
+
+type lang = "PT-BR" | "EN-US" | "IT-IT"
 class InfoPortfolio{
 
+    PTUSAIT(portugues:string,ingles:string,italiano:string,){
+        if(this.language==="PT-BR")
+            return portugues
+        if(this.language==="EN-US")
+            return ingles
+        if(this.language==="IT-IT")
+            return italiano
+
+    }
 
     language = $state("PT-BR");
 
-
-programming = ["php","java","docker","react","svelte","typescript"]
-tools = ["jest","nestjs"]
-countrys = $derived([
-    {
-        icon:"br",
-        value:"100",
-        status:this.language==="PT-BR" ? "Natural" : "Natural"
-    },
-    {
-        icon:"it",
-        value:"20",
-        status:this.language==="PT-BR" ? "Iniciante" : "Beginner"
-    },
-    {
-        icon:"us",
-        value:"90",
-        status:this.language==="PT-BR" ? "Proeficiente" : "Expert"
-    }
-])
+    programming = ["php","java","docker","react","svelte","typescript"]
+    tools = ["jest","nestjs"]
+    countrys = $derived([
+        {
+            icon:"br",
+            value:"100",
+            status:this.PTUSAIT("Natural","Natural","")
+        },
+        {
+            icon:"it",
+            value:"20",
+            status:this.PTUSAIT("Iniciante","Begineer","")
+        },
+        {
+            icon:"us",
+            value:"90",
+            status:this.PTUSAIT("Proeficiente","Expert","")        }
+    ])
 
     habilitys = $derived([
         {
@@ -87,26 +98,56 @@ countrys = $derived([
     projects = $derived([
         {
             name:"UFCHAT",
-            status: this.language=="PT-BR" ? "Disponivel" : "Avaliable",
+            about:this.PTUSAIT(`Projeto institucional para publicação de noticias para com estudantes da Universidade Federal do Cariri, embutido com um
+            web-scrapper para seleção de editais e noticias revelantes sobre a instituição`,`Institutional project to publish news for students at the 
+            Federal University of Cariri, embedded with a
+            web-scrapper for selecting public notices and relevant news about the institution`,``),
+            img:`${base}/images/ufchat1.png`,
             tags: ["Svelte 5","Golang","TypeScript"],
-            features: this.language ==="PT-BR"  ? 
-            ["Editor de Markdown","Sistema de pesquisa avançado","Página interativa UI/UX"]
-            :
-            ["Markdown Editor","Advanced Search System","UI/UX Interactive WebPage"],
             link:"https://github.com/dalton02/UFCHAT"  
                       
         },
+
         {
-            name:"ChatBot",
-            status: this.language=="PT-BR" ? "Disponivel" : "Avaliable",
-            tags: ["React","PHP","TypeScript"],
-            features: this.language ==="PT-BR"  ? 
-            ["Sistema de Chatbot para busca de conteudo"]  
-            :
-            ["Advanced ChatBot System"],
-            link:"https://github.com/dalton02/UFCHAT"  
+            name:"RayCaster",
+            about:this.PTUSAIT(`Pequeno experimento feito no inicio dos meus estudos de javascript, basicamente uma replica de como funcionava os gráficos do famoso
+            jogo DOOM, onde é criado uma ilusão do 3D atravez de diversos raios que representam a visão do jogador`,`A little experiment I did at the beginning of my javascript studies, basically a replica of how the graphics of the famous
+            DOOM game, where an illusion of 3D is created through various rays that represent the player's vision.`,""),
+            img:`${base}/images/ray.png`,
+            tags: ["Javascript","HTML5"],
+            link:"https://github.com/dalton02/Raycasting?tab=readme-ov-file"  
                       
-        }
+        },
+        {
+            name:"3D MOTOR ENGINE",
+            about:this.PTUSAIT(`Motor 3D desenvolvido do zero, um pequeno estudo feito usando manipulação de matrizes 4D para traduzir um
+            ambiente com vetores 3D para uma tela 2D.`,`A 3D engine from scratch, a small study using 4D matrix manipulation to translate an
+            environment with 3D vectors to a 2D screen.`,""),
+            img:`${base}/images/3d.png`,
+            tags: ["C++","SDL2"],
+            link:"https://github.com/dalton02/3D-Engine"  
+                      
+        },
+        {
+            name:"32-BIT CPU",
+            about:this.PTUSAIT(`Circuito de um processador implementado no Logisim seguindo uma arquitetura de 32 BITS, 
+            feito com uma arquitetura de pipelines para aprimorar a velocidade e controle de fluxo de instruções, suas instruções são geradas por um codigo python convertido para binario`,`The Logisim-implemented circuit embodies vital components intricately linked to craft a robust 32-bits 
+            processor architecture. These components collaboratively facilitate instruction execution. Leveraging pipeline circuits, instructions are 
+            segmented, enhancing code performance by segregating each operation's execution phase.`,""),
+            img:`${base}/images/circuito.png`,
+            tags: ["Python","Logisim"],
+            link:"https://github.com/dalton02/CPU-32BITS"  
+        },
+
+        {
+            name:"QIWI FrameWork",
+            about:this.PTUSAIT(`Pequeno framework criado em golang baseado em net/http, o mesmo segue as práticas de modulos e padronização de mensagens HTTP
+            seguidas pelo framework nest.js do mundo do typescript, contendo validações JSON e um pacote de utilitarios.`,`Small framework created in golang based on net/http, it follows the practices of modules and standardization of HTTP messages
+            messaging practices followed by the nest.js framework from the typescript world, containing JSON validations and a package of utilities.`,""),
+            img:`${base}/images/qiwi.webp`,
+            tags: ["Golang","Prisma"],
+            link:"https://github.com/dalton02/Qiwi-Base-Backend"  
+        }       
     ])
 
     jobs = $derived(

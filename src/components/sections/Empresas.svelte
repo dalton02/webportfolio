@@ -15,19 +15,28 @@ import EmpresaBack from "$components/elements/cards/EmpresaBack.svelte";
     function swip(index:number){
       containerInfo.startEndAnimation(index)
     }
-
+    let tituloLang = $derived.by(()=>{
+      switch(infoPortfolio.language){
+        case "PT-BR":
+          return "Carreira";
+        case "EN-US":
+          return "Career";
+        case "IT-IT":
+          return ".."
+      }
+    })
 </script>
 
 <WrapperDefault  bind:container={containerDiv}>
 
-  <Titulo titulo="Carreira"/>
-  <div class="flex lg:flex-row flex-col justify-start items-center relative p-8 w-full flex-grow lg:p-24 gap-4 ">
+  <Titulo titulo={tituloLang}/>
+  <div class="flex lg:flex-row flex-col justify-start items-center relative p-2 w-full flex-grow lg:p-24 gap-4 ">
 
-    <div class="flex justify-center items-center h-[550px]  relative lg:h-full w-full lg:w-[40vw]">
+    <div class="flex justify-center items-center h-[380px]  relative lg:h-full w-full lg:w-[60%]">
       <EmpresaBack bind:this={containerInfo}/>
     </div>
-    <div class="flex lg:flex-col xl:flex-row lg:justify-center lg:items-center gap-4  overflow-x-auto overflow-y-hidden 
-    lg:overflow-visible  lg:h-full lg:w-[40vw] w-full
+    <div class="flex lg:flex-col md:flex-wrap xl:flex-row lg:justify-center lg:items-center gap-4  overflow-x-auto overflow-y-hidden 
+    lg:overflow-visible  lg:h-full lg:w-[60%] w-full
     p-4 lg:p-0">
           {#each infoPortfolio.jobs as company,index}
                 <EmpresaCard on:ativado={()=>swip(index)} index={index+1} 

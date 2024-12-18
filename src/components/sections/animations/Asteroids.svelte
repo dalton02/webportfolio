@@ -5,6 +5,9 @@
 
   animationCycle()
   function animationCycle(){
+      if(window.innerWidth<600 && asteroidsHandle.asteroids.length>80){
+            asteroidsHandle.asteroids.splice(0,70)
+      }
       for(let i in asteroidsHandle.asteroids){
           asteroidsHandle.asteroids[i].x+=asteroidsHandle.asteroids[i].vX;  
       }

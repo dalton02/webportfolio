@@ -15,6 +15,8 @@
   import Side from "$components/sections/Side.svelte";
   import TextSublime from "$components/sections/animations/TextSublime.svelte";
   import Skills from "$components/sections/Skills.svelte";
+  import WrapperDefault from "$components/assets/wrapper/WrapperDefault.svelte";
+  import Titulo from "$components/assets/text/Titulo.svelte";
 
   let containerAbout = $state<HTMLDivElement>();
   let containerEmpresas = $state<HTMLDivElement>()
@@ -39,8 +41,13 @@
 <div class="relative left-0 flex items-center justify-center w-screen text-white h-svh ">
   <TextSublime/>
 </div>
-
+<div class="flex flex-col w-full lg:gap-0 gap-20">
 <About bind:containerDiv={containerAbout}/>
 <Skills bind:containerDiv={containerSkills}/>
 <Empresas bind:containerDiv={containerEmpresas}/>
 <Projects bind:containerDiv={containerProjects}/>
+<WrapperDefault>
+  <Titulo titulo="Contato"/>
+  
+</WrapperDefault>
+</div>

@@ -9,12 +9,12 @@ class Asteroids{
 
     constructor(qtd:number){
         for(let i=0;i<qtd;i++){
-            const [initX,initY] = [Math.random()*(-1000),Math.random()*(4000)];
+            const [initX,initY] = [Math.random()*(-1000),Math.random()*(8000)];
             const opacity = Math.random()*0.5+0.2;
             this.asteroids.push({
                 initX: initX,
                 initY: initY,
-                vX: Math.random()*2+1,
+                vX: Math.random()*5+3,
                 x: initX,
                 y: initY,
                 width:Math.random()*3+1,
@@ -35,6 +35,7 @@ class Asteroids{
     newPositions(){
         const initX = (Math.random()*window.innerWidth) *-1;
         const initY = Math.random()*(document.documentElement.scrollHeight);
+        
         return [initX,initY];
       }
       resetPosition(i:number){
@@ -47,5 +48,5 @@ class Asteroids{
 }
 
 
-const asteroidsHandle = new Asteroids(100);
+const asteroidsHandle = new Asteroids(110);
 export default asteroidsHandle

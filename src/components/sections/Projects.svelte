@@ -3,25 +3,23 @@
 
 
     import ButtonCursor from "$components/assets/lego/ButtonCursor.svelte";
-    import SelectInfo from "$components/assets/select/SelectInfo.svelte";
+    import Titulo from "$components/assets/text/Titulo.svelte";
+    import WrapperDefault from "$components/assets/wrapper/WrapperDefault.svelte";
     import Projeto from "$components/elements/cards/Projeto.svelte";
     import infoPortfolio from "$lib/localData/portifolio.svelte";
-    import type { Option } from "$lib/types/types";
-  import { onMount } from "svelte";
+    import { quadIn, quadOut } from "svelte/easing";
     import { fly } from "svelte/transition";
     
     let {containerDiv = $bindable()} = $props()
 
     let currentProject = $state<number>(0)
     
-    let visibleText = $state<boolean>(false)
+    let visibleText = $state<boolean>(true)
     let visibleCards = $state<boolean>(false)
     let containerCards = $state<HTMLDivElement>()
 
     let direction= $state<number>(1);
-
     let shakeLeft = $state<boolean>(false)
-
     let shakeRight = $state<boolean>(false)
 
     function prev(){
@@ -50,62 +48,45 @@
         currentProject++        
     }
 
+    let tituloLang = $derived.by(()=>{
+      switch(infoPortfolio.language){
+        case "PT-BR":
+          return "Projetos";
+        case "EN-US":
+          return "Projects";
+        case "IT-IT":
+          return ".."
+      }
+    })
 
-    onMount(() => {
-        const observer = new IntersectionObserver((entries) => {entries.forEach((entry) => {
-            if(entry.target===containerDiv){
-                visibleText=entry.isIntersecting
-            }
-            if(entry.target===containerCards){
-                visibleCards=entry.isIntersecting
-            }
-        });
-        },
-        { threshold: 0 } 
-        );
-        observer.observe(containerDiv);
-        observer.observe(containerCards);
-        
-        return () => {
-        if (containerDiv) {
-            observer.unobserve(containerDiv);
-        }
-        if (containerCards) {
-            observer.unobserve(containerCards);
-        }
-        };
-    });
+
+
 
 </script>
 
-<div class="flex flex-col items-center justify-center  p-10 py-13 lg:p-24 h-lvh" bind:this={containerDiv}>
-    <div class="flex lg:flex-row flex-col gap-3 justify-center w-full items-center duration-[600ms] {visibleText ? "scale-100" : "scale-[.1]"}">
-        <ButtonCursor className="rotate-[90deg] lg:flex hidden p-2 hover:-translate-x-1 ease-in-out" onClick={prev}>
-            <img src="{base}/icons/arrow.svg" alt="" class:shake={shakeLeft}/>
-        </ButtonCursor>
-        <b class="text-[24px] text-white">Visualize um projeto</b>
-        <ButtonCursor className="rotate-[-90deg] p-2 lg:flex hidden hover:translate-x-1 ease-in-out" onClick={next}>
-            <img src="{base}/icons/arrow.svg" alt="" class:shake={shakeRight}/>
-        </ButtonCursor>
-    </div>
+<WrapperDefault bind:container={containerDiv} >
 
-    <div class="flex lg:hidden gap-3 duration-[600ms] {visibleText ? "scale-100" : "scale-[.1]"}">
-      <ButtonCursor className="rotate-[90deg] p-2 hover:-translate-x-1 ease-in-out" onClick={prev}>
-        <img src="{base}/icons/arrow.svg" alt="" class:shake={shakeLeft}/>
-      </ButtonCursor>
-    <ButtonCursor className="rotate-[-90deg] p-2 hover:translate-x-1 ease-in-out" onClick={next}>
-        <img src="{base}/icons/arrow.svg" alt="" class:shake={shakeRight}/>
-      </ButtonCursor>
-    </div>
+  <Titulo titulo={tituloLang}/>
 
-    <div class="h-[400px] flex items-center justify-center w-screen duration-[600ms] {visibleCards ? "scale-100" : "scale-[.1]"}" bind:this={containerCards}>        
-      {#key currentProject}
-        <div class="flex absolute" in:fly={{x:2000*direction,duration:600}} out:fly={{x:2000*-direction,duration:600}}>
-          <Projeto about={infoPortfolio.projects[currentProject]}/>
-        </div>
-      {/key}
-    </div>
-</div>
+  <div class="flex text-white text-[14px] lg:text-[18px] flex-row gap-2 lg:gap-3 justify-center w-full items-center duration-[600ms] {visibleText ? "scale-100" : "scale-[.1]"}">
+    <ButtonCursor disabled={shakeLeft} className="rotate-[90deg] flex p-2 hover:-translate-x-1 ease-in-out" onClick={prev}>
+        <img src="{base}/icons/arrow.svg" alt=""  class="w-4 lg:w-8" class:shake={shakeLeft}/>
+    </ButtonCursor>
+    {infoPortfolio.PTUSAIT("Visualize os projetos","Search between projects","")}
+    <ButtonCursor disabled={shakeRight} className="rotate-[-90deg] p-2 flex hover:translate-x-1 ease-in-out" onClick={next}>
+        <img src="{base}/icons/arrow.svg" alt="" class="w-4 lg:w-8" class:shake={shakeRight}/>
+    </ButtonCursor>
+  </div>
+
+  <div class="h-[560px] lg:h-[520px] flex items-center  justify-center w-screen duration-[600ms] {visibleCards ? "scale-100" : "scale-[1]"}" bind:this={containerCards}>        
+    {#key currentProject}
+      <div class="flex absolute" in:fly={{x:2500*direction,duration:600,easing:quadOut}} out:fly={{x:2500*-direction,duration:900,easing:quadIn}}>
+        <Projeto about={infoPortfolio.projects[currentProject]}/>
+      </div>
+    {/key}
+  </div>
+</WrapperDefault>
+
 
 
 <style>

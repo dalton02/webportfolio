@@ -1,100 +1,67 @@
 <script lang="ts">
+
   import { base } from '$app/paths';
     import ButtonCursor from '$components/assets/lego/ButtonCursor.svelte';
     import LinkCursor from '$components/assets/lego/LinkCursor.svelte';
     import SvgIcon from '$components/assets/media/SvgIcon.svelte';
     import infoPortfolio from '$lib/localData/portifolio.svelte';
   import { onMount } from 'svelte';
+  import { inview } from 'svelte-inview';
 
     type Props = {
         about:{
             name:string,
-            status:string,
             tags:string[],
-            features:string[],
-            link:string
+            about:string,
+            link:string,
+            img:string,
         }
     }
     let {about}:Props = $props()
 
     let container = $state<HTMLDivElement>()
-
-
+    let isView = $state<boolean>()
+    
 
 </script>
 
-{#snippet tag(label)}
-<div class="px-2 py-1 m-0.5 bg-white/10 rounded-full text-xs font-medium text-white/70 shadow-sm 
-border border-white/20 transition-all duration-300 hover:bg-white/20">
-    {label}
-</div>
-{/snippet}
+<div class="flex flex-col duration-500 ease-in-out w-[300px] lg:w-[500px] rounded-lg bg-[rgba(27,32,54,.3)] backdrop-blur-[1px]  customShadow relative
+{isView ? "" : "scale-[.3] opacity-50"}" bind:this={container}
+    use:inview={{ unobserveOnEnter: false, rootMargin: '-10%' }}
+    oninview_change={(event) => {
+        const { inView, entry, scrollDirection, observer, node} = event.detail;
+        isView = inView;
+    }}>
 
-{#snippet check(label)}
-    <li class="flex items-center">
-        <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        fill="none"
-        class="w-3 h-3 mr-1 text-white/70"
-        >
-        <path
-            d="M5 13l4 4L19 7"
-            stroke-width="2"
-            stroke-linejoin="round"
-            stroke-linecap="round"
-        ></path>
-        </svg>
-        <span title="Dark Mode" class="truncate">{label}</span>
-    </li>
-{/snippet}
-
-
-<div class="card w-80 h-auto bg-[#35363F] rounded-2xl overflow-hidden relative transition-all duration-300" bind:this={container}>
-  <div class="card-content p-4 relative z-10">
-    <div class="flex items-center mb-4">
-      <div
-        class="w-12 h-12 rounded-xl shadow-lg mr-3 border-2 border-white/20 bg-blue-500 flex items-center justify-center text-white font-bold text-[0.6rem] leading-tight"
-      >
-        <div class="text-center">UI<br />VERSE</div>
-      </div>
-      <div>
-        <h2 title="SuperApp" class="text-lg font-bold text-white/90 truncate">
-          {about.name}
-        </h2>
-        <span
-          class="text-xs font-medium px-2 py-0.5 rounded-full mt-1 inline-block bg-green-500/20 text-green-300/90"
-        >
-            {about.status}
-        </span>
+    <div class="w-full h-[140px] lg:h-[200px] flex-grow-0 group  rounded-t-lg  overflow-hidden">
+        <div class="h-full w-full overflow-hidden">
+          <img src={about.img} class="w-full group-hover:scale-110 duration-500 border-e-slate-50 object-cover" alt="">
+        </div>
+        <img src={about.img} 
+        class="opacity-0 pointer-events-none duration-100 delay-0 group-hover:delay-1000 group-hover:lg:opacity-100 absolute overflow-hidden 
+        rounded-md top-[0%] border left-[70%] object-contain w-[600px]" alt="">
+    </div>
+    <div class="flex flex-col text-white p-4 text-[14px] mt-2">
+      <h3 class="text-[18px]">{about.name}</h3>
+      <p>
+      {about.about}
+      <LinkCursor className="text-teal-300 hover:underline" target="_blank" href={about.link}>
+        {infoPortfolio.PTUSAIT("Veja mais","See more","")}
+      </LinkCursor>
+      </p>
+      <div class="flex flex-wrap gap-2 mt-3 items-center">
+          
+          <b class="text-slate-50 font-semibold w-full lg:w-auto">
+            {infoPortfolio.PTUSAIT("Tecnologias:","Tech Stack:","")}
+          </b>
+          {#each about.tags as tag}
+            <div class="border rounded-lg p-1 px-2 text-[12px]">
+                {tag}
+            </div>
+          {/each}
       </div>
     </div>
-
-    <div class="mb-4 mt-3">
-      <h3 class="text-xs font-semibold text-white/80 mb-2">
-        {infoPortfolio.language==="PT-BR" ? "Linguagens" : "Languages"}
-      </h3>
-      <div class="flex flex-wrap -mx-1">
-        {#each about.tags as tag2}
-            {@render tag(tag2)}
-        {/each}
-      </div>
-    </div>
-
-    <div class="mb-4 mt-3">
-      <h3 class="text-xs font-semibold text-white/80 mb-2">
-        {infoPortfolio.language==="PT-BR" ? "Destaques" : "Features"}
-      </h3>
-      <ul class="text-xs text-white/60 grid grid-cols-1 gap-1">
-        {#each about.features as feature}
-            {@render check(feature)}
-        {/each}
-      </ul>
-    </div>
-
-    <div class="flex justify-end items-center space-x-2 mt-3">
-    
+    <div class="flex justify-end items-center space-x-2 mt-3 p-2">
       <LinkCursor className="w-1/2 bg-white/20 text-white rounded-lg px-3 py-2 text-xs font-medium transition duration-300 gap-2
         ease-in-out hover:bg-white/30 flex items-center justify-center h-9 max-h-9"
         href={about.link} target="_blank">
@@ -102,5 +69,13 @@ border border-white/20 transition-all duration-300 hover:bg-white/20">
         Github
       </LinkCursor>
     </div>
-  </div>
 </div>
+  
+<style>
+  .customShadow{
+    box-shadow: 0px 0px 30px 0px rgba(255,255,255,.04),
+    0px 0px 60px 0px rgba(255,255,255,.02),
+    0px 0px 1px 1px rgba(255,255,255,.3)
+    ;
+  }
+</style>
