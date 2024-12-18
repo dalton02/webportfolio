@@ -14,7 +14,7 @@ class InfoPortfolio{
 
     }
 
-    language = $state("PT-BR");
+    language = $state<lang>("PT-BR");
 
     programming = ["php","java","docker","react","svelte","typescript"]
     tools = ["jest","nestjs"]
