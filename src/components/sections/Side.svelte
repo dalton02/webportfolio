@@ -8,7 +8,7 @@
 import FocusBlock from "$components/assets/lego/FocusBlock.svelte";
   import asteroidsHandle from "$lib/localData/asteroids.svelte";
   import mouseState from "$lib/localData/mouse.svelte";
-  import infoPortfolio from "$lib/localData/portifolio.svelte";
+  import infoPortfolio, { type lang } from "$lib/localData/portifolio.svelte";
   import Item from "./list/Item.svelte";
 
     let showSide = $state<boolean>()
@@ -33,22 +33,38 @@ import FocusBlock from "$components/assets/lego/FocusBlock.svelte";
         }
     }
 
+    function setLanguage(lang:lang){
+      infoPortfolio.language=lang
+      localStorage.setItem("language",infoPortfolio.language)
+    }
+
 </script>
 
-<div class="lg:hidden flex fixed top-0 left-0 justify-start p-2  w-full z-30">
+<div class="lg:hidden flex fixed top-0 left-0 px-4 p-2 justify-between w-full z-30">
 <FocusBlock className="relative " containersWithinFocus={[]} bind:viewObject={showSide}>
 
     <button onclick={()=>showSide=true} class="top-0 left-0 z-10 p-1">
         <img src="{base}/icons/ham.svg" alt="">
     </button>
-    <DropBlock isDrop={showSide} className="top-[40px] flex flex-col overflow-hidden absolute left-[10%] bg-black-200 text-white border border-[white] rounded-xl">
+    <DropBlock isDrop={showSide} className="top-[40px] flex flex-col overflow-hidden absolute left-[10%] bg-white text-neutral-950 border border-[white] rounded-xl">
         {#each infoPortfolio.menuList as list,i}
-            <button class="p-4 px-8 w-full hover:bg-slate-800" onclick={()=>{redirect(i)}}>
+            <button class="p-4 px-8 w-full" onclick={()=>{redirect(i)}}>
                 {list.label}
             </button>
         {/each}
     </DropBlock>
+
 </FocusBlock>
+<div class="flex gap-4">
+  <button onclick={()=>{setLanguage("PT-BR")}} 
+    class="{mouseState.state.haveCustomCursor ? "hover:cursor-none" : ""} ">
+    <img class="h-[20px]" src="{base}/icons/brasil.svg" alt=""/>
+  </button>
+  
+  <button  onclick={()=>{setLanguage("EN-US")}} class="{mouseState.state.haveCustomCursor ? "hover:cursor-none" : ""}">
+    <img class="h-[20px]" src="{base}/icons/usa.svg" alt=""/>
+  </button>
+</div>
 </div>
 
 
@@ -67,12 +83,12 @@ import FocusBlock from "$components/assets/lego/FocusBlock.svelte";
     
     <div class="flex items-center gap-8">
 
-      <button onclick={()=>{infoPortfolio.language = "PT-BR";}} 
+      <button onclick={()=>{setLanguage("PT-BR")}} 
         class="{mouseState.state.haveCustomCursor ? "hover:cursor-none" : ""} hover:scale-105">
         <img class="h-[30px]" src="{base}/icons/brasil.svg" alt=""/>
       </button>
       
-      <button onclick={()=>{infoPortfolio.language = "EN-US";}} class="{mouseState.state.haveCustomCursor ? "hover:cursor-none" : ""} hover:scale-105">
+      <button  onclick={()=>{setLanguage("EN-US")}} class="{mouseState.state.haveCustomCursor ? "hover:cursor-none" : ""} hover:scale-105">
         <img class="h-[30px]" src="{base}/icons/usa.svg" alt=""/>
       </button>
     

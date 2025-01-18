@@ -5,7 +5,25 @@
   import PopMouse from "$components/sections/pops/PopMouse.svelte";
   import mouseState from "$lib/localData/mouse.svelte";
   import { base } from "$app/paths";
-   
+  import infoPortfolio from "$lib/localData/portifolio.svelte";
+  import { onMount } from "svelte";
+  
+  onMount(()=>{
+    
+    console.log(localStorage.getItem("language"))
+    if(localStorage.getItem("language")){
+      infoPortfolio.language = localStorage.getItem("language")
+      return
+    }
+
+    let language = document.documentElement.lang;
+    if(language==="en"){
+      infoPortfolio.language==="EN-US"
+    }
+
+  })
+
+
 </script>
 
 <svelte:head>

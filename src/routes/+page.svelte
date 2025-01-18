@@ -46,8 +46,8 @@
 <Skills bind:containerDiv={containerSkills}/>
 <Empresas bind:containerDiv={containerEmpresas}/>
 <Projects bind:containerDiv={containerProjects}/>
-<WrapperDefault>
+<!-- <WrapperDefault>
   <Titulo titulo="Contato"/>
   
-</WrapperDefault>
+</WrapperDefault> -->
 </div>

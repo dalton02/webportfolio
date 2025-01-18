@@ -1,12 +1,12 @@
 <script lang="ts">
 
-  import { base } from '$app/paths';
+    import { base } from '$app/paths';
     import ButtonCursor from '$components/assets/lego/ButtonCursor.svelte';
     import LinkCursor from '$components/assets/lego/LinkCursor.svelte';
     import SvgIcon from '$components/assets/media/SvgIcon.svelte';
     import infoPortfolio from '$lib/localData/portifolio.svelte';
-  import { onMount } from 'svelte';
-  import { inview } from 'svelte-inview';
+    import { onMount } from 'svelte';
+    import { inview } from 'svelte-inview';
 
     type Props = {
         about:{
