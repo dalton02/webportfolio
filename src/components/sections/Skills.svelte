@@ -44,11 +44,13 @@
       </div>
       
       {#key currentIcon}
-        <img   use:inview={{ unobserveOnEnter: false, rootMargin: '-10%' }} transition:scale={{duration:500,easing:expoInOut}} 
+      {#if currentIcon.length>0}
+        <img   use:inview={{ unobserveOnEnter: false, rootMargin: '-10%' }} transition:scale|global={{duration:500,easing:expoInOut}} 
         oninview_change={(event) => {
           const { inView, entry, scrollDirection, observer, node} = event.detail;
           giantView = inView;
       }} src="{base}/icons/{currentIcon}-plain.svg" class="{giantView ? "" : "scale-[0.3]"}  duration-500 ease-in-out mt-36 absolute w-[240px] lg:w-[400px]" alt="">
+      {/if}
       {/key}
     </div>
 
