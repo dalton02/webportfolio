@@ -28,7 +28,7 @@
       Olá e seja bem-vindo, sou um desenvolvedor full-stack, me especializo na criação de sistemas seguros e de alta performance em golang, tenho experiência
       em peso trabalhando com os frameworks mais populares do mercado front-end, assim como também não perco as origens ao saber lidar com Jquery e o famoso PHP.
       <br/><br/>
-      Tenho dóminio em paradigmas de POO e PF(Programação Funcional), e sigo as boas práticas para manter um código limpo, bem organizado e de facil manutenção.
+      Tenho domínio em paradigmas de POO e PF(Programação Funcional), e sigo as boas práticas para manter um código limpo, bem organizado e de fácil manutenção.
 
     {:else}
     Hello and welcome, I am a full-stack developer, I specialize in creating safe and high-performance systems in golang, I have experience working with the most popular frameworks in the front-end market, as well as not lose the origins to know how to deal with Jquery and the famous PHP.
