@@ -10,7 +10,7 @@
 </script>
 
 <WrapperDefault bind:container={containerDiv}>
-  <Titulo titulo="Sobre"/>
+  <Titulo titulo={infoPortfolio.PTUSAIT("Sobre","About","")}/>
   <div class="flex flex-col w-full xl:w-[80%] justify-start items-start">
   <!-- <div class="w-full flex justify-end z-20">
     <SelectInfo bind:selectedOption={selectedOption} options={[{value:"sobre",label:"Sobre"},{value:"conhecimentos",label:"Conhecimentos"}]}/>
