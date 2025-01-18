@@ -148,7 +148,7 @@ class InfoPortfolio{
             messaging practices followed by the nest.js framework from the typescript world, containing JSON validations and a package of utilities.`,""),
             img:`${base}/images/qiwi.webp`,
             tags: ["Golang"],
-            link:"https://www.linkedin.com/in/dalton-gomes/"  
+            link:"https://dalton02.github.io/licorDoc/"  
         },
         
     ])

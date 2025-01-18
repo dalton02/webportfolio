@@ -23,12 +23,19 @@
         const { inView, entry, scrollDirection, observer, node} = event.detail;
         isView = inView;
     }}>
+    <p>
     {#if infoPortfolio.language==="PT-BR"}
-    Olá! Sou um desenvolvedor Full-Stack com especialização em tecnologias Java e JavaScript e uso de frameworks reativos como React. Além disso, possuo conhecimento abrangente em diversas outras linguagens, como Golang PHP e Ruby. Minha trajetória é marcada por uma sólida experiência na construção de aplicações web e no desenvolvimento de sistemas backend. Estou sempre motivado para enfrentar novos desafios e contribuir com soluções inovadoras. Estou ansioso para explorar oportunidades e colaborar em projetos empolgantes.
-    {:else}
-    Hello! I am a Full-Stack developer with a specialization in Java and JavaScript technologies and use of reactive frameworks like React. In addition, I have extensive knowledge in several other languages, such as Golang PHP and Ruby. My trajectory is marked by a solid experience in the construction of web applications and in the development of backend systems.I am always motivated to face new challenges and contribute with innovative solutions. I look forward to exploring opportunities and collaborating on exciting projects.
-    {/if}
+      Olá e seja bem-vindo, sou um desenvolvedor full-stack, me especializo na criação de sistemas seguros e de alta performance em golang, tenho experiência
+      em peso trabalhando com os frameworks mais populares do mercado front-end, assim como também não perco as origens ao saber lidar com Jquery e o famoso PHP.
+      <br/><br/>
+      Tenho dóminio em paradigmas de POO e PF(Programação Funcional), e sigo as boas práticas para manter um código limpo, bem organizado e de facil manutenção.
 
+    {:else}
+    Hello and welcome, I am a full-stack developer, I specialize in creating safe and high-performance systems in golang, I have experience working with the most popular frameworks in the front-end market, as well as not lose the origins to know how to deal with Jquery and the famous PHP.
+    <br/><br/>
+    I have mastery in OOP and FP(Functional Programming) paradigms, and follow good practices to maintain a clean, well organized and easy to maintain code.
+    {/if}
+    </p>
    </div>
   </div>
 
