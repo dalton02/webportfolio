@@ -99,6 +99,17 @@ class InfoPortfolio{
 
     projects = $derived([
         {
+            name:"OllamaLib",
+            about:this.PTUSAIT(
+            `OllamaLib é um projeto de código aberto que permite que você execute seu próprio ChatGPT completamente offline e privado, aproveitando o poder dos modelos LLM Ollama. Com o OllamaLib, você tem controle total sobre seu assistente de IA sem depender de serviços de nuvem.`,
+            `OllamaLib is an open-source project that allows you to run your own ChatGPT completely offline and private, leveraging the power of LLM Ollama models. With OllamaLib, you have full control over your AI assistant without relying on cloud services.`,
+            ``),
+            img:`${base}/images/ollama.png`,
+            tags: ["Svelte 5","Ollama","TypeScript"],
+            link:"https://github.com/dalton02/OllamaLib"  
+                      
+        },
+        {
             name:"UFCHAT",
             about:this.PTUSAIT(`Projeto institucional para publicação de noticias para com estudantes da Universidade Federal do Cariri, embutido com um
             web-scrapper para seleção de editais e noticias revelantes sobre a instituição`,`Institutional project to publish news for students at the 
