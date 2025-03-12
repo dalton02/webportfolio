@@ -32,7 +32,7 @@
 
 
 
-<WrapperDefault bind:container={containerDiv} className=""> 
+<WrapperDefault bind:container={containerDiv} > 
     <Titulo titulo={tituloLang}/>
 
     <div class="flex justify-start relative items-center  flex-col">
@@ -42,7 +42,7 @@
                       {@render item(programa,i)}
               {/each}
       </div>
-      
+      <div class="h-[400px]"></div>
       {#key currentIcon}
       {#if currentIcon.length>0}
         <img  use:inview={{ unobserveOnEnter: false, rootMargin: '-10%' }} transition:scale|global={{duration:500,easing:expoInOut}} 
@@ -75,9 +75,6 @@
     }}
     onmouseenter={(event)=>{
       currentIcon=item;
-    }}
-    onmouseleave={(event)=>{
-      currentIcon=""
     }}
     role="button"
     tabindex="-1"
