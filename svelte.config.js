@@ -18,7 +18,6 @@ const config = {
 		alias: {
 			$components: resolve('src/components'),
 			$lib: resolve('src/lib'),
-			$static: resolve('static'),
 		},
 	},
 };

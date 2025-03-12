@@ -1,5 +1,4 @@
 <script lang="ts">
-  import SelectInfo from "$components/assets/select/SelectInfo.svelte";
   import Titulo from "$components/assets/text/Titulo.svelte";
   import WrapperDefault from "$components/assets/wrapper/WrapperDefault.svelte";
   import infoPortfolio from "$lib/localData/portifolio.svelte";

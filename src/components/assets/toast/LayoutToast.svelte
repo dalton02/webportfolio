@@ -2,7 +2,6 @@
 <script lang="ts">
   import toast from "$lib/functions/toast/Toast.svelte";
   import { fly } from "svelte/transition";
-  import SvgIcon from "../media/SvgIcon.svelte";
   import { expoIn, expoOut } from "svelte/easing";
 
 </script>
@@ -14,11 +13,7 @@
         in:fly={{ y: 20, duration: 1000,easing:expoOut }}
         out:fly={{ y: -20, duration: 100,easing:expoIn }}>
 
-          {#if t.status==="error"}
-            <SvgIcon src="/icons/x2.svg" width="10px" height="10px" fill="red"/>
-          {:else if t.status==="sucess"}
-            <SvgIcon src="/icons/check.svg" width="15px" height="20px" fill="green"/>
-          {/if}
+
 
           {@html t.conteudo}
         
