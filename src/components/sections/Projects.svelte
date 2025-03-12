@@ -78,7 +78,7 @@
     </ButtonCursor>
   </div>
 
-  <div class="h-[560px] lg:h-[520px] flex items-center  justify-center w-screen duration-[600ms] {visibleCards ? "scale-100" : "scale-[1]"}" bind:this={containerCards}>        
+  <div class="h-[500px] flex items-center  justify-center w-screen duration-[600ms] {visibleCards ? "scale-100" : "scale-[1]"}" bind:this={containerCards}>        
     {#key currentProject}
       <div class="flex absolute" in:fly={{x:2500*direction,duration:600,easing:quadOut}} out:fly={{x:2500*-direction,duration:900,easing:quadIn}}>
         <Projeto about={infoPortfolio.projects[currentProject]}/>

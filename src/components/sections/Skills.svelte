@@ -35,7 +35,7 @@
 <WrapperDefault bind:container={containerDiv} className=""> 
     <Titulo titulo={tituloLang}/>
 
-    <div class="flex justify-start relative items-center h-full  flex-col">
+    <div class="flex justify-start relative items-center  flex-col">
     
       <div class="flex gap-6 w-full px-2 lg:px-24 justify-start lg:justify-center  overflow-x-auto">
               {#each infoPortfolio.programming as programa,i (i)}
@@ -45,7 +45,7 @@
       
       {#key currentIcon}
       {#if currentIcon.length>0}
-        <img   use:inview={{ unobserveOnEnter: false, rootMargin: '-10%' }} transition:scale|global={{duration:500,easing:expoInOut}} 
+        <img  use:inview={{ unobserveOnEnter: false, rootMargin: '-10%' }} transition:scale|global={{duration:500,easing:expoInOut}} 
         oninview_change={(event) => {
           const { inView, entry, scrollDirection, observer, node} = event.detail;
           giantView = inView;

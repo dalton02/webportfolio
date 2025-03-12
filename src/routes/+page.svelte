@@ -41,7 +41,7 @@
 <div class="relative left-0 flex items-center justify-center w-screen text-white h-svh ">
   <TextSublime/>
 </div>
-<div class="flex flex-col w-full lg:gap-0 gap-20">
+<div class="flex flex-col w-full  gap-20">
 <About bind:containerDiv={containerAbout}/>
 <Skills bind:containerDiv={containerSkills}/>
 <Empresas bind:containerDiv={containerEmpresas}/>

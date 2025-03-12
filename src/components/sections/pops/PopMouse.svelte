@@ -11,6 +11,7 @@
   let nameUser = $state<string>("");
 
   function nameCursor(){
+
     localStorage.setItem("username",nameUser);
     mouseState.state.nameCursor=nameUser;
     mouseState.state.haveCustomCursor=true;
@@ -38,7 +39,7 @@
     <Input bind:value={nameUser}/>
     
     <div class="flex gap-4 mt-2">
-      <Button  bg="#8685EF" color="#2E2E2E" label={infoPortfolio.language==="PT-BR" ? "Vamos começar" : "Let's Start"} onClick={nameCursor}/>
+      <Button  disabled={nameUser.length===0} bg="#8685EF" color="#2E2E2E" label={infoPortfolio.language==="PT-BR" ? "Vamos começar" : "Let's Start"} onClick={nameCursor}/>
       <Button  bg="#FAF8FF" color='#2E2E2E' label={infoPortfolio.language==="PT-BR" ? "Cancelar" : "Cancel"} onClick={()=>{pop.drop()}}/>
     </div>
 </WrapperPop>
