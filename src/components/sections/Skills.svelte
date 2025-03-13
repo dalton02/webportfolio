@@ -42,14 +42,15 @@
                       {@render item(programa,i)}
               {/each}
       </div>
-      <div class="h-[400px]"></div>
+      <div class="h-[240px] xl:h-[280px] 2xl:h-[300px]"></div>
       {#key currentIcon}
       {#if currentIcon.length>0}
         <img  use:inview={{ unobserveOnEnter: false, rootMargin: '-10%' }} transition:scale|global={{duration:500,easing:expoInOut}} 
         oninview_change={(event) => {
           const { inView, entry, scrollDirection, observer, node} = event.detail;
           giantView = inView;
-      }} src="{base}/icons/{currentIcon}-plain.svg" class="{giantView ? "" : "scale-[0.3]"}  duration-500 ease-in-out mt-36 absolute w-[240px] lg:w-[400px]" alt="">
+      }} src="{base}/icons/{currentIcon}-plain.svg" class="{giantView ? "" : "scale-[0.3]"}  
+      duration-500 ease-in-out mt-36 absolute w-[240px] xl:w-[280px] 2xl:w-[300px]" alt="">
       {/if}
       {/key}
     </div>
@@ -79,7 +80,7 @@
     role="button"
     tabindex="-1"
     >
-        <img src="{base}/icons/{item}-plain.svg" class="w-9 xl:w-12" alt="">
+        <img src="{base}/icons/{item}-plain.svg" class="w-9 xl:w-10" alt="">
 
   </div>
 {/snippet}
