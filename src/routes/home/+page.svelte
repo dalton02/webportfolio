@@ -1,7 +1,17 @@
 <script>
+  import { goto } from "$app/navigation";
   import Button from "$lib/comps/Button.svelte";
   import Waves from "$lib/comps/Waves.svelte";
   import { Text } from "$lib/utils/lang.svelte";
+
+  const presentation = new Text({
+    enUs: "Ideias são o ponto de partida.<br /> Código é o que entrega valor.",
+    ptBr: "Ideias são o ponto de partida.<br /> Código é o que entrega valor.",
+  });
+  const doing = new Text({
+    enUs: "Eu projeto e construo sistemas que escalam,<br /> com código limpo e propósito.",
+    ptBr: "Eu projeto e construo sistemas que escalam,<br /> com código limpo e propósito.",
+  });
 </script>
 
 <div class="flex justify-center items-center h-full w-full flex-col">
@@ -14,17 +24,22 @@
       ptBr: "Desenvolvedor FullStack",
     }).value}
   </div>
-  <h2 class="text-[32px] font-light text-center p-3">
-    Talk is cheap. <br /> Show me the code.
+  <h2 class="text-xl plg:text-3xl font-light text-center p-3">
+    {@html presentation.value}
   </h2>
   <p class="text-egg/70 text-sm font-light text-center">
-    I design and code beautifully simple things,<br /> and i love what i do
+    {@html doing.value}
   </p>
   <div class="flex gap-4 mt-10 items-center">
     <Button theme="primary" action={() => {}}>
       {new Text({ enUs: "Download CV", ptBr: "Baixar Currículo" }).value}
     </Button>
-    <Button theme="secondary" action={() => {}}>
+    <Button
+      theme="secondary"
+      action={() => {
+        goto("/projects");
+      }}
+    >
       {new Text({ enUs: "My Projects", ptBr: "Meus Projetos" }).value}
     </Button>
   </div>

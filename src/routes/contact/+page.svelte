@@ -56,10 +56,15 @@
   }
 
   function submitWhats() {
-    const v = validation.safeParse(form);
+    const validationWithoutEmail = z.object({
+      name: validation.shape.name,
+      message: validation.shape.message,
+    });
+    const v = validationWithoutEmail.safeParse(form);
+
     if (!v.success) return;
     const text = new Text({
-      ptBr: `Olá meu nome é ${form.name}, \n ${form.message}`,
+      ptBr: `Olá meu nome é ${form.name},\n${form.message}`,
       enUs: `Hi there, my name is ${form.name}, \n ${form.message}`,
     });
     const encoded = encodeURIComponent(text.value);
@@ -68,20 +73,24 @@
   }
 </script>
 
-<div class="flex h-full justify-center w-full items-center flex-col">
+<div
+  class="flex h-full w-full not-lg:px-5 pt-10 lg:pt-20 items-center flex-col"
+>
   <div class="flex flex-col max-w-[500px]">
     <Title title={new Text({ enUs: "HIRE-ME", ptBr: "CONTATE-ME " }).value} />
     <p
       class="mx-auto max-w-lg text-center text-sm font-light tracking-wide text-white/55 mt-8 mb-10"
     >
-      {new Text({
-        enUs: `I'm open to full-time, part-time, and freelance opportunities. Feel free
-      to reach out—I'd love to connect and discuss how we can work together. You
-      can contact me through this form or via email:`,
-        ptBr: `Sei la, meu email: `,
+      {@html new Text({
+        enUs: `I'm open to full-time, part-time, and freelance opportunities. <br/>Feel free
+to reach out—I'd love to connect and discuss how we can work together. <br/>You
+can contact me through this form or via email:`,
+        ptBr: `Estou aberto a oportunidades full-time, part-time e freelas. <br/> Fique à vontade
+para entrar em contato — adoraria conversar e alinhar como podemos trabalhar juntos.<br/>
+Você pode me encontrar através deste formulário ou pelo e-mail:`,
       }).value}
 
-      <span class="selection:bg-teal text-foreground cursor-text select-all"
+      <span class=" text-white/90 cursor-text select-all"
         >daltongomeslobato@gmail.com</span
       >
     </p>
@@ -127,7 +136,7 @@
           ptBr: "Escreva sua mensagem aqui",
         }).value}
       />
-      <div class="grid grid-cols-2 gap-4 items-center">
+      <div class="grid lg:grid-cols-2 gap-4 items-center">
         <Button kind="form" theme="primary" value="whats" action={() => {}}>
           <div class="flex gap-2 justify-center items-center">
             {new Text({
@@ -146,5 +155,6 @@
         </Button>
       </div>
     </form>
+    <div class="h-10"></div>
   </div>
 </div>

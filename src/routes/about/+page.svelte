@@ -8,8 +8,8 @@
 
   const titles = {
     intro: new Text({
-      enUs: "Introduction",
-      ptBr: "Introdução",
+      enUs: "About-me",
+      ptBr: "Sobre",
     }),
     tech: new Text({
       enUs: "Technologies",
@@ -43,38 +43,37 @@
   });
 
   const paragraph = new Text({
-    enUs: `The road so far, I have been able to provide a variety of products, from CRUD systems
-    , CRM, WhiteLabel, to AI oriented services. I've worked across the full stack, building real-time systems and scalable microservices with clean code and best practices. 
-    Whether it's AI integration or cloud infrastructure, I'm always looking to deliver quality. 
-    At the end of the day, I enjoy turning complex problems into reliable products.`,
-    ptBr: `The road so far, I have been able to provide a variety of products,
-    from simple CRUD systems, CRM, WhiteLabel, to AI oriented services.
+    ptBr: `Durante minha jornada, pude entregar uma variedade de produtos,
+    desde sistemas CRUD simples, CRM, WhiteLabel, até serviços voltados para IA, processamento de pipelines RAG, integração de chatbots.
+    <br/>
+    Trabalhei com múltiplas tecnologias e cenários, enfrentando muitos desafios ao longo do caminho, me construindo
+    não apenas como um bom desenvolvedor, mas como alguém que sabe projetar o futuro da sua aplicação.`,
+    enUs: `The road so far, I have been able to provide a variety of products,
+    from simple CRUD systems, CRM, WhiteLabel, to AI oriented services, like RAG pipeline processing, integrating chatbots.
     <br/>
     I've worked across multiple technologies and scenarios, facing many challenges along my way, building myself
     not just as a good developer, but someone who can design and project the future of your application.
 
 `,
   });
-
   const skillBack = {
     desc: new Text({
-      enUs: "Building scalable things i guess",
-      ptBr: "Desenvolvimento de sistemas escalaveis e tals",
+      enUs: "Proficiency in handling high-concurrency systems and keeping them resilient and scalable.",
+      ptBr: "Proeficiência em lidar com sistemas de alta concorrência e mantê-los resilientes e escaláveis.",
     }),
     title: new Text({
-      enUs: "Backend Developer",
-      ptBr: "Desenvolvedor Backend",
+      enUs: "Concurrent Systems",
+      ptBr: "Sistemas escaláveis e concorrentes",
     }),
   };
-
   const skillFront = {
     desc: new Text({
-      enUs: "Building scalable things i guess",
-      ptBr: "Desenvolvimento de sistemas escalaveis e tals",
+      enUs: "Full-stack development using the JavaScript ecosystem, framework-agnostic and focused on scalable, maintainable solutions.",
+      ptBr: "Desenvolvimento full-stack com ecossistema JavaScript, agnóstico a frameworks e focado em soluções escaláveis e de fácil manutenção.",
     }),
     title: new Text({
-      enUs: "Backend Developer",
-      ptBr: "Desenvolvedor Backend",
+      enUs: "JavaScript Ecosystem",
+      ptBr: "Ecossistema JavaScript",
     }),
   };
   const educationUniversity = {
@@ -124,12 +123,10 @@
   ];
 </script>
 
-<div
-  class="flex flex-col w-full gap-12 pt-18 h-full justify-center items-center"
->
+<div class="flex flex-col w-full gap-12 pt-10 h-full items-center">
   <Title title={titles.intro.value} />
   <div
-    class="max-w-[1102px] h-full flex flex-col not-lg:px-10 lg:grid w-full grid-cols-10 gap-10 grow"
+    class="max-w-[1102px] flex flex-col not-lg:px-5 lg:grid w-full grid-cols-10 gap-10 grow"
   >
     <div class="flex flex-col gap-5 h-full z-10 col-span-5">
       {@render title("Introdução")}
@@ -154,32 +151,22 @@
           title={skillBack.title.value}
           subtitle=""
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="22"
-            height="22"
-            class="fill-primary"
-            viewBox="0 0 256 256"
-            ><path
-              d="M196.12,128c24.65-34.61,37.22-70.38,19.74-87.86S162.61,35.23,128,59.88C93.39,35.23,57.62,22.66,40.14,40.14S35.23,93.39,59.88,128c-24.65,34.61-37.22,70.38-19.74,87.86h0c5.63,5.63,13.15,8.14,21.91,8.14,18.48,0,42.48-11.17,66-27.88C151.47,212.83,175.47,224,194,224c8.76,0,16.29-2.52,21.91-8.14h0C233.34,198.38,220.77,162.61,196.12,128Zm8.43-76.55c7.64,7.64,2.48,32.4-18.52,63.28a300.33,300.33,0,0,0-21.19-23.57A300.33,300.33,0,0,0,141.27,70C172.15,49,196.91,43.8,204.55,51.45ZM176.29,128a289.14,289.14,0,0,1-22.76,25.53A289.14,289.14,0,0,1,128,176.29a289.14,289.14,0,0,1-25.53-22.76A289.14,289.14,0,0,1,79.71,128,298.62,298.62,0,0,1,128,79.71a289.14,289.14,0,0,1,25.53,22.76A289.14,289.14,0,0,1,176.29,128ZM51.45,51.45c2.2-2.21,5.83-3.35,10.62-3.35C73.89,48.1,92.76,55,114.72,70A304,304,0,0,0,91.16,91.16,300.33,300.33,0,0,0,70,114.73C49,83.85,43.81,59.09,51.45,51.45Zm0,153.1C43.81,196.91,49,172.15,70,141.27a300.33,300.33,0,0,0,21.19,23.57A304.18,304.18,0,0,0,114.73,186C83.85,207,59.09,212.2,51.45,204.55Zm153.1,0c-7.64,7.65-32.4,2.48-63.28-18.52a304.18,304.18,0,0,0,23.57-21.19A300.33,300.33,0,0,0,186,141.27C207,172.15,212.19,196.91,204.55,204.55ZM140,128a12,12,0,1,1-12-12A12,12,0,0,1,140,128Z"
-            ></path></svg
-          >
+          <img
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/go/go-original-wordmark.svg"
+            class="w-8"
+            alt="golang"
+          />
         </AboutSkill>
         <AboutSkill
           desc={skillFront.desc.value}
           title={skillFront.title.value}
           subtitle=""
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="22"
-            height="22"
-            class="fill-primary"
-            viewBox="0 0 256 256"
-            ><path
-              d="M196.12,128c24.65-34.61,37.22-70.38,19.74-87.86S162.61,35.23,128,59.88C93.39,35.23,57.62,22.66,40.14,40.14S35.23,93.39,59.88,128c-24.65,34.61-37.22,70.38-19.74,87.86h0c5.63,5.63,13.15,8.14,21.91,8.14,18.48,0,42.48-11.17,66-27.88C151.47,212.83,175.47,224,194,224c8.76,0,16.29-2.52,21.91-8.14h0C233.34,198.38,220.77,162.61,196.12,128Zm8.43-76.55c7.64,7.64,2.48,32.4-18.52,63.28a300.33,300.33,0,0,0-21.19-23.57A300.33,300.33,0,0,0,141.27,70C172.15,49,196.91,43.8,204.55,51.45ZM176.29,128a289.14,289.14,0,0,1-22.76,25.53A289.14,289.14,0,0,1,128,176.29a289.14,289.14,0,0,1-25.53-22.76A289.14,289.14,0,0,1,79.71,128,298.62,298.62,0,0,1,128,79.71a289.14,289.14,0,0,1,25.53,22.76A289.14,289.14,0,0,1,176.29,128ZM51.45,51.45c2.2-2.21,5.83-3.35,10.62-3.35C73.89,48.1,92.76,55,114.72,70A304,304,0,0,0,91.16,91.16,300.33,300.33,0,0,0,70,114.73C49,83.85,43.81,59.09,51.45,51.45Zm0,153.1C43.81,196.91,49,172.15,70,141.27a300.33,300.33,0,0,0,21.19,23.57A304.18,304.18,0,0,0,114.73,186C83.85,207,59.09,212.2,51.45,204.55Zm153.1,0c-7.64,7.65-32.4,2.48-63.28-18.52a304.18,304.18,0,0,0,23.57-21.19A300.33,300.33,0,0,0,186,141.27C207,172.15,212.19,196.91,204.55,204.55ZM140,128a12,12,0,1,1-12-12A12,12,0,0,1,140,128Z"
-            ></path></svg
-          >
+          <img
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
+            class="w-5"
+            alt="javascript-ecossystem"
+          />
         </AboutSkill>
       </div>
 

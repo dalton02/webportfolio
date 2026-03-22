@@ -25,7 +25,6 @@
 
   function validate() {
     const v = validation.safeParse(value);
-    console.log(v);
     if (!v.success) {
       error = JSON.parse(v.error.message)[0].message;
     } else {
