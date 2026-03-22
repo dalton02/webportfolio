@@ -7,6 +7,8 @@
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"prepack": "svelte-kit sync && svelte-package && publint",
+
+		"deploy": "bun run build && bunx gh-pages -d build -t true",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
@@ -51,6 +53,7 @@
 	"dependencies": {
 		"@sveltejs/adapter-static": "^3.0.10",
 		"date-fns": "^4.1.0",
+		"gh-pages": "^6.3.0",
 		"svelte-intersection-observer": "^1.1.1",
 		"zod": "^4.3.6"
 	}
