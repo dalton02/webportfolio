@@ -8,12 +8,6 @@
 
   let validation = $state(
     z.object({
-      email: z.email({
-        message: new Text({
-          enUs: "Insert a valid email",
-          ptBr: "Insira um email válido",
-        }).value,
-      }),
       name: z.string().min(4, {
         message: new Text({
           enUs: "Name must have at least 4 characters",
@@ -30,7 +24,6 @@
   );
 
   let form = $state({
-    email: "",
     name: "",
     message: "",
   });
@@ -53,7 +46,7 @@
 
     const mailtoLink = `mailto:${email}?subject=${encodedSubject}&body=${encodedBody}`;
 
-    Opcional: window.open(mailtoLink, "_blank");
+    window.open(mailtoLink, "_blank");
   }
 
   function submitWhats() {
@@ -116,15 +109,6 @@ Você pode me encontrar através deste formulário ou pelo e-mail:`,
         placeholder={new Text({
           enUs: "Chuck Norris",
           ptBr: "Chuck Norris",
-        }).value}
-      />
-      <Input
-        bind:value={form.email}
-        validation={validation.shape.email}
-        label="Email"
-        placeholder={new Text({
-          enUs: "example@gmail.com",
-          ptBr: "exemplo@gmail.com",
         }).value}
       />
       <Input
