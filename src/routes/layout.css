@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+@font-face {
+  font-family: "cursive";
+  src: url("/fonts/cool.otf") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap; /* Boa prática para performance */
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  overflow: hidden;
+}
+
+@theme {
+  --color-background: #25262a;
+  --color-secondary: #2d2e32;
+  --color-terciary: #4f5a61;
+  --color-primary: #8cc7c4;
+  --color-egg: #f0ead6;
+
+  --font-cursive: "cursive";
+}
