@@ -1,10 +1,18 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { page } from "$app/state";
-  import { headerSections, SectionsType } from "$lib/utils/global.svelte";
+  import globalState, {
+    headerSections,
+    SectionsType,
+  } from "$lib/utils/global.svelte";
 
   let list = $state<HTMLUListElement>();
-  let border = $derived.by(() => {
+
+  let slider = $derived.by(() => {
+    const path = page.url.pathname
+      .replaceAll(globalState.basePath, "")
+      .replaceAll("/", "") as SectionsType;
+
     if (!list) return { x: 0, width: 0 };
 
     const items = list.children;
@@ -16,7 +24,7 @@
       return acc + 12 * i;
     };
 
-    switch (page.url.pathname.replaceAll("/", "") as SectionsType) {
+    switch (path) {
       case "home":
         return {
           x: 0,
@@ -70,10 +78,13 @@
               </li>
             {/each}
           </ul>
-          <div
-            class="absolute bottom-0 h-[2px] bg-primary transition-all"
-            style="transform:translateX({border.x}px);width:{border.width}px;"
-          ></div>
+          {#if slider}
+            <div
+              class="absolute bottom-0 h-[2px] bg-primary transition-all"
+              style="transform:translateX({slider.x ??
+                0}px);width:{slider.width ?? 0}px;"
+            ></div>
+          {/if}
         </div>
       </div>
     </div>

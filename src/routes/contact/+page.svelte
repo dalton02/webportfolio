@@ -2,6 +2,7 @@
   import Button from "$lib/comps/Button.svelte";
   import Input from "$lib/comps/Input.svelte";
   import Title from "$lib/comps/Title.svelte";
+  import globalState from "$lib/utils/global.svelte";
   import { Text } from "$lib/utils/lang.svelte";
   import z from "zod";
 
@@ -143,14 +144,18 @@ Você pode me encontrar através deste formulário ou pelo e-mail:`,
               enUs: "Send to Whatsapp",
               ptBr: "Enviar para Whatsapp",
             }).value}
-            <img src="whatsapp.svg" class="w-4.5" alt="" />
+            <img
+              src="{globalState.basePath}/whatsapp.svg"
+              class="w-4.5"
+              alt=""
+            />
           </div>
         </Button>
         <Button kind="form" theme="secondary" value="email" action={() => {}}>
           <div class="flex gap-2 justify-center items-center">
             {new Text({ enUs: "Send to Email", ptBr: "Enviar para Email" })
               .value}
-            <img src="gmail.svg" class="w-6" alt="" />
+            <img src="{globalState.basePath}/gmail.svg" class="w-6" alt="" />
           </div>
         </Button>
       </div>

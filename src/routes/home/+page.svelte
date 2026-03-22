@@ -2,6 +2,7 @@
   import { goto } from "$app/navigation";
   import Button from "$lib/comps/Button.svelte";
   import Waves from "$lib/comps/Waves.svelte";
+  import globalState from "$lib/utils/global.svelte";
   import { Text } from "$lib/utils/lang.svelte";
 
   const presentation = new Text({
@@ -16,7 +17,7 @@
 
 <div class="flex justify-center items-center h-full w-full flex-col">
   <div class="h-40 rounded-full overflow-hidden aspect-square shrink-0 mb-8">
-    <img src="/photo.png" alt="my photo" />
+    <img src="{globalState.basePath}/photo.png" alt="profile pic" />
   </div>
   <div class="p-1 bg-secondary px-4 border text-sm border-white/20 rounded-2xl">
     {new Text({

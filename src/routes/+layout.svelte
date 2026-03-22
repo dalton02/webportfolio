@@ -17,9 +17,13 @@
   let key = $state("");
 
   beforeNavigate((d) => {
-    globalState.prevPage = d.to!.url.pathname.replaceAll("/", "");
+    globalState.prevPage = d
+      .to!.url.pathname.replaceAll(globalState.basePath, "")
+      .replaceAll("/", "");
     const from = globalState.prevPage;
-    const to = page.url.pathname.replaceAll("/", "");
+    const to = page.url.pathname
+      .replaceAll(globalState.basePath, "")
+      .replaceAll("/", "");
     const fromSec = headerSections.findIndex((v) => v.goto === from);
     const toSec = headerSections.findIndex((v) => v.goto === to);
     if (fromSec == toSec) return;

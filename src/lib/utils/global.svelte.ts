@@ -1,3 +1,4 @@
+import { dev } from "$app/environment";
 import { Text } from "./lang.svelte.ts";
 
 export const SectionsType = {
@@ -40,6 +41,7 @@ export const headerSections: { label: Text; goto: SectionsType }[] = [
 export type SectionsType = (typeof SectionsType)[keyof typeof SectionsType];
 class Global {
   prevPage = $state("");
+  basePath = dev ? "" : "/webportfolio";
 }
 
 const globalState = new Global();
