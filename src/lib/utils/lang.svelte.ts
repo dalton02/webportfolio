@@ -16,6 +16,18 @@ class Language {
         return enUS;
     }
   });
+
+  set() {
+    const userLanguage = navigator.language;
+    console.log(userLanguage);
+    const isEnglish = userLanguage.startsWith("en");
+    if (isEnglish) {
+      this.value = "enUs";
+      return;
+    }
+
+    this.value = "ptBr";
+  }
 }
 
 const language = new Language();

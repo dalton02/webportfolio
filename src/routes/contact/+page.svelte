@@ -80,8 +80,8 @@
 to reach out—I'd love to connect and discuss how we can work together. <br/>You
 can contact me through this form or via email:`,
         ptBr: `Estou aberto a oportunidades full-time, part-time e freelas. <br/> Fique à vontade
-para entrar em contato — adoraria conversar e alinhar como podemos trabalhar juntos.<br/>
-Você pode me encontrar através deste formulário ou pelo e-mail:`,
+para entrar em contato, adoraria conversar e alinhar como podemos trabalhar juntos.<br/>
+Você pode me contatar através deste formulário ou diretamente pelo e-mail:`,
       }).value}
 
       <span class=" text-white/90 cursor-text select-all"

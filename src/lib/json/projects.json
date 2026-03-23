@@ -1,0 +1,68 @@
+{
+    "projects":[
+        {
+            "title": {
+                "enUs": "SFU Media Server",
+                "ptBr": "Servidor de Mídia SFU"
+            },
+            "subtitle": {
+                "enUs": "WEBRTC Communication",
+                "ptBr": "Comunicação WebRTC"
+            },
+            "desc": {
+                "enUs": "Implementation of a media-server with a Service Forwarding Unit topology using WebRTC for real-time audio and video streaming between multiple participants, with simulcast support for dynamic adaptation according to each user's connection.",
+                "ptBr": 
+                "Implementação de media-server com topologia Service Forwarding Unit (SFU) utilizando WebRTC para transmissão em tempo real de áudio e vídeo entre múltiplos participantes de uma sala, com suporte a simulcast para adaptação dinamica das faixas de videos em diferentes qualidades conforme a conexão de cada usuário."
+            },
+            "url": "https://github.com/dalton02/Selective-Forwarding-Unit",
+            "image": "webrtc.webp",
+            "tags": ["Golang", "Pion", "Webrtc","UDP"]
+        },
+
+        {
+            "title": {
+                "enUs": "TicketFlow - Ticket Booking System",
+                "ptBr": "TicketFlow - Sistema de Venda de Ingressos"
+            },
+            "subtitle": {
+                "enUs": "High-Concurrency Reservation System",
+                "ptBr": "Sistema de Reserva"
+            },
+            "desc": {
+                  "ptBr": "Sistema de venda de ingressos multi-instância, projetado para gerar o fluxo de compra de ingressos.\n\nUtilizando uma arquitetura orientada a eventos (event-driven) com RabbitMQ, gerenciamento de cache para visualização rápida de assentos disponíveis utilizando Redis, e controle resiliente e altamente concorrente para a obtenção de reservas.",
+                  "enUs": "Multi-instance ticket sales system, designed to generate the ticket purchase flow.\n\nUsing an event-driven architecture with RabbitMQ, cache management for fast visualization of available seats using Redis, and resilient, highly concurrent control for obtaining reservations."
+            },
+            "url": "https://github.com/dalton02/starsoft-backend-challenge  ",
+            "image": "booking.webp",
+            "tags": [
+                "NestJS",
+                "PostgreSQL",
+                "Redis",
+                "RabbitMQ"
+            ]
+        },
+        {
+            "title": {
+                "enUs": "UFCHAT - University Integrated Chatbot",
+                "ptBr": "UFCHAT - Chatbot Universitário Integrado"
+            },
+            "subtitle": {
+                "enUs": "RAG Pipeline with Local LLM",
+                "ptBr": "Pipeline RAG com LLM Local"
+            },
+            "desc": {
+            "ptBr": "Chatbot universitário que auxilia alunos, professores e funcionários com dúvidas acadêmicas e institucionais de forma rápida, precisa e privada.\n\nUtilizando uma pipeline RAG local onde documentos são processados e armazenados em um banco vetorial, recuperados via contexto e injetados na LLM local adaptada com Ollama.\n\nGarante respostas atualizadas e contextualizadas sem expor dados sensíveis na nuvem.",
+            "enUs": "University chatbot that assists students, professors, and staff with academic and institutional questions in a fast, accurate, and private manner.\n\nUsing a local RAG pipeline where documents are processed and stored in a vector database, retrieved via context, and injected into the local LLM adapted with Ollama.\n\nEnsures updated and contextualized responses without exposing sensitive data to the cloud."
+            },
+            "url": "",
+            "image": "ufchat.webp",
+            "tags": [
+                "Golang",
+                "Svelte",
+                "RAG",
+                "AI",
+                "Ollama"
+            ]
+        }
+    ]
+}

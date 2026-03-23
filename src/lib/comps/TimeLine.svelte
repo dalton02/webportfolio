@@ -1,7 +1,7 @@
 <script lang="ts">
   import language, { Text } from "$lib/utils/lang.svelte";
   import mediaQuery from "$lib/utils/media.svelte";
-  import { firstCap } from "$lib/utils/text.ts";
+  import { firstCap } from "$lib/utils/text.js";
   import { format, formatDate, isAfter } from "date-fns";
   import { slide } from "svelte/transition";
 
@@ -9,11 +9,10 @@
     timeline,
   }: {
     timeline: {
-      timestamp: Date;
       title: string;
       desc: string;
       from: Date;
-      to: Date;
+      to: Date | null;
     }[];
   } = $props();
 
@@ -113,7 +112,7 @@
               >
                 {firstCap(
                   format(line.from, "MMM yyyy", { locale: language.locale }),
-                )} -{isAfter(new Date(), line.to)
+                )} -{line.to
                   ? firstCap(
                       format(line.to, "MMM yyyy", { locale: language.locale }),
                     )

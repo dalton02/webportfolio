@@ -1,0 +1,100 @@
+{
+  "hello": {
+    "enUs": "Hi, I'm",
+    "ptBr": "Olá, meu nome é"
+  },
+  "catchPhrase": {
+    "enUs": "Transforming ideas into production-ready systems that connect the world.",
+    "ptBr": "Transformando ideias em sistemas resilientes prontos para encarar o mundo."
+  },
+  "paragraph": {
+    "ptBr": "Durante minha jornada, pude entregar uma variedade de produtos,\n    desde sistemas CRUD simples, CRM, WhiteLabel, até serviços voltados para IA, processamento de pipelines RAG, integração de chatbots.\n    <br/>\n    Trabalhei com múltiplas tecnologias e cenários, enfrentando muitos desafios ao longo do caminho, me construindo\n    não apenas como um bom desenvolvedor, mas como alguém que sabe projetar o futuro da sua aplicação.",
+    "enUs": "The road so far, I have been able to provide a variety of products,\n    from simple CRUD systems, CRM, WhiteLabel, to AI oriented services, like RAG pipeline processing, integrating chatbots.\n    <br/>\n    I've worked across multiple technologies and scenarios, facing many challenges along my way, building myself\n    not just as a good developer, but someone who can design and project the future of your application.\n"
+  },
+  "skills": [
+    {
+        "desc": {
+          "enUs": "Building high-performance, scalable back-ends in Go. Mastering concurrency with goroutines, channels, and good coding patterns.",
+          "ptBr": "Construção de back-ends de alta performance e escaláveis em Go. Domínio de concorrência com goroutines, channels e bons padrões de código."
+        },
+        "title": {
+        "enUs": "Concurrent Systems",
+        "ptBr": "Sistemas escaláveis e concorrentes"    
+      },
+      "icon":"https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/go/go-original-wordmark.svg"    
+    },
+    {
+        "desc": {
+        "enUs": "Full-stack development using the JavaScript ecosystem, framework-agnostic and focused on scalable, maintainable solutions.",
+        "ptBr": "Desenvolvimento full-stack com o ecossistema JavaScript, agnóstico a frameworks e focado em soluções escaláveis e de fácil manutenção."
+        },
+        "title": {
+        "enUs": "JavaScript Ecosystem",
+        "ptBr": "Ecossistema JavaScript"
+        },
+        "icon":"https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
+
+    } 
+    ],
+    "techs":[
+      { "url": "typescript/typescript-original.svg", "name": "Typescript" },
+      { "url": "go/go-original-wordmark.svg", "name": "Golang" },
+      { "url": "python/python-original.svg", "name": "Python" },
+      { "url": "java/java-original.svg", "name": "Java" },
+      { "url": "csharp/csharp-original.svg", "name": "C#" },
+      { "url": "postgresql/postgresql-original.svg", "name": "PostgreSQL" },
+      { "url": "redis/redis-original.svg", "name": "Redis" },
+      { "url": "mongodb/mongodb-original.svg", "name": "MongoDB" },
+      { "url": "rabbitmq/rabbitmq-original.svg", "name": "RabbitMQ" },
+      { "url": "apachekafka/apachekafka-original.svg", "name": "Kafka" },
+      { "url": "react/react-original.svg", "name": "React" },
+      { "url": "tailwindcss/tailwindcss-original.svg", "name": "Tailwind" },
+      { "url": "docker/docker-original.svg", "name": "Docker" },
+      { "url": "nginx/nginx-original.svg", "name": "Nginx" },
+      { "url": "linux/linux-original.svg", "name": "Linux" },
+      { "url": "amazonwebservices/amazonwebservices-plain-wordmark.svg", "name": "AWS" }
+  ],
+    "education": [{
+    "desc": {
+      "enUs": "Juazeiro do Norte - CE",
+      "ptBr": "Juazeiro do Norte - CE"
+    },
+    "title": {
+      "enUs": "Federal University Of Cariri",
+      "ptBr": "Universidade Federal do Cariri"
+    },
+    "subtitle": {
+      "enUs": "Major in Computer Science",
+      "ptBr": "Graduação em Ciência da Computação"
+    }
+  }],
+  "timeline": [
+    {
+      "desc": {
+        "enUs": "FullStack Developer",
+        "ptBr": "Desenvolver Fullstack"
+      },
+      "title": "Pináculo Digital",
+      "from": "2024-09-22",
+      "to": null
+    },
+    {
+      "desc": {
+        "enUs":"Tech Lead",
+        "ptBr": "Tech Lead"
+      },
+      "title": "Calang.io",
+      "from": "2025-02-22T14:21:36+00:00",
+      "to": "2025-12-22T14:21:36+00:00"
+    },
+    {
+      "desc": {
+        "enUs": "FullStack Developer",
+        "ptBr": "Trainee"
+      },
+      "title": "Pináculo Digital",
+      "from": "2024-06-22T14:21:36+00:00",
+      "to": "2024-09-22T14:21:36+00:00"
+    }
+  ]
+}

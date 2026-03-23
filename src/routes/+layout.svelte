@@ -8,6 +8,8 @@
   import { afterNavigate, beforeNavigate } from "$app/navigation";
   import { quadInOut } from "svelte/easing";
   import mediaQuery from "$lib/utils/media.svelte";
+  import { onMount } from "svelte";
+  import language from "$lib/utils/lang.svelte";
   const { children } = $props();
 
   let signal = $state({
@@ -35,6 +37,7 @@
   });
 
   const duration = 800;
+  let mounted = $state(false);
 
   let length = $derived.by(() => {
     if (mediaQuery.lg.current) {
@@ -42,22 +45,32 @@
     }
     return 1200;
   });
+
+  onMount(() => {
+    language.set();
+    mounted = true;
+  });
 </script>
 
-<div class="w-screen h-svh flex flex-col overflow-hidden">
-  <Header />
-  <div class="relative flex-1 flex-col w-full bg-background text-egg" id="main">
-    {#key key}
-      <div
-        class="absolute left-0 top-0 z-10 scroll-bar flex-1 h-full w-full flex overflow-y-auto"
-        in:fly={{ x: length * signal.in, easing: quadInOut, duration }}
-        out:fly={{ x: length * signal.out, easing: quadInOut, duration }}
-      >
-        {@render children()}
-      </div>
-    {/key}
+{#if mounted}
+  <div class="w-screen h-svh flex flex-col overflow-hidden">
+    <Header />
+    <div
+      class="relative flex-1 flex-col w-full bg-background text-egg"
+      id="main"
+    >
+      {#key key}
+        <div
+          class="absolute left-0 top-0 z-10 scroll-bar flex-1 h-full w-full flex overflow-y-auto"
+          in:fly={{ x: length * signal.in, easing: quadInOut, duration }}
+          out:fly={{ x: length * signal.out, easing: quadInOut, duration }}
+        >
+          {@render children()}
+        </div>
+      {/key}
+    </div>
   </div>
-</div>
+{/if}
 
 <style>
   .scroll-bar::-webkit-scrollbar {
