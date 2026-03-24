@@ -19,12 +19,13 @@
   rounded-2xl border border-gray-200/50 shadow-lg backdrop-blur-sm transition-all duration-300"
 >
   <div
-    class="pointer-events-none absolute inset-0 opacity-[0.06] dark:opacity-[0.1]"
+    class="pointer-events-none absolute inset-0 opacity-[0.1]"
     aria-hidden="true"
     style="background-image: radial-gradient(circle, rgb(45, 209, 110) 1px, transparent 1px); background-size: 20px 20px; transform: translateZ(0px);"
   ></div>
   <div
-    class="relative h-60 w-full overflow-hidden border-b-2 border-gray-200 bg-secondary-content-background-light dark:border-gray-700 dark:bg-secondary-content-background"
+    class="relative h-60 w-full overflow-hidden border-b-2
+     border-gray-700"
   >
     <img
       alt={title}
@@ -41,22 +42,17 @@
   >
     <div class="mb-1 flex items-start justify-between">
       <div>
-        <h3
-          class="select-none font-semibold text-gray-900 dark:text-white text-md"
-        >
+        <h3 class="select-none font-semibold text-white text-md">
           {title}
         </h3>
-        <p
-          class="select-none text-sm text-secondary-500 dark:text-secondary-400"
-        >
+        <p class="select-none text-sm">
           {subtitle}
         </p>
       </div>
     </div>
     <div class="mt-4 flex-1">
       <p
-        class="line-clamp-4 select-none group-hover:line-clamp-none group-active:line-clamp-none text-sm text-gray-700
-         dark:text-gray-300"
+        class="line-clamp-4 select-none group-hover:line-clamp-none group-active:line-clamp-none text-sm"
       >
         {desc}
       </p>
@@ -65,7 +61,8 @@
     <div class="mt-4 flex flex-wrap gap-1.5">
       {#each tags as tag}
         <span
-          class="inline-flex shrink-0 items-center justify-center rounded-md bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300"
+          class="inline-flex shrink-0 items-center justify-center rounded-md px-1.5 py-0.5
+           text-xs font-medium bg-gray-700 text-gray-300"
         >
           {tag}
         </span>
@@ -78,7 +75,10 @@
         <a
           href={url}
           target="_blank"
-          class="group/btn rounded-xl border-2 border-primary-500 hover:bg-egg bg-transparent px-6 py-2 text-center text-base font-semibold text-primary-500 shadow-lg transition-all duration-200 hover:border-primary-400 hover:bg-primary-500 hover:text-white hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:text-primary-500 dark:hover:text-[#1A212C] dark:focus:ring-offset-gray-900"
+          class="group/btn rounded-xl border-2 border-primary-500 hover:bg-egg bg-transparent px-6 py-2
+          text-center text-base font-semibold text-primary-500 shadow-lg transition-all duration-200
+          hover:border-primary-400 hover:bg-primary-500 hover:text-white hover:shadow-lg focus:outline-none
+          focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
         >
           <span class="flex items-center justify-center"
             >{new Text({ enUs: "View Project", ptBr: "Ver projeto" }).value}<svg
