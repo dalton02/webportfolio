@@ -30,28 +30,33 @@
       alt={title}
       width="600"
       height="338"
-      class="h-full w-full transition-transform duration-200 group-hover:scale-105 object-cover"
+      class="h-full w-full transition-transform pointer-event-none duration-200 group-hover:scale-105 object-cover"
       src="{globalState.basePath}/{image}"
       style="color: transparent; aspect-ratio: 600 / 338;"
     />
   </div>
   <div
-    class="relative flex flex-col p-4 md:p-6"
+    class="relative flex flex-col p-4 md:p-6 group"
     style="height: calc(100% - 240px);"
   >
     <div class="mb-1 flex items-start justify-between">
       <div>
-        <h3 class="font-semibold text-gray-900 dark:text-white text-md">
+        <h3
+          class="select-none font-semibold text-gray-900 dark:text-white text-md"
+        >
           {title}
         </h3>
-        <p class="text-sm text-secondary-500 dark:text-secondary-400">
+        <p
+          class="select-none text-sm text-secondary-500 dark:text-secondary-400"
+        >
           {subtitle}
         </p>
       </div>
     </div>
     <div class="mt-4 flex-1">
       <p
-        class="line-clamp-4 hover:line-clamp-none active:line-clamp-none text-sm text-gray-700 dark:text-gray-300"
+        class="line-clamp-4 select-none group-hover:line-clamp-none group-active:line-clamp-none text-sm text-gray-700
+         dark:text-gray-300"
       >
         {desc}
       </p>
@@ -60,7 +65,7 @@
     <div class="mt-4 flex flex-wrap gap-1.5">
       {#each tags as tag}
         <span
-          class="inline-flex flex-shrink-0 items-center justify-center rounded-md bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300"
+          class="inline-flex shrink-0 items-center justify-center rounded-md bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300"
         >
           {tag}
         </span>

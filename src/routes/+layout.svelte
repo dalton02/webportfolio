@@ -52,6 +52,9 @@
   });
 </script>
 
+<svelte:head>
+  <title>Portfolio - Dalton Gomes Lobato</title>
+</svelte:head>
 {#if mounted}
   <div class="w-screen h-svh flex flex-col overflow-hidden">
     <Header />

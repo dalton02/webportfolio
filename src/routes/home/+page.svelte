@@ -7,7 +7,11 @@
 
 <div class="flex justify-center items-center h-full w-full flex-col">
   <div class="h-40 rounded-full overflow-hidden aspect-square shrink-0 mb-8">
-    <img src="{globalState.basePath}/photo.png" alt="profile pic" />
+    <img
+      src="{globalState.basePath}/photo.webp"
+      class="translate-x-1.5 object-cover scale-[1.15]"
+      alt="profile pic"
+    />
   </div>
   <div class="p-1 bg-secondary px-4 border text-sm border-white/20 rounded-2xl">
     {new Text({

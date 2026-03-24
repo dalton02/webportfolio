@@ -48,6 +48,7 @@
       <div class="flex flex-col">
         <h2 class="text-2xl leading-tight font-light text-white md:text-4xl">
           {new Text(aboutJSON.hello).value}
+          <br />
           <b class="text-primary"> Dalton Gomes Lobato </b>
         </h2>
 
@@ -62,13 +63,13 @@
       </div>
       {@render title(titles.skills.value)}
       <div class="flex flex-col gap-5">
-        {#each aboutJSON.skills as skill}
+        {#each aboutJSON.skills as skill, i}
           <AboutSkill
             desc={new Text(skill.desc).value}
             title={new Text(skill.title).value}
             subtitle=""
           >
-            <img src={skill.icon} class="w-8" alt="" />
+            <img src={skill.icon} class={i == 0 ? "w-8" : "w-6"} alt="" />
           </AboutSkill>
         {/each}
       </div>

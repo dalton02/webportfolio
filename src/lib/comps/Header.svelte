@@ -71,7 +71,7 @@
                     goto(sec.goto);
                   }}
                 >
-                  <span class="text-lg">
+                  <span class="text-lg font-light tracking-tight">
                     {sec.label.value}
                   </span>
                 </button>
