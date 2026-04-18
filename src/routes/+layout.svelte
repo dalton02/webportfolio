@@ -10,6 +10,7 @@
   import mediaQuery from "$lib/utils/media.svelte";
   import { onMount } from "svelte";
   import language from "$lib/utils/lang.svelte";
+  import Stars from "$lib/comps/Stars.svelte";
   const { children } = $props();
 
   let signal = $state({
@@ -54,6 +55,7 @@
 
 <svelte:head>
   <title>Portfolio - Dalton Gomes Lobato</title>
+  <meta name="description" content="WebPortfolio of a fullstack developer" />
 </svelte:head>
 {#if mounted}
   <div class="w-screen h-svh flex flex-col overflow-hidden">
@@ -71,6 +73,9 @@
           {@render children()}
         </div>
       {/key}
+      <div class="absolute left-0 top-0 w-full h-full">
+        <Stars />
+      </div>
     </div>
   </div>
 {/if}

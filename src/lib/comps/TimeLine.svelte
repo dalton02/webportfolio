@@ -18,9 +18,9 @@
 
   let linesPerJob = $derived.by(() => {
     if (mediaQuery.lg.current) {
-      return 14;
+      return 8;
     } else {
-      return 9;
+      return 6;
     }
   });
   let linesBetween = $derived.by(() => {
@@ -75,6 +75,7 @@
       {@const selected = i === focus}
       <div class="relative w-px flex justify-center">
         <button
+          aria-label={`Go to timeline: ${line.desc} from ${format(line.from, "MMM yyyy")}`}
           class="flex flex-col absolute top-0 cursor-pointer px-1 gap-2 justify-start items-center"
           onclick={() => (focus = i)}
         >

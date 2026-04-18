@@ -55,7 +55,9 @@
       <div
         class="flex justify-center lg:justify-between items-center w-full lg max-w-[1400px] px-12"
       >
-        <h1 class="font-cursive text-xl not-lg:hidden">Dalton Gomes</h1>
+        <h1 class="font-cursive text-xl not-lg:hidden font-bold italic">
+          Dalton <span class="text-primary">Gomes</span>
+        </h1>
 
         <div class="relative py-1">
           <ul class="flex items-center gap-3" bind:this={list}>

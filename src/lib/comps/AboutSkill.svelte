@@ -3,7 +3,7 @@
 </script>
 
 <div
-  class="bg-secondary/30 relative rounded-lg px-6 py-5 transition-all duration-300 ease-in-out hover:z-10 hover:scale-[102%] hover:shadow-xl"
+  class="bg-secondary relative rounded-lg px-6 py-5 transition-all duration-300 ease-in-out hover:z-10 hover:scale-[102%] hover:shadow-xl"
 >
   <div class="absolute right-8">
     {@render children()}

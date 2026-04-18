@@ -3,15 +3,21 @@
   import globalState from "$lib/utils/global.svelte";
   import { Text } from "$lib/utils/lang.svelte";
   import homeJSON from "$lib/json/home.json" with { type: "json" };
+  import { scale } from "svelte/transition";
+  import { bounceInOut } from "svelte/easing";
 </script>
 
 <div class="flex justify-center items-center h-full w-full flex-col">
-  <div class="h-40 rounded-full overflow-hidden aspect-square shrink-0 mb-8">
-    <img
-      src="{globalState.basePath}/photo.webp"
-      class="translate-x-1.5 object-cover scale-[1.15]"
-      alt="profile pic"
-    />
+  <div class="overflow-hidden mask-photo">
+    <div
+      class="h-40 rounded-full overflow-hidden aspect-square shrink-0 mb-8 anim-photo"
+    >
+      <img
+        src="{globalState.basePath}/photo.webp"
+        class="translate-x-1.5 object-cover scale-[1.15]"
+        alt="profile pic"
+      />
+    </div>
   </div>
   <div class="p-1 bg-secondary px-4 border text-sm border-white/20 rounded-2xl">
     {new Text({

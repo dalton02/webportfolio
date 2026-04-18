@@ -7,6 +7,6 @@
 <div
   class="flex flex-col text-sm grayscale-75 hover:grayscale-0 active:grayscale-0 duration-200 select-none tracking-tight items-center justify-center gap-2"
 >
-  <img src={prefix + url} class="w-[44px]" />
+  <img src={prefix + url} class="w-[44px]" alt={name} />
   {name}
 </div>

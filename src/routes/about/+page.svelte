@@ -52,9 +52,9 @@
           <b class="text-primary"> Dalton Gomes Lobato </b>
         </h2>
 
-        <h4 class="py-5 text-xl leading-relaxed font-light text-white italic">
+        <h3 class="py-5 text-xl leading-relaxed font-light text-white italic">
           {new Text(aboutJSON.catchPhrase).value}
-        </h4>
+        </h3>
         <p
           class=" text-sm leading-relaxed font-light tracking-wide text-white/55"
         >
