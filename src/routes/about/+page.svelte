@@ -45,18 +45,22 @@
   >
     <div class="flex flex-col gap-5 h-full z-10 col-span-5">
       {@render title(titles.intro.value)}
-      <div class="flex flex-col">
-        <h2 class="text-2xl leading-tight font-light text-white md:text-4xl">
+      <div class="relative flex flex-col pl-5 border-l border-primary/25">
+        <span
+          class="absolute left-[-3px] top-0 h-10 w-[5px] rounded-full bg-primary"
+          aria-hidden="true"
+        ></span>
+        <h2 class="text-2xl leading-tight font-light text-egg md:text-4xl">
           {new Text(aboutJSON.hello).value}
           <br />
-          <b class="text-primary"> Dalton Gomes Lobato </b>
+          <b class="text-primary">Dalton Gomes Lobato</b>
         </h2>
 
-        <h3 class="py-5 text-xl leading-relaxed font-light text-white italic">
+        <h3 class="py-5 text-lg leading-relaxed font-light text-egg/85 italic md:text-xl">
           {new Text(aboutJSON.catchPhrase).value}
         </h3>
         <p
-          class=" text-sm leading-relaxed font-light tracking-wide text-white/55"
+          class="text-sm leading-relaxed font-light tracking-wide text-white/55"
         >
           {@html new Text(aboutJSON.paragraph).value}
         </p>
@@ -98,7 +102,7 @@
     </div>
     <div class="flex flex-col h-full z-10 col-span-5 gap-1">
       {@render title(titles.tech.value)}
-      <div class="grid grid-cols-4 lg:grid-cols-6 gap-5 mt-4 ml-2 mb-8">
+      <div class="grid grid-cols-4 lg:grid-cols-6 gap-3 mt-4 mb-8">
         {#each aboutJSON.techs as tech}
           <SvgTech url={tech.url} name={tech.name} />
         {/each}
@@ -122,5 +126,12 @@
 </div>
 
 {#snippet title(text: string)}
-  <span class="text-xs tracking-wide text-white/55">{text.toUpperCase()}</span>
+  <div class="flex items-center gap-2">
+    <span class="h-px w-6 bg-primary" aria-hidden="true"></span>
+    <span
+      class="text-[11px] font-medium uppercase tracking-[0.2em] text-primary"
+    >
+      {text}
+    </span>
+  </div>
 {/snippet}

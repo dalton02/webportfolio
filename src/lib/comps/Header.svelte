@@ -1,93 +1,135 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
   import { page } from "$app/state";
-  import globalState, {
-    headerSections,
-    SectionsType,
-  } from "$lib/utils/global.svelte";
+  import globalState, { headerSections } from "$lib/utils/global.svelte";
+  import language from "$lib/utils/lang.svelte";
 
   let list = $state<HTMLUListElement>();
 
-  let slider = $derived.by(() => {
-    const path = page.url.pathname
-      .replaceAll(globalState.basePath, "")
-      .replaceAll("/", "") as SectionsType;
+  let currentPath = $derived(
+    page.url.pathname
+      .replace(globalState.basePath, "")
+      .replace(/^\/+|\/+$/g, ""),
+  );
 
-    if (!list) return { x: 0, width: 0 };
+  let activeIndex = $derived(
+    headerSections.findIndex((s) => s.goto === currentPath),
+  );
 
-    const items = list.children;
+  let slider = $state({ x: 0, width: 0, ready: false });
 
-    const moveX = (i: number) => {
-      const acc = Object.values(items)
-        .slice(0, i)
-        .reduce((prev, current) => current.clientWidth + prev, 0);
-      return acc + 12 * i;
-    };
-
-    switch (path) {
-      case "home":
-        return {
-          x: 0,
-          width: items[0].clientWidth,
-        };
-      case "about":
-        return {
-          x: moveX(1),
-          width: items[1].clientWidth,
-        };
-      case "projects":
-        return {
-          x: moveX(2),
-          width: items[2].clientWidth,
-        };
-      case "contact":
-        return {
-          x: moveX(3),
-          width: items[3].clientWidth,
-        };
+  function measure() {
+    if (!list || activeIndex < 0) {
+      slider = { x: 0, width: 0, ready: false };
+      return;
     }
+    const item = list.children[activeIndex] as HTMLElement | undefined;
+    if (!item) return;
+    const listRect = list.getBoundingClientRect();
+    const itemRect = item.getBoundingClientRect();
+    slider = {
+      x: itemRect.left - listRect.left,
+      width: itemRect.width,
+      ready: true,
+    };
+  }
+
+  $effect(() => {
+    // re-run when path changes or language flips (label widths change)
+    void activeIndex;
+    void language.value;
+    measure();
   });
+
+  $effect(() => {
+    if (!list) return;
+    const ro = new ResizeObserver(measure);
+    ro.observe(list);
+    for (const child of Array.from(list.children)) ro.observe(child);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  });
+
+  function href(goto: string) {
+    return `${globalState.basePath}/${goto}`;
+  }
 </script>
 
-<header class="sticky top-0 left-0 w-full z-20 pointer-events-auto">
-  <div class=" text-egg">
-    <div class="bg-secondary shadow-xl/10 flex justify-center items-center">
+<header
+  class="sticky top-0 left-0 w-full z-20 pointer-events-auto
+  bg-secondary/80 backdrop-blur-md shadow-xl/10"
+>
+  <div class="text-egg">
+    <div class="flex justify-center items-center">
       <div
-        class="flex justify-center lg:justify-between items-center w-full lg max-w-[1400px] px-12"
+        class="grid grid-cols-[1fr_auto_1fr] items-center w-full max-w-[1400px] px-4 sm:px-6 lg:px-12 gap-2"
       >
-        <h1 class="font-cursive text-xl not-lg:hidden font-bold italic">
+        <a
+          href={href("home")}
+          class="font-cursive text-xl not-lg:hidden font-bold italic
+          justify-self-start
+          transition-opacity hover:opacity-80 focus-visible:outline-none
+          focus-visible:ring-2 focus-visible:ring-primary/60 rounded"
+        >
           Dalton <span class="text-primary">Gomes</span>
-        </h1>
+        </a>
 
-        <div class="relative py-1">
-          <ul class="flex items-center gap-3" bind:this={list}>
-            {#each headerSections as sec}
-              {@const selected =
-                sec.goto === page.url.pathname.replaceAll("/", "")}
+        <nav aria-label="Primary" class="relative py-1 justify-self-center col-start-2">
+          <ul class="flex items-center gap-1 sm:gap-3" bind:this={list}>
+            {#each headerSections as sec, i}
+              {@const selected = i === activeIndex}
               <li>
-                <button
-                  class="h-full flex pointer-events-auto items-center p-3 px-1 {selected
-                    ? ''
-                    : ''} transition-all duration-200 cursor-pointer"
-                  onclick={() => {
-                    goto(sec.goto);
-                  }}
+                <a
+                  href={href(sec.goto)}
+                  data-sveltekit-preload-data="hover"
+                  aria-current={selected ? "page" : undefined}
+                  class="flex items-center px-2.5 sm:px-3 py-2.5 rounded-md
+                  transition-colors duration-200
+                  hover:bg-white/5 focus-visible:outline-none
+                  focus-visible:ring-2 focus-visible:ring-primary/60
+                  {selected
+                    ? 'text-primary font-medium'
+                    : 'text-egg/80 hover:text-egg'}"
                 >
-                  <span class="text-lg font-light tracking-tight">
+                  <span class="text-base sm:text-lg tracking-tight">
                     {sec.label.value}
                   </span>
-                </button>
+                </a>
               </li>
             {/each}
           </ul>
-          {#if slider}
-            <div
-              class="absolute bottom-0 h-[2px] bg-primary transition-all"
-              style="transform:translateX({slider.x ??
-                0}px);width:{slider.width ?? 0}px;"
-            ></div>
-          {/if}
-        </div>
+          <div
+            class="absolute bottom-0 h-[2px] bg-primary transition-all duration-300 ease-out
+            {slider.ready ? 'opacity-100' : 'opacity-0'}"
+            style="transform:translateX({slider.x}px);width:{slider.width}px;"
+            aria-hidden="true"
+          ></div>
+        </nav>
+
+        <button
+          type="button"
+          class="justify-self-end col-start-3 flex items-center gap-1
+          text-xs font-medium tracking-[0.15em] uppercase
+          rounded-full border border-white/10 bg-white/5 px-2.5 py-1
+          text-egg/70 hover:text-egg hover:border-primary/40 hover:bg-primary/5
+          transition-colors duration-200 focus-visible:outline-none
+          focus-visible:ring-2 focus-visible:ring-primary/60 cursor-pointer"
+          aria-label="Toggle language"
+          onclick={() =>
+            (language.value = language.value === "ptBr" ? "enUs" : "ptBr")}
+        >
+          <span
+            class={language.value === "ptBr" ? "text-primary" : "text-egg/50"}
+            >PT</span
+          >
+          <span class="text-egg/25">/</span>
+          <span
+            class={language.value === "enUs" ? "text-primary" : "text-egg/50"}
+            >EN</span
+          >
+        </button>
       </div>
     </div>
   </div>

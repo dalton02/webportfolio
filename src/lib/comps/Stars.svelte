@@ -18,9 +18,9 @@
 
   let MAX_STARS = $derived.by(() => {
     if (mediaQuery.lg.current) {
-      return 15;
+      return 11;
     }
-    return 8;
+    return 5;
   });
   function randomStar(): Star {
     return {

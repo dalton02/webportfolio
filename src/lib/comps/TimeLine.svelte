@@ -1,9 +1,7 @@
 <script lang="ts">
   import language, { Text } from "$lib/utils/lang.svelte";
-  import mediaQuery from "$lib/utils/media.svelte";
   import { firstCap } from "$lib/utils/text.js";
-  import { format, formatDate, isAfter } from "date-fns";
-  import { slide } from "svelte/transition";
+  import { format, differenceInMonths } from "date-fns";
 
   let {
     timeline,
@@ -16,146 +14,82 @@
     }[];
   } = $props();
 
-  let linesPerJob = $derived.by(() => {
-    if (mediaQuery.lg.current) {
-      return 8;
-    } else {
-      return 6;
-    }
-  });
-  let linesBetween = $derived.by(() => {
-    if (mediaQuery.lg.current) {
-      return 19;
-    } else {
-      return 10;
-    }
-  });
+  let sorted = $derived(
+    [...timeline].sort((a, b) => b.from.getTime() - a.from.getTime()),
+  );
 
-  let container = $state<HTMLDivElement>();
-  let focus = $state(0);
-  let moveX = $derived.by(() => {
-    if (!container) return 0;
-    const lineFocus = (linesPerJob + 1) * focus + linesBetween + 1;
+  const present = new Text({ ptBr: "Presente", enUs: "Present" });
+  const yearLabel = new Text({ ptBr: "ano", enUs: "yr" });
+  const yearsLabel = new Text({ ptBr: "anos", enUs: "yrs" });
+  const monthLabel = new Text({ ptBr: "mês", enUs: "mo" });
+  const monthsLabel = new Text({ ptBr: "meses", enUs: "mos" });
 
-    const containerWidth = container.clientWidth;
+  function duration(from: Date, to: Date | null) {
+    const end = to ?? new Date();
+    const months = Math.max(1, differenceInMonths(end, from));
+    const y = Math.floor(months / 12);
+    const m = months % 12;
+    const parts: string[] = [];
+    if (y > 0) parts.push(`${y} ${y === 1 ? yearLabel.value : yearsLabel.value}`);
+    if (m > 0) parts.push(`${m} ${m === 1 ? monthLabel.value : monthsLabel.value}`);
+    return parts.join(" ");
+  }
 
-    const lineWidth = 1;
-    const gap = 12;
-
-    const lineX = lineFocus * (lineWidth + gap);
-    const lineCenter = lineX + lineWidth / 2;
-
-    const containerCenter = containerWidth / 2;
-
-    const translate = containerCenter - lineCenter;
-
-    return translate;
-  });
+  function fmt(d: Date) {
+    return firstCap(format(d, "MMM yyyy", { locale: language.locale }));
+  }
 </script>
 
-<div
-  class="w-full overflow-hidden h-[300px] flex origin-center relative"
-  bind:this={container}
->
-  <div
-    class="absolute left-0 sh w-30 lg:w-50 z-10 h-full pointer-events-none"
-  ></div>
-  <div
-    class="absolute right-0 sh2 z-10 w-30 lg:w-50 h-full pointer-events-none"
-  ></div>
+<ol class="relative flex flex-col gap-5 pl-6 border-l border-primary/25">
+  {#each sorted as job, i}
+    {@const isCurrent = job.to === null}
+    <li class="relative">
+      <span
+        class="absolute left-[-27px] top-5 flex h-3 w-3 items-center justify-center rounded-full bg-primary"
+        aria-hidden="true"
+      >
+        {#if isCurrent}
+          <span
+            class="absolute inline-flex h-full w-full rounded-full bg-primary/60 animate-ping"
+          ></span>
+        {/if}
+      </span>
 
-  <div
-    class="flex gap-3 transition-all duration-500 pt-4"
-    style="transform: translateX({moveX}px)"
-  >
-    {#each { length: linesBetween } as _, i}
-      {@render lineS(i, true)}
-    {/each}
-    {#each timeline as line, i}
-      {@const selected = i === focus}
-      <div class="relative w-px flex justify-center">
-        <button
-          aria-label={`Go to timeline: ${line.desc} from ${format(line.from, "MMM yyyy")}`}
-          class="flex flex-col absolute top-0 cursor-pointer px-1 gap-2 justify-start items-center"
-          onclick={() => (focus = i)}
-        >
-          <div
-            class="absolute w-2.5 h-2.5 top-[-5px] bg-primary rounded-full"
-          ></div>
-          <div
-            class="w-[2px] shrink-0 transition-all duration-500 {selected
-              ? 'h-[120px]'
-              : 'h-[60px]'} bg-primary"
-          ></div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="28"
-            height="28"
-            fill="white"
-            viewBox="0 0 256 256"
-            ><path
-              d="M216,56H176V48a24,24,0,0,0-24-24H104A24,24,0,0,0,80,48v8H40A16,16,0,0,0,24,72V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V72A16,16,0,0,0,216,56ZM96,48a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96ZM216,72v41.61A184,184,0,0,1,128,136a184.07,184.07,0,0,1-88-22.38V72Zm0,128H40V131.64A200.19,200.19,0,0,0,128,152a200.25,200.25,0,0,0,88-20.37V200ZM104,112a8,8,0,0,1,8-8h32a8,8,0,0,1,0,16H112A8,8,0,0,1,104,112Z"
-            ></path></svg
-          >
-          {#if selected}
-            <div class="flex flex-col items-center">
-              <b class="text-xl text-white whitespace-nowrap">
-                {line.title}
-              </b>
-              <span
-                class="text-lg text-white/55 whitespace-nowrap tracking-tight"
-              >
-                {line.desc}
-              </span>
-
-              <span
-                class="text-white/55 whitespace-nowrap text-sm tracking-tight"
-              >
-                {firstCap(
-                  format(line.from, "MMM yyyy", { locale: language.locale }),
-                )} -{line.to
-                  ? firstCap(
-                      format(line.to, "MMM yyyy", { locale: language.locale }),
-                    )
-                  : new Text({ ptBr: "Presente", enUs: "Present" }).value}
-              </span>
-            </div>
+      <div
+        class="group relative flex flex-col gap-2 rounded-xl border border-white/5 bg-secondary/70 px-5 py-4
+        transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-primary/30
+        hover:bg-secondary hover:shadow-[0_10px_30px_rgba(0,0,0,0.25)]"
+      >
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <h4
+              class="text-primary text-lg leading-tight font-medium tracking-wide"
+            >
+              {job.title}
+            </h4>
+            <p class="mt-0.5 text-sm text-egg/75">
+              {job.desc}
+            </p>
+          </div>
+          {#if isCurrent}
+            <span
+              class="shrink-0 rounded-full border border-primary/40 bg-primary/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.2em] text-primary"
+            >
+              {present.value}
+            </span>
           {/if}
-        </button>
+        </div>
+
+        <div
+          class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs tracking-wide text-white/45"
+        >
+          <span>{fmt(job.from)}</span>
+          <span class="text-white/25">—</span>
+          <span>{job.to ? fmt(job.to) : present.value}</span>
+          <span class="text-white/25">·</span>
+          <span class="text-white/60">{duration(job.from, job.to)}</span>
+        </div>
       </div>
-
-      {#each { length: linesPerJob } as _, i}
-        {@render lineS(i, false)}
-      {/each}
-    {/each}
-
-    {#each { length: linesBetween } as _, i}
-      {@render lineS(i, true)}
-    {/each}
-  </div>
-</div>
-
-{#snippet lineS(i: number, curve: boolean)}
-  <div class="w-px h-[35px] shrink-0 bg-white/45"></div>
-{/snippet}
-
-<style>
-  .sh {
-    opacity: 0.85;
-    background: var(--color-background);
-    background: linear-gradient(
-      90deg,
-      var(--color-background) 20%,
-      rgba(237, 221, 83, 0) 100%
-    );
-  }
-  .sh2 {
-    opacity: 0.85;
-    background: var(--color-background);
-    background: linear-gradient(
-      -90deg,
-      var(--color-background) 20%,
-      rgba(237, 221, 83, 0) 100%
-    );
-  }
-</style>
+    </li>
+  {/each}
+</ol>

@@ -31,7 +31,22 @@
   <p class="text-egg/70 text-sm font-light text-center">
     {@html new Text(homeJSON.presentation).value}
   </p>
-  <div class="flex gap-4 mt-10 items-center">
+  <div class="flex gap-3 mt-8 items-center">
+    <a
+      href="{globalState.basePath}/projects"
+      class="text-sm px-5 py-2 rounded-2xl border border-white/20 bg-secondary hover:bg-secondary/70 transition-colors"
+    >
+      {new Text({ enUs: "View projects", ptBr: "Ver projetos" }).value}
+    </a>
+    <a
+      href="{globalState.basePath}/contact"
+      class="text-sm px-5 py-2 rounded-2xl border border-egg/60 bg-egg text-background hover:bg-egg/80 transition-colors"
+    >
+      {new Text({ enUs: "Contact me", ptBr: "Fale comigo" }).value}
+    </a>
+  </div>
+
+  <div class="flex gap-4 mt-6 items-center">
     <a
       href="https://github.com/dalton02"
       class="group"
