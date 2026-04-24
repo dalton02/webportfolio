@@ -18,7 +18,7 @@
 
   let MAX_STARS = $derived.by(() => {
     if (mediaQuery.lg.current) {
-      return 11;
+      return 10;
     }
     return 5;
   });
@@ -28,7 +28,7 @@
       y: Math.random() * height,
       size: Math.random() * 1 + 0.8,
       speed: Math.random() * 2.5 + 0.8,
-      opacity: Math.random() * 0.5 + 0.1,
+      opacity: Math.random() * 0.4 + 0.1,
     };
   }
 
@@ -68,7 +68,7 @@
 
       star.x += star.speed;
 
-      if (star.x > width + 10) {
+      if (star.x > width + 100) {
         star.x = -10;
         star.y = Math.random() * height;
       }

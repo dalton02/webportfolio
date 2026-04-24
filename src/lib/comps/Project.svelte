@@ -15,7 +15,7 @@
 </script>
 
 <article
-  class="group/card relative flex shrink-0 w-[340px] lg:w-[400px] flex-col overflow-hidden
+  class="group/card relative flex w-full flex-col overflow-hidden
   rounded-2xl bg-secondary/80 border border-white/5 shadow-[0_8px_30px_rgba(0,0,0,0.25)]
   backdrop-blur-sm transition-all duration-500 ease-out
   hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_20px_50px_rgba(140,199,196,0.15)]"
@@ -64,9 +64,9 @@
     </h3>
 
     <p
-      class="mt-3 line-clamp-4 select-none text-sm leading-relaxed text-egg/70
-      transition-[color,-webkit-line-clamp] duration-300
-      group-hover/card:line-clamp-none group-hover/card:text-egg/85"
+      class="mt-3 select-none text-sm leading-relaxed text-egg/70
+      lg:line-clamp-4 transition-[color,-webkit-line-clamp] duration-300
+      lg:group-hover/card:line-clamp-none group-hover/card:text-egg/85"
     >
       {desc}
     </p>

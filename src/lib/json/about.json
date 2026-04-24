@@ -52,7 +52,10 @@
       { "url": "docker/docker-original.svg", "name": "Docker" },
       { "url": "nginx/nginx-original.svg", "name": "Nginx" },
       { "url": "linux/linux-original.svg", "name": "Linux" },
-      { "url": "amazonwebservices/amazonwebservices-plain-wordmark.svg", "name": "AWS" }
+      { "url": "amazonwebservices/amazonwebservices-plain-wordmark.svg", "name": "AWS" },
+      { "url": "elixir/elixir-original.svg", "name": "Elixir" },
+      { "url": "phoenix/phoenix-original.svg", "name": "Phoenix" },
+      { "url": "sqlite/sqlite-original.svg", "name": "SQLite" }
   ],
     "education": [{
     "desc": {
@@ -72,11 +75,20 @@
     {
       "desc": {
         "enUs": "FullStack Developer",
+        "ptBr": "Desenvolvedor Fullstack"
+      },
+      "title": "NSD Tecnologia",
+      "from": "2026-04-10",
+      "to": null
+    },
+    {
+      "desc": {
+        "enUs": "FullStack Developer",
         "ptBr": "Desenvolver Fullstack"
       },
       "title": "Pináculo Digital",
       "from": "2024-09-22",
-      "to": null
+      "to": "2026-03-31"
     },
     {
       "desc": {

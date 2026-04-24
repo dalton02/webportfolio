@@ -2,6 +2,23 @@
     "projects":[
         {
             "title": {
+                "enUs": "W-Core - Real-Time State Engine",
+                "ptBr": "W-Core - Motor de Estado em Tempo Real"
+            },
+            "subtitle": {
+                "enUs": "High-Throughput Telemetry with OTP",
+                "ptBr": "Telemetria de Alta Vazão com OTP"
+            },
+            "desc": {
+                "ptBr": "Motor de estado em tempo real para telemetria industrial, projetado para absorver milhares de eventos concorrentes de sensores sem contenção no banco relacional.\n\nArquitetura em duas camadas com ETS como buffer transacional em memória e write-behind assíncrono para SQLite via GenServers supervisionados, garantindo ingestão não-bloqueante e dashboard reativo.\n\nValidado com chaos testing de 10.000 eventos concorrentes.",
+                "enUs": "Real-time state engine for industrial telemetry, designed to absorb thousands of concurrent sensor events without relational database contention.\n\nTwo-layer architecture with ETS as in-memory transactional buffer and asynchronous write-behind to SQLite via supervised GenServers, ensuring non-blocking ingestion and reactive dashboard.\n\nValidated with chaos testing of 10,000 concurrent events."
+            },
+            "url": "https://github.com/dalton02/real-time-state-engine",
+            "image": "sensors.webp",
+            "tags": ["Elixir", "OTP", "ETS", "Phoenix LiveView", "SQLite"]
+        }, 
+        {
+            "title": {
                 "enUs": "SFU Media Server",
                 "ptBr": "Servidor de Mídia SFU"
             },
@@ -10,29 +27,28 @@
                 "ptBr": "Comunicação WebRTC"
             },
             "desc": {
-                "enUs": "Implementation of a media-server with a Service Forwarding Unit topology using WebRTC for real-time audio and video streaming between multiple participants, with simulcast support for dynamic adaptation according to each user's connection.",
-                "ptBr": 
-                "Implementação de media-server com topologia Service Forwarding Unit (SFU) utilizando WebRTC para transmissão em tempo real de áudio e vídeo entre múltiplos participantes de uma sala, com suporte a simulcast para adaptação dinamica das faixas de videos em diferentes qualidades conforme a conexão de cada usuário."
+                "ptBr": "Arquiteturas WebRTC peer-to-peer não escalam além de poucos participantes por sala devido ao crescimento quadrático de conexões.\n\nImplementação from-scratch de um media-server com topologia Selective Forwarding Unit (SFU), centralizando o roteamento de streams e reduzindo a carga de upload por cliente.\n\nSuporte a simulcast com adaptação dinâmica de qualidade por consumidor, permitindo que cada participante receba a faixa ideal para sua conexão.",
+                "enUs": "WebRTC peer-to-peer architectures don't scale beyond a few participants per room due to quadratic connection growth.\n\nFrom-scratch implementation of a media-server with Selective Forwarding Unit (SFU) topology, centralizing stream routing and reducing client-side upload load.\n\nSimulcast support with dynamic quality adaptation per consumer, allowing each participant to receive the optimal track for their connection."
             },
             "url": "https://github.com/dalton02/Selective-Forwarding-Unit",
             "image": "webrtc.webp",
-            "tags": ["Golang", "Pion", "Webrtc","UDP"]
+            "tags": ["Golang", "Pion", "WebRTC", "UDP"]
         },
 
         {
             "title": {
-                "enUs": "TicketFlow - Ticket Booking System",
-                "ptBr": "TicketFlow - Sistema de Venda de Ingressos"
+                "enUs": "Event-Driven Booking Exercise",
+                "ptBr": "Exercício de Reservas Event-Driven"
             },
             "subtitle": {
-                "enUs": "High-Concurrency Reservation System",
-                "ptBr": "Sistema de Reserva"
+                "enUs": "Backend Concurrency Challenge",
+                "ptBr": "Desafio de Concorrência Backend"
             },
             "desc": {
-                  "ptBr": "Sistema de venda de ingressos multi-instância, projetado para gerar o fluxo de compra de ingressos.\n\nUtilizando uma arquitetura orientada a eventos (event-driven) com RabbitMQ, gerenciamento de cache para visualização rápida de assentos disponíveis utilizando Redis, e controle resiliente e altamente concorrente para a obtenção de reservas.",
-                  "enUs": "Multi-instance ticket sales system, designed to generate the ticket purchase flow.\n\nUsing an event-driven architecture with RabbitMQ, cache management for fast visualization of available seats using Redis, and resilient, highly concurrent control for obtaining reservations."
+                  "ptBr": "Desafio backend focado em resolver race conditions e overselling em cenários de alta concorrência, onde milhares de usuários tentam reservar o mesmo assento simultaneamente.\n\nArquitetura multi-instância orientada a eventos com RabbitMQ para desacoplamento do fluxo de compra, Redis para visualização em tempo real dos assentos disponíveis, e locking distribuído para garantir consistência nas reservas concorrentes.",
+                  "enUs": "Backend challenge focused on solving race conditions and overselling in high-concurrency scenarios, where thousands of users try to reserve the same seat simultaneously.\n\nMulti-instance event-driven architecture with RabbitMQ decoupling the purchase flow, Redis for real-time seat availability visualization, and distributed locking to ensure consistency across concurrent reservations."
             },
-            "url": "https://github.com/dalton02/starsoft-backend-challenge  ",
+            "url": "https://github.com/dalton02/starsoft-backend-challenge",
             "image": "booking.webp",
             "tags": [
                 "NestJS",
@@ -41,6 +57,7 @@
                 "RabbitMQ"
             ]
         },
+
         {
             "title": {
                 "enUs": "UFCHAT - University Integrated Chatbot",
@@ -51,8 +68,8 @@
                 "ptBr": "Pipeline RAG com LLM Local"
             },
             "desc": {
-            "ptBr": "Chatbot universitário que auxilia alunos, professores e funcionários com dúvidas acadêmicas e institucionais de forma rápida, precisa e privada.\n\nUtilizando uma pipeline RAG local onde documentos são processados e armazenados em um banco vetorial, recuperados via contexto e injetados na LLM local adaptada com Ollama.\n\nGarante respostas atualizadas e contextualizadas sem expor dados sensíveis na nuvem.",
-            "enUs": "University chatbot that assists students, professors, and staff with academic and institutional questions in a fast, accurate, and private manner.\n\nUsing a local RAG pipeline where documents are processed and stored in a vector database, retrieved via context, and injected into the local LLM adapted with Ollama.\n\nEnsures updated and contextualized responses without exposing sensitive data to the cloud."
+            "ptBr": "Chatbot universitário para dúvidas acadêmicas e institucionais, construído sobre uma stack 100% local para não expor documentos internos a APIs de terceiros.\n\nPipeline RAG com documentos processados e indexados em banco vetorial, recuperação por similaridade semântica e injeção de contexto em LLM executada via Ollama on-premise.\n\nElimina custos recorrentes de API e riscos de vazamento de dados sensíveis, mantendo respostas atualizadas conforme a base documental da instituição.",
+            "enUs": "University chatbot for academic and institutional questions, built on a fully local stack to avoid exposing internal documents to third-party APIs.\n\nRAG pipeline with documents processed and indexed in a vector database, retrieval by semantic similarity, and context injection into an LLM running via Ollama on-premise.\n\nEliminates recurring API costs and data leakage risks while keeping responses aligned with the institution's document base."
             },
             "url": "",
             "image": "ufchat.webp",

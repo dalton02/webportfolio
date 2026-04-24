@@ -12,9 +12,9 @@
       ptBr: "Projetos",
     }).value}
   />
-  <div class="relative">
+  <div class="relative w-full flex justify-center">
     <div
-      class=" w-full px-4 lg:px-30 flex flex-wrap justify-center items-start gap-7 py-6 scroll-bar"
+      class="w-full max-w-6xl px-4 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 py-6"
     >
       {#each obj.projects as { desc, image, subtitle, tags, title, url }}
         <Project
