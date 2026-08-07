@@ -4,13 +4,14 @@
     "ptBr": "Olá, meu nome é"
   },
   "catchPhrase": {
-    "enUs": "Making your ideas real. One line of code at a time.",
-    "ptBr": "Tornando suas ideias reais. Uma linha de código por vez."
+    "enUs": "Code that ships. Systems that hold up under load.",
+    "ptBr": "Código que entrega. Sistemas que aguentam o tranco."
   },
   "paragraph": {
-    "ptBr": "Durante minha jornada, pude entregar uma variedade de produtos,\n    desde sistemas CRUD simples, CRM, WhiteLabel, até serviços voltados para IA, processamento de pipelines RAG, integração de chatbots.\n    <br/>\n    Trabalhei com múltiplas tecnologias e cenários, enfrentando muitos desafios ao longo do caminho, me construindo\n    não apenas como um bom desenvolvedor, mas como alguém que sabe projetar o futuro da sua aplicação.",
-    "enUs": "The road so far, I have been able to provide a variety of products,\n    from simple CRUD systems, CRM, WhiteLabel, to AI oriented services, like RAG pipeline processing, integrating chatbots.\n    <br/>\n    I've worked across multiple technologies and scenarios, facing many challenges along my way, building myself\n    not just as a good developer, but someone who can design and project the future of your application.\n"
+    "ptBr": "Durante minha jornada, pude entregar uma variedade de produtos,\n    desde sistemas CRUD simples, CRM, WhiteLabel, passando por gateways de pagamento de alto volume, até serviços voltados para IA, processamento de pipelines RAG, integração de chatbots.\n    <br/>\n    Trabalhei com múltiplas tecnologias e cenários, enfrentando muitos desafios ao longo do caminho, me construindo\n    não apenas como um bom desenvolvedor, mas como alguém que sabe projetar o futuro da sua aplicação.",
+    "enUs": "The road so far, I have been able to provide a variety of products,\n    from simple CRUD systems, CRM, WhiteLabel, through high-volume payment gateways, to AI oriented services, like RAG pipeline processing, integrating chatbots.\n    <br/>\n    I've worked across multiple technologies and scenarios, facing many challenges along my way, building myself\n    not just as a good developer, but someone who can design and project the future of your application.\n"
   },
+
   "skills": [
     {
         "desc": {
@@ -34,7 +35,18 @@
         },
         "icon":"https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
 
-    } 
+    },
+    {
+        "desc": {
+        "enUs": "Low-level real-time systems: a WebRTC SFU with simulcast in Go, and event-driven telemetry with Elixir/OTP, ETS and Phoenix LiveView.",
+        "ptBr": "Sistemas em tempo real de baixo nível: um SFU WebRTC com simulcast em Go e telemetria orientada a eventos com Elixir/OTP, ETS e Phoenix LiveView."
+        },
+        "title": {
+        "enUs": "Real-Time Systems",
+        "ptBr": "Sistemas em tempo real"
+        },
+        "icon":"https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/elixir/elixir-original.svg"
+    }
     ],
     "techs":[
       { "url": "typescript/typescript-original.svg", "name": "Typescript" },
@@ -74,39 +86,68 @@
   "timeline": [
     {
       "desc": {
-        "enUs": "FullStack Developer",
-        "ptBr": "Desenvolvedor Fullstack"
+        "enUs": "Full-Stack Developer",
+        "ptBr": "Desenvolvedor Full-Stack"
       },
-      "title": "NSD Tecnologia",
-      "from": "2026-04-10",
+      "highlights": {
+        "enUs": "Responsible for critical systems and modern feature development in the payment gateway market, working on application security and maintaining sensitive parts of the platform.",
+        "ptBr": "Responsável por sistemas críticos e desenvolvimento de funcionalidades modernas para o mercado de gateways de pagamento, atuando no escopo de segurança da aplicação e manutenção de partes sensíveis."
+      },
+      "title": "Bestfy",
+      "from": "2026-04-01T12:00:00",
       "to": null
     },
     {
       "desc": {
-        "enUs": "FullStack Developer",
-        "ptBr": "Desenvolver Fullstack"
+        "enUs": "Full-Stack Developer",
+        "ptBr": "Desenvolvedor Full-Stack"
+      },
+      "highlights": {
+        "enUs": "Fullstack Developer at the Pináculo Digital software house, working across many different project contexts and dealing with a wide range of technologies.",
+        "ptBr": "Desenvolvedor Fullstack da Software House Pináculo Digital, trabalhando em diversos contextos de projetos e lidando com as mais variadas tecnologias."
       },
       "title": "Pináculo Digital",
-      "from": "2024-09-22",
-      "to": "2026-03-31"
+      "from": "2024-09-01T12:00:00",
+      "to": "2026-03-31T12:00:00"
     },
     {
       "desc": {
-        "enUs":"Tech Lead",
-        "ptBr": "Tech Lead"
+        "enUs": "Backend Tech Lead",
+        "ptBr": "Tech Lead Backend"
+      },
+      "highlights": {
+        "enUs": "Leadership role at a junior enterprise development company, running code reviews, guiding the team on business rules and managing the Kanban workflow.",
+        "ptBr": "Cargo de liderança em uma empresa júnior de desenvolvimento, realizando code reviews, orientação em regras de negócio e fluxo Kanban."
       },
       "title": "Calang.io",
-      "from": "2025-02-22T14:21:36+00:00",
-      "to": "2025-12-22T14:21:36+00:00"
+      "from": "2025-03-01T12:00:00",
+      "to": "2025-12-01T12:00:00"
     },
     {
       "desc": {
-        "enUs": "FullStack Developer",
+        "enUs": "Trainee",
         "ptBr": "Trainee"
       },
+      "highlights": {
+        "enUs": "Focused on frontend development for modern web applications, building interfaces and integrating RESTful APIs.",
+        "ptBr": "Atuação focada no frontend de aplicações web modernas, construindo interfaces e integrando APIs REST."
+      },
       "title": "Pináculo Digital",
-      "from": "2024-06-22T14:21:36+00:00",
-      "to": "2024-09-22T14:21:36+00:00"
+      "from": "2024-06-01T12:00:00",
+      "to": "2024-09-01T12:00:00"
+    },
+    {
+      "desc": {
+        "enUs": "R&D Scholar (DTI)",
+        "ptBr": "Bolsista de P&D (DTI)"
+      },
+      "highlights": {
+        "enUs": "Scholarship supporting the university's IT and network infrastructure, taking care of Windows and Ubuntu workstations, VLAN setups and PowerShell automation.",
+        "ptBr": "Bolsista de apoio à infraestrutura de TI e redes da universidade, cuidando de estações Windows e Ubuntu, configuração de VLANs e automações com PowerShell."
+      },
+      "title": "Universidade Federal do Cariri",
+      "from": "2022-07-01T12:00:00",
+      "to": "2023-11-01T12:00:00"
     }
   ]
 }

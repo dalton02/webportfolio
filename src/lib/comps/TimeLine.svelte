@@ -9,6 +9,7 @@
     timeline: {
       title: string;
       desc: string;
+      highlights?: string;
       from: Date;
       to: Date | null;
     }[];
@@ -41,7 +42,7 @@
 </script>
 
 <ol class="relative flex flex-col gap-5 pl-6 border-l border-primary/25">
-  {#each sorted as job, i}
+  {#each sorted as job (job.title + job.from.getTime())}
     {@const isCurrent = job.to === null}
     <li class="relative">
       <span
@@ -89,6 +90,12 @@
           <span class="text-white/25">·</span>
           <span class="text-white/60">{duration(job.from, job.to)}</span>
         </div>
+
+        {#if job.highlights}
+          <p class="text-xs leading-relaxed text-white/50">
+            {job.highlights}
+          </p>
+        {/if}
       </div>
     </li>
   {/each}

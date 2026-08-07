@@ -113,6 +113,9 @@
           timeline={aboutJSON.timeline.map((obj) => {
             return {
               desc: new Text(obj.desc).value,
+              highlights: obj.highlights
+                ? new Text(obj.highlights).value
+                : undefined,
               from: new Date(obj.from),
               to: obj.to ? new Date(obj.to) : null,
               title: obj.title,
