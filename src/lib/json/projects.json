@@ -10,76 +10,65 @@
                 "ptBr": "Telemetria de Alta Vazão com OTP"
             },
             "desc": {
-                "ptBr": "Motor de estado em tempo real para telemetria industrial, projetado para absorver milhares de eventos concorrentes de sensores sem contenção no banco relacional.\n\nArquitetura em duas camadas com ETS como buffer transacional em memória e write-behind assíncrono para SQLite via GenServers supervisionados, garantindo ingestão não-bloqueante e dashboard reativo.\n\nValidado com chaos testing de 10.000 eventos concorrentes.",
-                "enUs": "Real-time state engine for industrial telemetry, designed to absorb thousands of concurrent sensor events without relational database contention.\n\nTwo-layer architecture with ETS as in-memory transactional buffer and asynchronous write-behind to SQLite via supervised GenServers, ensuring non-blocking ingestion and reactive dashboard.\n\nValidated with chaos testing of 10,000 concurrent events."
+                "ptBr": "Motor de telemetria em tempo real para edge computing industrial, que recebe eventos de heartbeat de milhares de sensores sem perder nenhum.\n\nO estado vive em duas camadas: um GenServer grava os eventos quentes em ETS no caminho crítico, enquanto um worker supervisionado faz upserts em lote (write-behind) no SQLite. Isso eliminou o lock de escrita que travava o desenho relacional antigo.\n\nA resiliência foi comprovada com um teste de integração que injeta 10.000 eventos concorrentes e confere a contagem exata, a ausência de condições de corrida e a sincronia da persistência. O dashboard em Phoenix LiveView avisa via PubSub no instante em que uma máquina falha.",
+                "enUs": "Real-time telemetry engine for industrial edge computing, ingesting heartbeat events from thousands of sensors without losing a single one.\n\nState lives in two layers: a GenServer writes hot events to ETS on the critical path, while a supervised worker performs batched write-behind upserts into SQLite. That removed the write-lock bottleneck of the old relational design.\n\nResilience was proven with an integration test that injects 10,000 concurrent events and asserts exact counts, no race conditions and correct persistence sync. The Phoenix LiveView dashboard pushes status changes over PubSub the instant a machine fails."
             },
             "url": "https://github.com/dalton02/real-time-state-engine",
             "image": "sensors.webp",
-            "tags": ["Elixir", "OTP", "ETS", "Phoenix LiveView", "SQLite"]
-        }, 
+            "tags": ["Elixir", "OTP", "ETS", "Phoenix LiveView", "PubSub", "SQLite"]
+        },
         {
             "title": {
                 "enUs": "SFU Media Server",
                 "ptBr": "Servidor de Mídia SFU"
             },
             "subtitle": {
-                "enUs": "WEBRTC Communication",
+                "enUs": "WebRTC Communication",
                 "ptBr": "Comunicação WebRTC"
             },
             "desc": {
-                "ptBr": "Arquiteturas WebRTC peer-to-peer não escalam além de poucos participantes por sala devido ao crescimento quadrático de conexões.\n\nImplementação from-scratch de um media-server com topologia Selective Forwarding Unit (SFU), centralizando o roteamento de streams e reduzindo a carga de upload por cliente.\n\nSuporte a simulcast com adaptação dinâmica de qualidade por consumidor, permitindo que cada participante receba a faixa ideal para sua conexão.",
-                "enUs": "WebRTC peer-to-peer architectures don't scale beyond a few participants per room due to quadratic connection growth.\n\nFrom-scratch implementation of a media-server with Selective Forwarding Unit (SFU) topology, centralizing stream routing and reducing client-side upload load.\n\nSimulcast support with dynamic quality adaptation per consumer, allowing each participant to receive the optimal track for their connection."
+                "ptBr": "Arquiteturas WebRTC peer-to-peer não escalam além de poucos participantes por sala, porque o número de conexões cresce de forma quadrática.\n\nConstruí do zero, em Go sobre a biblioteca Pion, um servidor de áudio e vídeo multiusuário com topologia Selective Forwarding Unit (SFU), que centraliza o roteamento das streams e economiza banda e processamento em relação a uma malha.\n\nCom suporte a simulcast, cada publicador envia várias codificações (480p/720p) e o servidor escolhe, para cada inscrito, a camada ideal para a conexão dele.",
+                "enUs": "Peer-to-peer WebRTC architectures don't scale beyond a few participants per room, because the number of connections grows quadratically.\n\nI built from scratch, in Go on top of Pion, a multi-party audio/video server with a Selective Forwarding Unit (SFU) topology that centralizes stream routing and saves bandwidth and compute compared to a mesh.\n\nWith simulcast support, each publisher sends several encodings (480p/720p) and the server picks, for every subscriber, the layer that best fits their connection."
             },
             "url": "https://github.com/dalton02/Selective-Forwarding-Unit",
             "image": "webrtc.webp",
-            "tags": ["Golang", "Pion", "WebRTC", "UDP"]
+            "tags": ["Golang", "Pion", "WebRTC", "Simulcast", "UDP"]
         },
 
         {
             "title": {
-                "enUs": "Event-Driven Booking Exercise",
-                "ptBr": "Exercício de Reservas Event-Driven"
+                "enUs": "High-Concurrency Seat Booking",
+                "ptBr": "Reservas sob Alta Concorrência"
             },
             "subtitle": {
                 "enUs": "Backend Concurrency Challenge",
                 "ptBr": "Desafio de Concorrência Backend"
             },
             "desc": {
-                  "ptBr": "Desafio backend focado em resolver race conditions e overselling em cenários de alta concorrência, onde milhares de usuários tentam reservar o mesmo assento simultaneamente.\n\nArquitetura multi-instância orientada a eventos com RabbitMQ para desacoplamento do fluxo de compra, Redis para visualização em tempo real dos assentos disponíveis, e locking distribuído para garantir consistência nas reservas concorrentes.",
-                  "enUs": "Backend challenge focused on solving race conditions and overselling in high-concurrency scenarios, where thousands of users try to reserve the same seat simultaneously.\n\nMulti-instance event-driven architecture with RabbitMQ decoupling the purchase flow, Redis for real-time seat availability visualization, and distributed locking to ensure consistency across concurrent reservations."
+                  "ptBr": "Desafio backend focado em resolver race conditions e overselling em cenários de alta concorrência, onde milhares de usuários tentam reservar o mesmo assento ao mesmo tempo.\n\nArquitetura multi-instância orientada a eventos com RabbitMQ para desacoplar o fluxo de compra, Redis para mostrar em tempo real os assentos disponíveis e locking distribuído para garantir consistência entre reservas concorrentes.",
+                  "enUs": "Backend challenge focused on solving race conditions and overselling under high concurrency, where thousands of users try to book the same seat at the same time.\n\nMulti-instance event-driven architecture with RabbitMQ decoupling the purchase flow, Redis for real-time seat availability, and distributed locking to keep concurrent reservations consistent."
             },
             "url": "https://github.com/dalton02/starsoft-backend-challenge",
             "image": "booking.webp",
-            "tags": [
-                "NestJS",
-                "PostgreSQL",
-                "Redis",
-                "RabbitMQ"
-            ]
+            "tags": ["NestJS", "PostgreSQL", "Redis", "RabbitMQ"]
         },
 
         {
             "title": {
-                "enUs": "UFCHAT - University Integrated Chatbot",
-                "ptBr": "UFCHAT - Chatbot Universitário Integrado"
+                "enUs": "UFCHAT - Academic RAG Assistant",
+                "ptBr": "UFCHAT - Assistente Acadêmico com RAG"
             },
             "subtitle": {
                 "enUs": "RAG Pipeline with Local LLM",
                 "ptBr": "Pipeline RAG com LLM Local"
             },
             "desc": {
-            "ptBr": "Chatbot universitário para dúvidas acadêmicas e institucionais, construído sobre uma stack 100% local para não expor documentos internos a APIs de terceiros.\n\nPipeline RAG com documentos processados e indexados em banco vetorial, recuperação por similaridade semântica e injeção de contexto em LLM executada via Ollama on-premise.\n\nElimina custos recorrentes de API e riscos de vazamento de dados sensíveis, mantendo respostas atualizadas conforme a base documental da instituição.",
-            "enUs": "University chatbot for academic and institutional questions, built on a fully local stack to avoid exposing internal documents to third-party APIs.\n\nRAG pipeline with documents processed and indexed in a vector database, retrieval by semantic similarity, and context injection into an LLM running via Ollama on-premise.\n\nEliminates recurring API costs and data leakage risks while keeping responses aligned with the institution's document base."
+                "ptBr": "Assistente para dúvidas acadêmicas da universidade, sobre cursos, disciplinas e semestres, construído sobre uma stack local para não expor documentos internos a APIs de terceiros.\n\nUm pipeline de ingestão processa os documentos institucionais, gera os embeddings e guarda os vetores no PostgreSQL com pgvector. Na consulta, a pergunta do usuário é vetorizada, os contextos mais próximos são recuperados por similaridade e injetados na LLM, que roda localmente via Ollama.\n\nO chat autenticado é entregue como aplicativo desktop com SvelteKit e Tauri, sem custo recorrente de API e sem risco de vazar dados sensíveis.",
+                "enUs": "Assistant for the university's academic questions, about courses, subjects and semesters, built on a local stack so internal documents never reach third-party APIs.\n\nAn ingestion pipeline parses the institutional documents, generates embeddings and stores the vectors in PostgreSQL with pgvector. At query time the user's question is embedded, the closest contexts are retrieved by similarity and injected into an LLM running locally via Ollama.\n\nThe authenticated chat ships as a desktop app built with SvelteKit and Tauri, with no recurring API costs and no risk of leaking sensitive data."
             },
-            "url": "",
+            "url": "https://github.com/dalton02/UFCA-ChatBot",
             "image": "ufchat.webp",
-            "tags": [
-                "Golang",
-                "Svelte",
-                "RAG",
-                "AI",
-                "Ollama"
-            ]
+            "tags": ["Golang", "PostgreSQL", "pgvector", "SvelteKit", "Tauri", "RAG", "Ollama"]
         }
     ]
 }

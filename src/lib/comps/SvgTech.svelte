@@ -1,21 +1,20 @@
-<script>
-  let { url, name } = $props();
+<script lang="ts">
+  let { url, name }: { url: string; name: string } = $props();
 
   const prefix = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/";
 </script>
 
-<div
-  class="group flex flex-col items-center justify-center gap-2 rounded-xl
-  border border-white/5 bg-secondary/40 px-2 py-3
-  text-sm tracking-tight text-egg/70 select-none
-  transition-all duration-300 ease-out
-  hover:-translate-y-0.5 hover:border-primary/30 hover:bg-secondary/80
-  hover:text-egg hover:shadow-[0_8px_20px_rgba(0,0,0,0.2)]"
+<li
+  class="group flex items-center gap-3 rounded-full border border-line bg-surface/60 py-1.5 pr-4 pl-1.5
+  text-[13px] text-dust transition-colors duration-300 select-none hover:border-clay/40 hover:text-sand"
 >
-  <img
-    src={prefix + url}
-    class="w-[40px] grayscale-[70%] transition-all duration-300 group-hover:grayscale-0 group-hover:scale-110"
-    alt={name}
-  />
+  <span class="grid h-7 w-7 place-items-center rounded-full bg-ink/80">
+    <img
+      src={prefix + url}
+      class="h-4 w-4 opacity-70 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+      alt=""
+      loading="lazy"
+    />
+  </span>
   {name}
-</div>
+</li>

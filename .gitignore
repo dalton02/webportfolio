@@ -20,6 +20,7 @@ Thumbs.db
 !.env.test
 
 *.pdf
+!static/*.pdf
 
 # Vite
 vite.config.js.timestamp-*

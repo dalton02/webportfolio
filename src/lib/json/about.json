@@ -8,144 +8,177 @@
     "ptBr": "Código que entrega. Sistemas que aguentam o tranco."
   },
   "paragraph": {
-    "ptBr": "Durante minha jornada, pude entregar uma variedade de produtos,\n    desde sistemas CRUD simples, CRM, WhiteLabel, passando por gateways de pagamento de alto volume, até serviços voltados para IA, processamento de pipelines RAG, integração de chatbots.\n    <br/>\n    Trabalhei com múltiplas tecnologias e cenários, enfrentando muitos desafios ao longo do caminho, me construindo\n    não apenas como um bom desenvolvedor, mas como alguém que sabe projetar o futuro da sua aplicação.",
-    "enUs": "The road so far, I have been able to provide a variety of products,\n    from simple CRUD systems, CRM, WhiteLabel, through high-volume payment gateways, to AI oriented services, like RAG pipeline processing, integrating chatbots.\n    <br/>\n    I've worked across multiple technologies and scenarios, facing many challenges along my way, building myself\n    not just as a good developer, but someone who can design and project the future of your application.\n"
+    "ptBr": "Sou engenheiro de software full-stack e há mais de dois anos coloco sistemas em produção com Node.js (NestJS), Go, React e PostgreSQL na AWS. Hoje estou na Bestfy, um gateway de pagamento que já processou mais de R$47 milhões em transações, onde entrego funcionalidades que o cliente usa todo dia, reforço a segurança da aplicação e cuido de performance sob carga real.<br/>Nos meus projetos pessoais eu gosto de ir mais fundo: construí do zero um servidor de mídia WebRTC em Go e um motor de telemetria em Elixir/OTP que aguenta milhares de sensores sem perder evento. É isso que me faz pensar não só em entregar a feature, mas em como ela vai se comportar quando o sistema crescer.",
+    "enUs": "I'm a full-stack software engineer who has spent the last two-plus years putting systems into production with Node.js (NestJS), Go, React and PostgreSQL on AWS. Today I'm at Bestfy, a payment gateway that has processed more than R$47M in transactions, where I ship features customers use every day, harden application security and take care of performance under real load.<br/>In my own projects I like to go deeper: I built a WebRTC media server in Go from scratch and an Elixir/OTP telemetry engine that handles thousands of sensors without losing an event. That's what makes me think not only about shipping the feature, but about how it will behave once the system grows."
   },
 
   "skills": [
     {
-        "desc": {
-          "enUs": "Building high-performance, scalable back-ends in Go. Mastering concurrency with goroutines, channels, and good coding patterns.",
-          "ptBr": "Construção de back-ends de alta performance e escaláveis em Go. Domínio de concorrência com goroutines, channels e bons padrões de código."
-        },
-        "title": {
-        "enUs": "Concurrent Systems",
-        "ptBr": "Sistemas escaláveis e concorrentes"    
+      "title": {
+        "enUs": "Production back-ends",
+        "ptBr": "Back-end em produção"
       },
-      "icon":"https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/go/go-original-wordmark.svg"    
+      "desc": {
+        "enUs": "APIs in NestJS and Go on top of PostgreSQL, Redis and AWS. I care about what happens after the deploy: I once took a production search from 9s down to 1.2s, and I keep errors visible with Sentry, Grafana and Prometheus.",
+        "ptBr": "APIs em NestJS e Go sobre PostgreSQL, Redis e AWS. Me importo com o que acontece depois do deploy: já levei uma busca em produção de 9s para 1,2s e mantenho os erros visíveis com Sentry, Grafana e Prometheus."
+      },
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nestjs/nestjs-original.svg"
     },
     {
-        "desc": {
-        "enUs": "Full-stack development using the JavaScript ecosystem, framework-agnostic and focused on scalable, maintainable solutions.",
-        "ptBr": "Desenvolvimento full-stack com o ecossistema JavaScript, agnóstico a frameworks e focado em soluções escaláveis e de fácil manutenção."
-        },
-        "title": {
-        "enUs": "JavaScript Ecosystem",
-        "ptBr": "Ecossistema JavaScript"
-        },
-        "icon":"https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
-
+      "title": {
+        "enUs": "Payments & security",
+        "ptBr": "Pagamentos & segurança"
+      },
+      "desc": {
+        "enUs": "Checkout flows that move real money. I implemented 3D Secure (3DS2) on a public checkout, designed Redis sessions for horizontally scaled instances, and added CSRF protection, secure cookies and Cloudflare Turnstile against bots.",
+        "ptBr": "Fluxos de checkout que movimentam dinheiro de verdade. Implementei 3D Secure (3DS2) em um checkout público, desenhei sessões em Redis para instâncias escaladas horizontalmente e adicionei proteção CSRF, cookies seguros e Cloudflare Turnstile contra bots."
+      },
+      "icon": "lock"
     },
     {
-        "desc": {
-        "enUs": "Low-level real-time systems: a WebRTC SFU with simulcast in Go, and event-driven telemetry with Elixir/OTP, ETS and Phoenix LiveView.",
-        "ptBr": "Sistemas em tempo real de baixo nível: um SFU WebRTC com simulcast em Go e telemetria orientada a eventos com Elixir/OTP, ETS e Phoenix LiveView."
-        },
-        "title": {
-        "enUs": "Real-Time Systems",
-        "ptBr": "Sistemas em tempo real"
-        },
-        "icon":"https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/elixir/elixir-original.svg"
+      "title": {
+        "enUs": "Real-time & concurrency",
+        "ptBr": "Tempo real & concorrência"
+      },
+      "desc": {
+        "enUs": "Low-level systems where timing matters: a WebRTC SFU with per-subscriber simulcast in Go, and event-driven telemetry with Elixir/OTP, ETS and Phoenix LiveView.",
+        "ptBr": "Sistemas de baixo nível em que o tempo importa: um SFU WebRTC com simulcast por inscrito em Go e telemetria orientada a eventos com Elixir/OTP, ETS e Phoenix LiveView."
+      },
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/go/go-original-wordmark.svg"
     }
-    ],
-    "techs":[
-      { "url": "typescript/typescript-original.svg", "name": "Typescript" },
-      { "url": "go/go-original-wordmark.svg", "name": "Golang" },
-      { "url": "python/python-original.svg", "name": "Python" },
-      { "url": "java/java-original.svg", "name": "Java" },
-      { "url": "csharp/csharp-original.svg", "name": "C#" },
-      { "url": "postgresql/postgresql-original.svg", "name": "PostgreSQL" },
-      { "url": "redis/redis-original.svg", "name": "Redis" },
-      { "url": "mongodb/mongodb-original.svg", "name": "MongoDB" },
-      { "url": "rabbitmq/rabbitmq-original.svg", "name": "RabbitMQ" },
-      { "url": "apachekafka/apachekafka-original.svg", "name": "Kafka" },
-      { "url": "react/react-original.svg", "name": "React" },
-      { "url": "tailwindcss/tailwindcss-original.svg", "name": "Tailwind" },
-      { "url": "docker/docker-original.svg", "name": "Docker" },
-      { "url": "nginx/nginx-original.svg", "name": "Nginx" },
-      { "url": "linux/linux-original.svg", "name": "Linux" },
-      { "url": "amazonwebservices/amazonwebservices-plain-wordmark.svg", "name": "AWS" },
-      { "url": "elixir/elixir-original.svg", "name": "Elixir" },
-      { "url": "phoenix/phoenix-original.svg", "name": "Phoenix" },
-      { "url": "sqlite/sqlite-original.svg", "name": "SQLite" }
   ],
-    "education": [{
-    "desc": {
-      "enUs": "Juazeiro do Norte - CE",
-      "ptBr": "Juazeiro do Norte - CE"
+  "techs": [
+    { "url": "typescript/typescript-original.svg", "name": "TypeScript" },
+    { "url": "nodejs/nodejs-original.svg", "name": "Node.js" },
+    { "url": "nestjs/nestjs-original.svg", "name": "NestJS" },
+    { "url": "go/go-original-wordmark.svg", "name": "Go" },
+    { "url": "elixir/elixir-original.svg", "name": "Elixir" },
+    { "url": "phoenix/phoenix-original.svg", "name": "Phoenix" },
+    { "url": "react/react-original.svg", "name": "React" },
+    { "url": "svelte/svelte-original.svg", "name": "SvelteKit" },
+    { "url": "tauri/tauri-original.svg", "name": "Tauri" },
+    { "url": "postgresql/postgresql-original.svg", "name": "PostgreSQL" },
+    { "url": "redis/redis-original.svg", "name": "Redis" },
+    { "url": "sqlite/sqlite-original.svg", "name": "SQLite" },
+    { "url": "prisma/prisma-original.svg", "name": "Prisma" },
+    { "url": "rabbitmq/rabbitmq-original.svg", "name": "RabbitMQ" },
+    { "url": "amazonwebservices/amazonwebservices-plain-wordmark.svg", "name": "AWS" },
+    { "url": "docker/docker-original.svg", "name": "Docker" },
+    { "url": "cloudflare/cloudflare-original.svg", "name": "Cloudflare" },
+    { "url": "linux/linux-original.svg", "name": "Linux" },
+    { "url": "git/git-original.svg", "name": "Git" },
+    { "url": "jest/jest-plain.svg", "name": "Jest" },
+    { "url": "cypressio/cypressio-original.svg", "name": "Cypress" },
+    { "url": "sentry/sentry-original.svg", "name": "Sentry" },
+    { "url": "grafana/grafana-original.svg", "name": "Grafana" },
+    { "url": "prometheus/prometheus-original.svg", "name": "Prometheus" },
+    { "url": "python/python-original.svg", "name": "Python" },
+    { "url": "cplusplus/cplusplus-original.svg", "name": "C++" }
+  ],
+  "education": [
+    {
+      "title": {
+        "enUs": "Federal University of Cariri (UFCA)",
+        "ptBr": "Universidade Federal do Cariri (UFCA)"
+      },
+      "subtitle": {
+        "enUs": "Bachelor of Science in Computer Science",
+        "ptBr": "Bacharelado em Ciência da Computação"
+      },
+      "desc": {
+        "enUs": "2021 – 2026 · Juazeiro do Norte, CE",
+        "ptBr": "2021 – 2026 · Juazeiro do Norte, CE"
+      }
     },
-    "title": {
-      "enUs": "Federal University Of Cariri",
-      "ptBr": "Universidade Federal do Cariri"
-    },
-    "subtitle": {
-      "enUs": "Major in Computer Science",
-      "ptBr": "Graduação em Ciência da Computação"
+    {
+      "title": {
+        "enUs": "E.E.E.P Maria Violeta Arraes de Alencar Gervaiseau",
+        "ptBr": "E.E.E.P Maria Violeta Arraes de Alencar Gervaiseau"
+      },
+      "subtitle": {
+        "enUs": "Technical Degree in Computer Networks",
+        "ptBr": "Técnico em Redes de Computadores"
+      },
+      "desc": {
+        "enUs": "2018 – 2021 · Ceará",
+        "ptBr": "2018 – 2021 · Ceará"
+      }
     }
-  }],
+  ],
+  "languages": {
+    "enUs": "Portuguese (native) · English (professional working proficiency)",
+    "ptBr": "Português (nativo) · Inglês (proficiência profissional)"
+  },
   "timeline": [
     {
+      "title": "Bestfy",
       "desc": {
         "enUs": "Full-Stack Developer",
         "ptBr": "Desenvolvedor Full-Stack"
       },
-      "highlights": {
-        "enUs": "Responsible for critical systems and modern feature development in the payment gateway market, working on application security and maintaining sensitive parts of the platform.",
-        "ptBr": "Responsável por sistemas críticos e desenvolvimento de funcionalidades modernas para o mercado de gateways de pagamento, atuando no escopo de segurança da aplicação e manutenção de partes sensíveis."
+      "location": {
+        "enUs": "Balneário Camboriú, SC",
+        "ptBr": "Balneário Camboriú, SC"
       },
-      "title": "Bestfy",
+      "highlights": {
+        "enUs": "I work on a payment gateway that has processed more than R$47M in transactions. I delivered core parts of the Checkout, which lets merchants sell straight from a public link and is now one of the platform's main revenue drivers, along with order bump and abandoned-cart recovery. I also brought 3D Secure (3DS2) to the public checkout, designed the Redis session layer that runs across multiple instances, and hardened the application's security.",
+        "ptBr": "Trabalho em um gateway de pagamento que já processou mais de R$47 milhões em transações. Entreguei partes centrais do Checkout, que permite ao lojista vender direto por um link público e hoje é uma das principais fontes de receita da plataforma, além do order bump e da recuperação de carrinho abandonado. Também levei o 3D Secure (3DS2) para o checkout público, desenhei a camada de sessões em Redis que roda entre várias instâncias e reforcei a segurança da aplicação."
+      },
       "from": "2026-04-01T12:00:00",
       "to": null
     },
     {
+      "title": "Pináculo Digital",
       "desc": {
         "enUs": "Full-Stack Developer",
         "ptBr": "Desenvolvedor Full-Stack"
       },
-      "highlights": {
-        "enUs": "Fullstack Developer at the Pináculo Digital software house, working across many different project contexts and dealing with a wide range of technologies.",
-        "ptBr": "Desenvolvedor Fullstack da Software House Pináculo Digital, trabalhando em diversos contextos de projetos e lidando com as mais variadas tecnologias."
+      "note": {
+        "enUs": "Promoted from Trainee in Sep 2024",
+        "ptBr": "Promovido de Trainee em set/2024"
       },
-      "title": "Pináculo Digital",
-      "from": "2024-09-01T12:00:00",
-      "to": "2026-03-31T12:00:00"
+      "location": {
+        "enUs": "Fortaleza, CE",
+        "ptBr": "Fortaleza, CE"
+      },
+      "highlights": {
+        "enUs": "I joined as a front-end trainee and was promoted to full-stack three months later. I built web applications with NestJS, React, SvelteKit and Go, took part in architecture decisions and led code reviews. The result I'm proudest of: using Grafana and Prometheus metrics to find the bottleneck, I cut a production search from 9s to 1.2s with indexing and query analysis.",
+        "ptBr": "Entrei como trainee de front-end e fui promovido a full-stack três meses depois. Construí aplicações web com NestJS, React, SvelteKit e Go, participei das decisões de arquitetura e liderei code reviews. O resultado de que mais me orgulho: guiado pelas métricas do Grafana e do Prometheus, levei uma busca em produção de 9s para 1,2s com indexação e análise de queries."
+      },
+      "from": "2024-06-01T12:00:00",
+      "to": "2026-04-01T12:00:00"
     },
     {
+      "title": "Calang.io",
       "desc": {
         "enUs": "Backend Tech Lead",
         "ptBr": "Tech Lead Backend"
       },
-      "highlights": {
-        "enUs": "Leadership role at a junior enterprise development company, running code reviews, guiding the team on business rules and managing the Kanban workflow.",
-        "ptBr": "Cargo de liderança em uma empresa júnior de desenvolvimento, realizando code reviews, orientação em regras de negócio e fluxo Kanban."
+      "location": {
+        "enUs": "Juazeiro do Norte, CE",
+        "ptBr": "Juazeiro do Norte, CE"
       },
-      "title": "Calang.io",
+      "highlights": {
+        "enUs": "Alongside my job at Pináculo, I led the back-end team of a student-run software company, running code reviews, helping the team turn business rules into code and organizing the work on a Kanban board.",
+        "ptBr": "Em paralelo ao trabalho na Pináculo, liderei o time de back-end de uma empresa júnior de desenvolvimento, conduzindo code reviews, ajudando o time a transformar regras de negócio em código e organizando as demandas no Kanban."
+      },
       "from": "2025-03-01T12:00:00",
       "to": "2025-12-01T12:00:00"
     },
     {
-      "desc": {
-        "enUs": "Trainee",
-        "ptBr": "Trainee"
-      },
-      "highlights": {
-        "enUs": "Focused on frontend development for modern web applications, building interfaces and integrating RESTful APIs.",
-        "ptBr": "Atuação focada no frontend de aplicações web modernas, construindo interfaces e integrando APIs REST."
-      },
-      "title": "Pináculo Digital",
-      "from": "2024-06-01T12:00:00",
-      "to": "2024-09-01T12:00:00"
-    },
-    {
+      "title": "Universidade Federal do Cariri",
       "desc": {
         "enUs": "R&D Scholar (DTI)",
         "ptBr": "Bolsista de P&D (DTI)"
+      },
+      "location": {
+        "enUs": "Juazeiro do Norte, CE",
+        "ptBr": "Juazeiro do Norte, CE"
       },
       "highlights": {
         "enUs": "Scholarship supporting the university's IT and network infrastructure, taking care of Windows and Ubuntu workstations, VLAN setups and PowerShell automation.",
         "ptBr": "Bolsista de apoio à infraestrutura de TI e redes da universidade, cuidando de estações Windows e Ubuntu, configuração de VLANs e automações com PowerShell."
       },
-      "title": "Universidade Federal do Cariri",
       "from": "2022-07-01T12:00:00",
       "to": "2023-11-01T12:00:00"
     }

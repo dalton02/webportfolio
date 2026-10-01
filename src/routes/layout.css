@@ -2,18 +2,78 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
-body {
-  font-family: "Roboto", sans-serif;
-  font-optical-sizing: auto;
-  overflow: hidden;
+@theme {
+  --color-ink: #121014;
+  --color-surface: #1a171d;
+  --color-line: #2a2530;
+  --color-sand: #efe4d6;
+  --color-dust: #9a8f8a;
+  --color-clay: #e8744a;
+  --color-sun: #f2c57c;
+
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@theme {
-  --color-background: #25262a;
-  --color-secondary: #2d2e32;
-  --color-terciary: #4f5a61;
-  --color-primary: #8cc7c4;
-  --color-egg: #f0ead6;
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    scrollbar-color: var(--color-line) transparent;
+    scrollbar-width: thin;
+  }
 
-  --font-cursive: "Raleway";
+  body {
+    @apply bg-ink font-sans text-sand antialiased;
+    font-optical-sizing: auto;
+    /* safety net: decorative bits (glows, outlined numbers) must never cause sideways scroll */
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-clay) 32%, transparent);
+    color: var(--color-sand);
+  }
+
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-clay);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@utility font-soft {
+  font-variation-settings: "SOFT" 100, "opsz" 144;
+}
+
+/* scroll reveal — see $lib/utils/reveal.ts */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.9s var(--ease-soft),
+    transform 0.9s var(--ease-soft);
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+[data-reveal="in"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

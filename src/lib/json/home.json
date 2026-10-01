@@ -2,9 +2,10 @@
   "presentation": {
     "enUs": "Dont hold your idea.<br /> Talk to me.",
     "ptBr": "Não fique apenas com a ideia em mente.<br /> Entre em contato."
-  }, 
+  },
   "doing": {
-    "enUs": "Your project in the right hands",
-    "ptBr": "Seu projeto tem o meu zelo"
-  }
-} 
+    "enUs": "I build production back-ends with NestJS, PostgreSQL and AWS and real-time systems in Go and Elixir.",
+    "ptBr": "Construo back-ends em produção com NestJS, PostgreSQL e AWS e sistemas em tempo real com Go e Elixir."
+  },
+  "stack": "NestJS · Go · React · AWS"
+}

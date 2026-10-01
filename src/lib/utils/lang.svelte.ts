@@ -17,16 +17,36 @@ class Language {
     }
   });
 
+  /** Picks the initial language: the visitor's saved choice, else Portuguese only for pt browsers. */
   set() {
-    const userLanguage = navigator.language;
-    console.log(userLanguage);
-    const isEnglish = userLanguage.startsWith("en");
-    if (isEnglish) {
-      this.value = "enUs";
+    const saved = readSaved();
+    if (saved) {
+      this.value = saved;
       return;
     }
 
-    this.value = "ptBr";
+    this.value = navigator.language.toLowerCase().startsWith("pt") ? "ptBr" : "enUs";
+  }
+
+  /** Manual switch from the header; remembered for the next visit. */
+  toggle() {
+    this.value = this.value === "ptBr" ? "enUs" : "ptBr";
+    try {
+      localStorage.setItem(STORAGE_KEY, this.value);
+    } catch {
+      // storage blocked (private mode etc.): the switch still works for this visit
+    }
+  }
+}
+
+const STORAGE_KEY = "lang";
+
+function readSaved(): keyof TextType | null {
+  try {
+    const v = localStorage.getItem(STORAGE_KEY);
+    return v === "ptBr" || v === "enUs" ? v : null;
+  } catch {
+    return null;
   }
 }
 

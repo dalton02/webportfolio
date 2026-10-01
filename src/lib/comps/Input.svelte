@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ZodRawShape, ZodTypeAny } from "zod";
+  import type { ZodTypeAny } from "zod";
 
   let {
     value = $bindable(),
@@ -15,56 +15,40 @@
     kind?: "input" | "textarea";
   } = $props();
 
-  let error = $state("");
+  const id = $props.id();
 
-  $effect(() => {
-    if (value) {
-      validate();
-    }
+  let error = $derived.by(() => {
+    if (!value) return "";
+    const v = validation.safeParse(value);
+    return v.success ? "" : (v.error.issues[0]?.message ?? "");
   });
 
-  function validate() {
-    const v = validation.safeParse(value);
-    if (!v.success) {
-      error = JSON.parse(v.error.message)[0].message;
-    } else {
-      error = "";
-    }
-  }
+  const field = `peer w-full rounded-xl border bg-ink/60 px-4 py-3 text-[15px] text-sand outline-none
+    placeholder:text-dust/60 transition-[border-color,box-shadow] duration-300
+    focus:ring-4 focus:ring-clay/10`;
 </script>
 
-<div class="relative space-y-2.5 w-full">
-  <label
-    class="flex items-center gap-2 text-sm leading-none font-medium
-    select-none group-data-[disabled=true]:pointer-events-none
-    group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50"
-    for="name">{label}</label
-  >
+<div class="relative flex w-full flex-col gap-2">
+  <label for={id} class="font-mono text-[11px] tracking-[0.14em] text-dust uppercase">{label}</label>
   {#if kind === "input"}
     <input
+      {id}
       type="text"
-      class="bg-secondary flex h-10 w-full min-w-0 rounded-md border border-white/15 px-3 py-1 text-sm shadow-xs
-    transition-[color,box-shadow] outline-none placeholder:text-neutral-400 disabled:pointer-events-none
-    disabled:cursor-not-allowed disabled:opacity-50 md:text-base focus-visible:border-neutral-600
-    focus-visible:ring-[3px] focus-visible:ring-neutral-600/55 aria-invalid:ring-red-700"
+      class="{field} {error ? 'border-clay/70' : 'border-line focus:border-clay/60'}"
       {placeholder}
       name={label}
+      aria-invalid={!!error}
       bind:value
     />
   {:else}
     <textarea
-      class="bg-secondary flex h-10 w-full min-w-0 rounded-md border border-white/15 px-3 py-1 pt-2.5 text-sm shadow-xs
-    transition-[color,box-shadow] outline-none placeholder:text-neutral-400 disabled:pointer-events-none
-    disabled:cursor-not-allowed disabled:opacity-50 md:text-base focus-visible:border-neutral-600
-    focus-visible:ring-[3px] focus-visible:ring-neutral-600/55 aria-invalid:ring-red-700 min-h-[150px]"
+      {id}
+      class="{field} min-h-[150px] resize-y {error ? 'border-clay/70' : 'border-line focus:border-clay/60'}"
       {placeholder}
       name={label}
+      aria-invalid={!!error}
       bind:value
     ></textarea>
   {/if}
-  {#if error}
-    <span class="text-red-500 text-xs leading-none absolute h-0 bottom-[3px]">
-      {error}
-    </span>
-  {/if}
+  <span class="h-3 text-[12px] leading-none text-clay" aria-live="polite">{error}</span>
 </div>
