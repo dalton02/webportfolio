@@ -2,6 +2,23 @@
     "projects":[
         {
             "title": {
+                "enUs": "Diligens - AI Assistant for ERPs",
+                "ptBr": "Diligens - Assistente de IA para ERPs"
+            },
+            "subtitle": {
+                "enUs": "AI SaaS in Production",
+                "ptBr": "SaaS de IA em Produção"
+            },
+            "desc": {
+                "ptBr": "SaaS que coloca um assistente de IA dentro de ERPs e sistemas financeiros. O cliente envia a documentação da API dele e o chat passa a consultar pedidos e contas a pagar e receber, e a executar ações no próprio sistema, em linguagem natural.\n\nA API em Go (Gin) usa PostgreSQL, Redis e LLMs via Ollama. O roteamento das perguntas é medido por um eval de acurácia, a cobrança é pré-paga por créditos (Pix e boleto) e um cron gera insights das vendas.\n\nO painel é uma SPA em SvelteKit, com a landing e a documentação pública pré-renderizadas na Cloudflare. O widget do chat é um SDK em Svelte isolado em shadow DOM, que o cliente embute no site com uma linha de script.",
+                "enUs": "SaaS that puts an AI assistant inside ERPs and financial systems. The customer uploads their API documentation and the chat starts querying orders and accounts payable and receivable, and running actions in their own system, in plain language.\n\nThe Go (Gin) API runs on PostgreSQL, Redis and LLMs via Ollama. Question routing is measured by an accuracy eval, billing is prepaid with credits (Pix and boleto) and a cron job generates sales insights.\n\nThe dashboard is a SvelteKit SPA, with the landing page and public docs prerendered on Cloudflare. The chat widget is a Svelte SDK isolated in a shadow DOM that customers embed on their site with a single script tag."
+            },
+            "url": "https://app.diligensai.com.br/",
+            "image": "diligens.webp",
+            "tags": ["Golang", "Gin", "PostgreSQL", "Redis", "Ollama", "SvelteKit", "Cloudflare"]
+        },
+        {
+            "title": {
                 "enUs": "W-Core - Real-Time State Engine",
                 "ptBr": "W-Core - Motor de Estado em Tempo Real"
             },

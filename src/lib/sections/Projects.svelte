@@ -11,6 +11,7 @@
     heading: new Text(ui.projects.heading),
     kicker: new Text(ui.projects.kicker),
     view: new Text(ui.projects.view),
+    visit: new Text(ui.projects.visit),
     private: new Text(ui.projects.private),
   };
 
@@ -19,6 +20,7 @@
     subtitle: new Text(p.subtitle),
     desc: new Text(p.desc),
     url: p.url,
+    isRepo: p.url.includes("github.com"),
     image: p.image,
     tags: p.tags,
   }));
@@ -31,6 +33,7 @@
     <div class="flex flex-col gap-28 sm:gap-36">
       {#each projects as p, i (p.image)}
         {@const flip = i % 2 === 1}
+        {@const linkLabel = p.isRepo ? t.view.value : t.visit.value}
         <article class="group grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
           <div class="relative lg:col-span-7 {flip ? 'lg:order-2' : ''}" use:reveal>
             <span
@@ -46,7 +49,7 @@
               href={p.url || undefined}
               target={p.url ? "_blank" : undefined}
               rel={p.url ? "noopener noreferrer" : undefined}
-              aria-label={p.url ? `${t.view.value}: ${p.title.value}` : undefined}
+              aria-label={p.url ? `${linkLabel}: ${p.title.value}` : undefined}
               class="relative block aspect-[16/10] overflow-hidden rounded-2xl border border-line bg-surface
               transition-[border-color,box-shadow] duration-700 group-hover:border-clay/40 group-hover:shadow-[0_30px_80px_-30px_rgb(232_116_74/0.35)]"
             >
@@ -91,8 +94,8 @@
                   rel="noopener noreferrer"
                   class="link inline-flex items-center gap-2 pb-1 text-[14px] font-medium text-sand transition-colors duration-300 hover:text-clay"
                 >
-                  <Icon name="github" class="h-4 w-4" />
-                  {t.view.value}
+                  <Icon name={p.isRepo ? "github" : "globe"} class="h-4 w-4" />
+                  {linkLabel}
                   <Icon name="arrow" class="h-3.5 w-3.5" />
                 </a>
               {:else}

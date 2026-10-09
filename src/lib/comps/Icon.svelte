@@ -1,5 +1,5 @@
 <script lang="ts">
-  type Name = "github" | "linkedin" | "whatsapp" | "mail" | "arrow" | "arrowUp" | "copy" | "check" | "lock" | "download";
+  type Name = "github" | "linkedin" | "whatsapp" | "mail" | "arrow" | "arrowUp" | "copy" | "check" | "lock" | "download" | "globe";
 
   let { name, class: css = "h-4 w-4" }: { name: Name; class?: string } = $props();
 
@@ -19,6 +19,7 @@
     copy: ["M10 8h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z", "M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2"],
     check: ["M20 6 9 17l-5-5"],
     download: ["M12 15V3", "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", "m7 10 5 5 5-5"],
+    globe: ["M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20z", "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20", "M2 12h20"],
     lock: ["M5 11h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z", "M7 11V7a5 5 0 0 1 10 0v4"],
   };
 </script>

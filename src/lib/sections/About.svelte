@@ -23,7 +23,13 @@
     paragraph.value
       .split(/<br\s*\/?>/)
       .map((p) => p.replace(/\s+/g, " ").trim())
-      .filter(Boolean),
+      .filter(Boolean)
+      .map((p) =>
+        p.split(/(\[[^\]]+\]\([^)]+\))/).map((part) => {
+          const link = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+          return link ? { text: link[1], href: link[2] } : { text: part };
+        }),
+      ),
   );
 
   const skills = aboutJSON.skills.map((s) => ({ title: new Text(s.title), desc: new Text(s.desc), icon: s.icon }));
@@ -64,7 +70,21 @@
 
       <div class="flex flex-col gap-6 text-[17px] leading-[1.75] text-dust lg:col-span-7" use:reveal={1}>
         {#each paragraphs as p, i (i)}
-          <p class={i === 0 ? "text-sand/90" : ""}>{p}</p>
+          <p class={i === 0 ? "text-sand/90" : ""}>
+            {#each p as part, j (j)}
+              {#if part.href}
+                <a
+                  href={part.href}
+                  target="_blank"
+                  rel="noopener"
+                  class="text-sand underline decoration-clay/60 underline-offset-4 transition-colors duration-300 hover:text-clay"
+                  >{part.text}</a
+                >
+              {:else}
+                {part.text}
+              {/if}
+            {/each}
+          </p>
         {/each}
       </div>
     </div>
