@@ -1,0 +1,209 @@
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{cmap}            % improves PDF text extraction
+\usepackage{tabularx}
+\usepackage{xcolor}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Margins
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.6in}
+\addtolength{\textwidth}{1.2in}
+\addtolength{\topmargin}{-0.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Section headings: plain text, standard names, no decoration beyond a rule.
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure generated PDF has a proper glyph-to-unicode map (ATS-critical).
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+%-------------------------------------------------------------------------------
+% Custom commands
+%-------------------------------------------------------------------------------
+\newcommand{\resumeItem}[1]{
+  \item\small{#1\vspace{-2pt}}
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \small #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & \small #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%===============================================================================
+\begin{document}
+
+%----------- HEADING -----------
+% Plain text, no tabular: guarantees clean top-to-bottom extraction order.
+\begin{center}
+    {\Huge Dalton Gomes Lobato} \\ \vspace{4pt}
+    \small Backend / Full-Stack Software Engineer $|$ Node.js (NestJS) $\cdot$ Go (Golang) $\cdot$ Elixir $\cdot$ PostgreSQL $\cdot$ AWS \\ \vspace{4pt}
+    \small
+    +55 88 99744-6106 $|$
+    \href{mailto:daltongomeslobato@gmail.com}{daltongomeslobato@gmail.com} $|$
+    \href{https://www.linkedin.com/in/dalton-gomes}{linkedin.com/in/dalton-gomes} \\ \vspace{2pt}
+    \small
+    \href{https://github.com/dalton02}{github.com/dalton02} $|$
+    \href{https://dalton02.github.io/webportfolio/}{dalton02.github.io/webportfolio}
+\end{center}
+\vspace{-6pt}
+
+%----------- SUMMARY -----------
+\section{Summary}
+\vspace{2pt}
+\small{
+Backend/full-stack software engineer with 2+ years building payment systems. At Bestfy, a payment
+gateway that has processed R\$47M+, I build checkout, 3DS2, distributed sessions and job queues on
+NestJS, PostgreSQL and AWS. Founder and sole engineer of \textbf{DiligensAI}, an AI SaaS written in
+\textbf{Go} with an LLM agent and tool calling. I also build concurrent systems in
+\textbf{Elixir/OTP} and real-time media with WebRTC.
+}
+
+%----------- EXPERIENCE -----------
+\section{Experience}
+\resumeSubHeadingListStart
+
+  \resumeSubheading
+    {Bestfy --- Payment Gateway (Fintech)}{Apr 2026 -- Present}
+    {Full-Stack Developer}{Balneário Camboriú, SC, Brazil}
+    \resumeItemListStart
+      \resumeItem{Delivered core parts of the public \textbf{Checkout} and the \textbf{order bump}, now one
+        of the platform's primary revenue drivers.}
+      \resumeItem{Built \textbf{abandoned-cart recovery} on a real-time session that alerts the merchant
+        when a buyer drops off.}
+      \resumeItem{Implemented \textbf{3D Secure (3DS2)} with backend-enforced validation, reducing fraud
+        and chargeback risk.}
+      \resumeItem{Moved emails and pixel events off the request path into \textbf{BullMQ queues} with
+        idempotent retries.}
+      \resumeItem{Designed \textbf{Redis} sessions shared across horizontally scaled instances, solved
+        concurrency with \textbf{PostgreSQL} advisory locks, and cut up to \textbf{2--3s} from critical
+        queries.}
+      \resumeItem{Security and quality: \textbf{CSRF}, HttpOnly/SameSite cookies, Turnstile, \textbf{Jest}
+        and \textbf{Cypress} (E2E) tests, \textbf{Sentry}.}
+    \resumeItemListEnd
+
+  \resumeSubheading
+    {Pináculo Digital}{Jun 2024 -- Apr 2026}
+    {Full-Stack Developer (promoted from Trainee, Sep 2024)}{Fortaleza, CE, Brazil}
+    \resumeItemListStart
+      \resumeItem{Built video calling for an internal communication platform: an \textbf{SFU} in
+        \textbf{Go} (Pion), \textbf{WebSocket} signaling and per-subscriber \textbf{simulcast}, replacing
+        a P2P mesh that degraded beyond 3 participants.}
+      \resumeItem{Cut a production search query from \textbf{9s to 1.2s} via \textbf{indexing} and
+        query-plan analysis, guided by \textbf{Grafana}/\textbf{Prometheus}.}
+      \resumeItem{Shipped \textbf{NestJS}, \textbf{React} and \textbf{SvelteKit} apps with Prisma plus a
+        \textbf{web-scraping microservice}; \textbf{led code reviews}.}
+    \resumeItemListEnd
+
+  \resumeSubheading
+    {Calang.io --- Junior Enterprise (student-run software company)}{Mar 2025 -- Dec 2025}
+    {Backend Tech Lead (concurrent with the role above)}{Juazeiro do Norte, CE, Brazil}
+    \resumeItemListStart
+      \resumeItem{Led a junior development team with regular \textbf{code reviews} and a \textbf{Kanban}
+        workflow.}
+    \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%----------- PROJECTS -----------
+\section{Projects}
+\resumeSubHeadingListStart
+
+  \resumeProjectHeading
+    {\textbf{DiligensAI} $|$ \emph{Go, PostgreSQL, Redis, RabbitMQ, SvelteKit, LLM}
+      $|$ \href{https://app.diligensai.com.br}{app.diligensai.com.br}}{2026}
+    \resumeItemListStart
+      \resumeItem{AI assistant SaaS (beta) built solo from infra to SDK: \textbf{Go} API, \textbf{RabbitMQ}
+        worker with DLQ, Svelte admin panel and embeddable SDK.}
+      \resumeItem{\textbf{LLM agent} with \textbf{tool calling} generated from the client's OpenAPI docs; router
+        hits \textbf{97\% accuracy} on evals.}
+      \resumeItem{PII encrypted with \textbf{AES-256-GCM} (LGPD), \textbf{blue/green} deploys via GitHub
+        Actions, OpenTelemetry, 335 Go tests.}
+    \resumeItemListEnd
+
+  \resumeProjectHeading
+    {\textbf{W-Core} --- Real-Time State Engine $|$ \emph{Elixir, OTP, ETS, Phoenix LiveView, SQLite}}{2026}
+    \resumeItemListStart
+      \resumeItem{Industrial telemetry: a \textbf{GenServer} writes to \textbf{ETS} while a supervised
+        worker does batched \textbf{write-behind} into SQLite.}
+      \resumeItem{Tested with \textbf{10,000 concurrent events}, no event loss and no race conditions.}
+    \resumeItemListEnd
+
+  \resumeProjectHeading
+    {\textbf{Academic RAG Assistant} $|$ \emph{Go, pgvector, embeddings, SvelteKit}
+      $|$ \href{https://github.com/dalton02/UFCA-ChatBot}{dalton02/UFCA-ChatBot}}{2026}
+
+\resumeSubHeadingListEnd
+
+%----------- SKILLS -----------
+\section{Technical Skills}
+\vspace{2pt}
+\begin{itemize}[leftmargin=0.15in, label={}]
+  \small{\item{
+    \textbf{Languages:} TypeScript, JavaScript, Go (Golang), Elixir, SQL \quad
+      \textbf{Frontend:} React, SvelteKit, Tailwind CSS \\
+    \textbf{Backend:} Node.js, NestJS, Express, Gin, REST, WebSockets, SSE, WebRTC, Microservices, OAuth2 \\
+    \textbf{Data \& Messaging:} PostgreSQL, Redis, Prisma, sqlc, pgvector, RabbitMQ, BullMQ, Elixir/OTP \\
+    \textbf{AI \& LLM:} LLM Agents, Tool Calling, Anthropic API, RAG, Embeddings, Evals \\
+    \textbf{Testing \& Observability:} Jest, Cypress, Go testing, Sentry, Grafana, Prometheus, OpenTelemetry \\
+    \textbf{Cloud \& DevOps:} AWS (EC2, S3, Amplify), Docker, GitHub Actions (CI/CD), Nginx, Cloudflare, Linux \\
+    \textbf{Spoken Languages:} English (professional working proficiency), Portuguese (native)
+  }}
+\end{itemize}
+\vspace{-6pt}
+
+%----------- EDUCATION -----------
+\section{Education}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {Universidade Federal do Cariri (UFCA)}{Sep 2021 -- Aug 2026}
+    {Bachelor of Science in Computer Science}{Juazeiro do Norte, CE, Brazil}
+\resumeSubHeadingListEnd
+
+\end{document}

@@ -1,0 +1,213 @@
+%-------------------------------------------------------------------------------
+% Currículo otimizado para ATS - Dalton Gomes Lobato
+% Base: template de currículo de Jake Gutierrez (Overleaf, MIT), endurecido para
+% leitura por ATS.
+%
+% Compile com pdflatex. NÃO troque para xelatex/lualatex sem também remover as
+% linhas inputenc/fontenc abaixo.
+%
+% CRÍTICO - não remova \pdfgentounicode: sem isso o pdfTeX escreve fi/ff/ffi como
+% glifos de ligadura sem mapeamento Unicode, e a extração de texto do ATS corrompe
+% palavras silenciosamente ("eficiente" -> "eciente").
+%-------------------------------------------------------------------------------
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{cmap}            % melhora a extração de texto do PDF
+\usepackage{tabularx}
+\usepackage{xcolor}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Margens
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.6in}
+\addtolength{\textwidth}{1.2in}
+\addtolength{\topmargin}{-0.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Títulos de seção: texto simples, nomes padrão, sem decoração além da régua.
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Garante que o PDF gerado tenha um mapa glifo-para-unicode correto (crítico p/ ATS).
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+%-------------------------------------------------------------------------------
+% Comandos customizados
+%-------------------------------------------------------------------------------
+\newcommand{\resumeItem}[1]{
+  \item\small{#1\vspace{-2pt}}
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \small #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & \small #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%===============================================================================
+\begin{document}
+
+%----------- CABEÇALHO -----------
+% Texto simples, sem tabular: garante ordem de extração limpa de cima para baixo.
+\begin{center}
+    {\Huge Dalton Gomes Lobato} \\ \vspace{4pt}
+    \small Engenheiro de Software Back-end / Full-Stack $|$ Node.js (NestJS) $\cdot$ Go (Golang) $\cdot$ Elixir $\cdot$ PostgreSQL $\cdot$ AWS \\ \vspace{4pt}
+    \small
+    +55 88 99744-6106 $|$
+    \href{mailto:daltongomeslobato@gmail.com}{daltongomeslobato@gmail.com} $|$
+    \href{https://www.linkedin.com/in/dalton-gomes}{linkedin.com/in/dalton-gomes} \\ \vspace{2pt}
+    \small
+    \href{https://github.com/dalton02}{github.com/dalton02} $|$
+    \href{https://dalton02.github.io/webportfolio/}{dalton02.github.io/webportfolio}
+\end{center}
+\vspace{-6pt}
+
+%----------- RESUMO -----------
+\section{Resumo Profissional}
+\vspace{2pt}
+\small{
+Engenheiro de software back-end/full-stack com mais de 2 anos em sistemas de pagamento. Na Bestfy,
+gateway com mais de R\$47M processados, construo checkout, 3DS2, sessões distribuídas e filas em
+NestJS, PostgreSQL e AWS. Fundador e único desenvolvedor da \textbf{DiligensAI}, SaaS de IA em
+\textbf{Go} com agente LLM e tool calling. Também construo sistemas concorrentes em
+\textbf{Elixir/OTP} e de tempo real com WebRTC.
+}
+
+%----------- EXPERIÊNCIA -----------
+\section{Experiência Profissional}
+\resumeSubHeadingListStart
+
+  \resumeSubheading
+    {Bestfy --- Gateway de Pagamento (Fintech)}{Abr 2026 -- Atual}
+    {Desenvolvedor Full-Stack}{Balneário Camboriú, SC}
+    \resumeItemListStart
+      \resumeItem{Entreguei partes centrais do \textbf{Checkout} público e do \textbf{order bump}, hoje
+        uma das principais fontes de receita.}
+      \resumeItem{Construí a \textbf{recuperação de carrinho abandonado}, com sessão em tempo real que avisa o lojista do abandono.}
+      \resumeItem{Implementei \textbf{3D Secure (3DS2)} com validação obrigatória no back-end,
+        reduzindo fraude e chargeback.}
+      \resumeItem{Movi e-mails e eventos de pixel para \textbf{filas BullMQ} com retry idempotente, tirando-os do ciclo da requisição.}
+      \resumeItem{Projetei sessões em \textbf{Redis} entre instâncias escaladas horizontalmente, resolvi
+        concorrência com \textbf{advisory locks} do \textbf{PostgreSQL} e cortei até \textbf{2--3s} de
+        queries críticas.}
+      \resumeItem{Segurança e qualidade: \textbf{CSRF}, cookies HttpOnly/SameSite, Turnstile, testes \textbf{Jest} e \textbf{Cypress} (E2E), \textbf{Sentry}.}
+    \resumeItemListEnd
+
+  \resumeSubheading
+    {Pináculo Digital}{Jun 2024 -- Abr 2026}
+    {Desenvolvedor Full-Stack (promovido de Trainee em Set 2024)}{Fortaleza, CE}
+    \resumeItemListStart
+      \resumeItem{Construí a videochamada de uma plataforma interna de comunicação: \textbf{SFU} em
+        \textbf{Go} (Pion), sinalização por \textbf{WebSocket} e \textbf{simulcast} por inscrito,
+        substituindo um P2P que degradava a partir de 3 participantes.}
+      \resumeItem{Reduzi uma query de busca em produção de \textbf{9s para 1,2s} com \textbf{indexação}
+        e análise de plano de execução, guiado por métricas de \textbf{Grafana} e \textbf{Prometheus}.}
+      \resumeItem{Apps em \textbf{NestJS}, \textbf{React} e \textbf{SvelteKit} com Prisma e um \textbf{microsserviço de scraping}; \textbf{liderei code reviews}.}
+    \resumeItemListEnd
+
+  \resumeSubheading
+    {Calang.io --- Empresa Júnior de Desenvolvimento de Software}{Mar 2025 -- Dez 2025}
+    {Tech Lead Backend (concomitante ao cargo acima)}{Juazeiro do Norte, CE}
+    \resumeItemListStart
+      \resumeItem{Liderei um time júnior com \textbf{code reviews} regulares e fluxo em \textbf{Kanban}.}
+    \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%----------- PROJETOS -----------
+\section{Projetos}
+\resumeSubHeadingListStart
+
+  \resumeProjectHeading
+    {\textbf{DiligensAI} $|$ \emph{Go, PostgreSQL, Redis, RabbitMQ, SvelteKit, LLM}
+      $|$ \href{https://app.diligensai.com.br}{app.diligensai.com.br}}{2026}
+    \resumeItemListStart
+      \resumeItem{SaaS de IA (beta) feito sozinho da infra ao SDK: API em \textbf{Go}, worker \textbf{RabbitMQ} com DLQ, painel e SDK em Svelte.}
+      \resumeItem{\textbf{Agente LLM} com \textbf{tool calling} gerado da doc OpenAPI do cliente e roteador com \textbf{97\% de acerto} em evals.}
+      \resumeItem{PII em \textbf{AES-256-GCM} (\textbf{LGPD}), deploy \textbf{blue/green} via
+        GitHub Actions, OpenTelemetry e 335 testes em Go.}
+    \resumeItemListEnd
+
+  \resumeProjectHeading
+    {\textbf{W-Core}, Motor de Estado em Tempo Real $|$ \emph{Elixir, OTP, ETS, Phoenix LiveView, SQLite}}{2026}
+    \resumeItemListStart
+      \resumeItem{Telemetria industrial: \textbf{GenServer} grava em \textbf{ETS} e worker supervisionado faz \textbf{write-behind} em lote no SQLite.}
+      \resumeItem{Testado com \textbf{10 mil eventos concorrentes} sem perda nem race condition.}
+    \resumeItemListEnd
+
+  \resumeProjectHeading
+    {\textbf{Assistente RAG Acadêmico} $|$ \emph{Go, pgvector, embeddings, SvelteKit}
+      $|$ \href{https://github.com/dalton02/UFCA-ChatBot}{dalton02/UFCA-ChatBot}}{2026}
+
+\resumeSubHeadingListEnd
+
+%----------- COMPETÊNCIAS -----------
+\section{Competências Técnicas}
+\vspace{2pt}
+\begin{itemize}[leftmargin=0.15in, label={}]
+  \small{\item{
+    \textbf{Linguagens:} TypeScript, JavaScript, Go (Golang), Elixir, SQL \quad
+      \textbf{Front-end:} React, SvelteKit, Tailwind CSS \\
+    \textbf{Back-end:} Node.js, NestJS, Express, Gin, REST, WebSockets, SSE, WebRTC, Microsserviços, OAuth2 \\
+    \textbf{Dados \& Mensageria:} PostgreSQL, Redis, Prisma, sqlc, pgvector, RabbitMQ, BullMQ, Elixir/OTP \\
+    \textbf{IA \& LLM:} Agentes LLM, Tool Calling, Anthropic API, RAG, Embeddings, Evals \\
+    \textbf{Testes \& Observabilidade:} Jest, Cypress, Go testing, Sentry, Grafana, Prometheus, OpenTelemetry \\
+    \textbf{Cloud \& DevOps:} AWS (EC2, S3, Amplify), Docker, GitHub Actions (CI/CD), Nginx, Cloudflare, Linux \\
+    \textbf{Idiomas:} Inglês (profissional), Português (nativo)
+  }}
+\end{itemize}
+\vspace{-6pt}
+
+%----------- FORMAÇÃO -----------
+\section{Formação Acadêmica}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {Universidade Federal do Cariri (UFCA)}{Set 2021 -- Ago 2026}
+    {Bacharelado em Ciência da Computação}{Juazeiro do Norte, CE}
+\resumeSubHeadingListEnd
+
+\end{document}
