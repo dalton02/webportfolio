@@ -1,22 +1,22 @@
 # Currículo
 
-Fonte LaTeX dos currículos baixados pelo site.
+Fonte LaTeX e PDFs dos currículos baixados pelo site. Os links do site importam os PDFs
+daqui (`src/lib/utils/resume.ts`), e o Vite os copia para o build.
 
-| Arquivo | Versão | PDF publicado |
-|---|---|---|
-| `resume-pt.tex` | Português (BR) | `static/dalton-gomes-curriculo-pt.pdf` |
-| `resume-en.tex` | English | `static/dalton-gomes-resume-en.pdf` |
+| Arquivo | Versão |
+|---|---|
+| `resume-pt.tex` → `resume-pt.pdf` | Português (BR) |
+| `resume-en.tex` → `resume-en.pdf` | English |
 
 ## Gerar
 
 ```bash
-./resume/build.sh               # compila os dois e copia os PDFs para static/
+./resume/build.sh               # compila os dois
 ./resume/build.sh resume-pt     # só um
-./resume/build.sh --no-publish  # compila sem tocar em static/
 ```
 
 Usa `pdflatex` local ou, se não houver, a imagem Docker `texlive/texlive`.
-Os PDFs gerados aqui dentro são ignorados pelo git; só os de `static/` são versionados.
+O CI do Pages não roda LaTeX: depois de editar um `.tex`, rode o script e **commite o PDF**.
 
 ## Não mexer
 

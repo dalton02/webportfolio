@@ -21,6 +21,7 @@ Thumbs.db
 
 *.pdf
 !static/*.pdf
+!resume/*.pdf
 
 # Vite
 vite.config.js.timestamp-*

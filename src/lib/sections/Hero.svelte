@@ -4,6 +4,7 @@
   import globalState from "$lib/utils/global.svelte";
   import { Text } from "$lib/utils/lang.svelte";
   import { reveal } from "$lib/utils/reveal.js";
+  import { resumeUrl } from "$lib/utils/resume.js";
   import aboutJSON from "$lib/json/about.json" with { type: "json" };
   import homeJSON from "$lib/json/home.json" with { type: "json" };
   import ui from "$lib/json/ui.json" with { type: "json" };
@@ -17,7 +18,7 @@
   const doing = new Text(homeJSON.doing);
 
   const current = aboutJSON.timeline.find((j) => j.to === null);
-  const resume = new Text(ui.links.resume);
+  const resume = new Text(resumeUrl);
 </script>
 
 <section id="home" class="relative flex min-h-svh flex-col justify-center overflow-hidden pt-24 pb-16">
@@ -73,7 +74,7 @@
           <Icon name="arrow" class="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
         </Button>
         <Button href="#projects" variant="ghost">{t.ctaProjects.value}</Button>
-        <Button href="{globalState.basePath}/{resume.value}" variant="ghost" external>
+        <Button href={resume.value} variant="ghost" external>
           <Icon name="download" class="h-4 w-4" />
           {t.resume.value}
         </Button>

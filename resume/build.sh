@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-# Gera resume-en.pdf e resume-pt.pdf e copia os PDFs para ../static/, de onde
-# o site os serve para download (nomes definidos em src/lib/json/ui.json).
+# Gera resume-en.pdf e resume-pt.pdf. O site importa esses PDFs direto daqui
+# (src/lib/utils/resume.ts), então rode este script e commite os PDFs.
 #
 # Usa o pdflatex local se existir; caso contrário, cai para uma imagem Docker
 # do TeX Live. Se nenhum dos dois estiver disponível, avisa e mostra como instalar.
@@ -11,7 +11,6 @@
 #   ./build.sh resume-pt      # compila apenas um
 #   ./build.sh --docker       # força o uso do Docker
 #   ./build.sh --keep-aux     # mantém .aux/.log/.out para depurar
-#   ./build.sh --no-publish   # não copia os PDFs para ../static/
 #
 set -euo pipefail
 
@@ -20,22 +19,14 @@ cd "$(dirname "$0")"
 DOCKER_IMAGE="texlive/texlive:latest"
 KEEP_AUX=0
 FORCE_DOCKER=0
-PUBLISH=1
 DOCS=()
-
-# Nome do PDF publicado em ../static/ para cada documento.
-declare -A STATIC_NAME=(
-  [resume-pt]="dalton-gomes-curriculo-pt.pdf"
-  [resume-en]="dalton-gomes-resume-en.pdf"
-)
 
 # ---------------------------------------------------------------- argumentos --
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --docker)   FORCE_DOCKER=1 ;;
     --keep-aux) KEEP_AUX=1 ;;
-    --no-publish) PUBLISH=0 ;;
-    -h|--help)  sed -n '3,14p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    -h|--help)  sed -n '3,13p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
     -*)         echo "Opção desconhecida: $1" >&2; exit 2 ;;
     *)          DOCS+=("${1%.tex}") ;;
   esac
@@ -144,11 +135,6 @@ for doc in "${DOCS[@]}"; do
   pages=$(grep -oP 'Output written on .*\(\K[0-9]+' "$doc.build.log" | tail -1 || true)
   echo "   OK: $doc.pdf (${pages:-?} página(s))"
   check_extraction "$doc"
-
-  if [[ $PUBLISH -eq 1 && -n "${STATIC_NAME[$doc]:-}" ]]; then
-    cp "$doc.pdf" "../static/${STATIC_NAME[$doc]}"
-    echo "   Publicado em static/${STATIC_NAME[$doc]}"
-  fi
 
   if [[ $KEEP_AUX -eq 0 ]]; then
     rm -f "$doc.aux" "$doc.log" "$doc.out" "$doc.build.log"

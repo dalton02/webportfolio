@@ -1,12 +1,12 @@
 <script lang="ts">
   import z from "zod";
   import Button from "$lib/comps/Button.svelte";
-  import globalState from "$lib/utils/global.svelte";
   import Icon from "$lib/comps/Icon.svelte";
   import Input from "$lib/comps/Input.svelte";
   import SectionHeading from "$lib/comps/SectionHeading.svelte";
   import { Text } from "$lib/utils/lang.svelte";
   import { reveal } from "$lib/utils/reveal.js";
+  import { resumeUrl } from "$lib/utils/resume.js";
   import ui from "$lib/json/ui.json" with { type: "json" };
 
   const t = Object.fromEntries(Object.entries(ui.contact).map(([k, v]) => [k, new Text(v)])) as Record<
@@ -15,7 +15,7 @@
   >;
   const { email, whatsapp } = ui.links;
   const [emailUser, emailDomain] = email.split("@");
-  const resume = new Text(ui.links.resume);
+  const resume = new Text(resumeUrl);
 
   let validation = $derived(
     z.object({
@@ -114,7 +114,7 @@
         </div>
 
         <a
-          href="{globalState.basePath}/{resume.value}"
+          href={resume.value}
           target="_blank"
           rel="noopener noreferrer"
           class="group flex items-center gap-3 rounded-2xl border border-line bg-surface/40 p-4 transition-colors duration-300 hover:border-clay/40 hover:bg-surface/70 sm:gap-4 sm:p-5"
