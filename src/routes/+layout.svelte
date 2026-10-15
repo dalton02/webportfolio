@@ -26,9 +26,6 @@
 <svelte:head>
   <title>{title.value}</title>
   <meta name="description" content={description.value} />
-  <meta property="og:title" content={title.value} />
-  <meta property="og:description" content={description.value} />
-  <meta property="og:type" content="website" />
 </svelte:head>
 
 <Background />
