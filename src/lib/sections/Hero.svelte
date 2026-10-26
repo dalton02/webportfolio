@@ -95,14 +95,17 @@
         <span class="absolute top-1/3 left-0 z-10 blink [animation-delay:.5s] sm:left-[12px]" aria-hidden="true"
           ><PixelSprite sprite={sparkle} scale={3} fps={3} /></span
         >
+        <!-- the sprite carries 12 clear columns each side for the raised arm; only the middle,
+             where he stands, takes the hover, so the margin never covers the soldadinho -->
         <button
           type="button"
-          class="relative z-[1] cursor-pointer"
+          class="pointer-events-none relative z-[1]"
           aria-label="Dalton Gomes, say hi"
           onmouseenter={sayHi}
           onmouseleave={() => (hi = false)}
           onclick={tapHi}
         >
+          <span class="pointer-events-auto absolute inset-y-0 right-12 left-12 cursor-pointer sm:right-[60px] sm:left-[60px]" aria-hidden="true"></span>
           {#if hi}
             <span class="hi-bubble absolute -top-2 right-10 z-10 font-title text-[16px] whitespace-nowrap text-ink uppercase sm:-top-1 sm:right-12 sm:text-[20px]" aria-hidden="true"
               >{t.hi.value}</span
@@ -115,7 +118,7 @@
           <PixelSprite sprite={groundShadow} scale={8} class="sm:hidden" />
           <PixelSprite sprite={groundShadow} scale={10} class="hidden sm:block" />
         </span>
-        <span class="absolute -right-4 bottom-3 hop sm:-right-5" aria-hidden="true"
+        <span class="absolute -right-4 bottom-3 z-[2] hop sm:-right-5" aria-hidden="true"
           ><Soldadinho scale={3} /></span
         >
       </div>
