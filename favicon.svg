@@ -1,5 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="32" fill="#121014"/>
-  <circle cx="32" cy="32" r="30.5" fill="none" stroke="#2a2530" stroke-width="2"/>
-  <text x="32" y="42" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-weight="600" font-size="30" fill="#e8744a">dg</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" shape-rendering="crispEdges">
+  <path fill="#181018" d="M8 1h4v1H8zM6 2h2v1H6zM12 2h2v1H12zM5 3h1v1H5zM14 3h2v1H14zM4 4h1v1H4zM17 4h1v1H17zM4 5h1v1H4zM19 5h1v1H19zM3 6h1v1H3zM15 6h4v1H15zM3 7h1v1H3zM16 7h1v1H16zM3 8h1v1H3zM14 8h1v1H14zM17 8h1v1H17zM2 9h1v1H2zM13 9h2v1H13zM18 9h1v1H18zM2 10h1v1H2zM13 10h2v1H13zM19 10h1v1H19zM2 11h1v1H2zM4 11h5v1H4zM17 11h2v1H17zM1 12h2v1H1zM9 12h1v1H9zM17 12h1v1H17zM0 13h1v1H0zM9 13h1v1H9zM17 13h1v1H17zM0 14h1v1H0zM8 14h1v1H8zM17 14h1v1H17zM1 15h2v1H1zM7 15h1v1H7zM17 15h1v1H17zM3 16h4v1H3zM16 16h1v1H16zM6 17h2v1H6zM9 17h3v1H9zM13 17h3v1H13z"/>
+  <path fill="#f83838" d="M8 2h2v1H8zM6 3h6v1H6zM5 4h3v1H5zM9 4h8v1H9zM6 5h13v1H6zM6 6h9v1H6zM6 7h10v1H6zM5 8h1v1H5z"/>
+  <path fill="#ff8070" d="M10 2h2v1H10zM12 3h2v1H12zM8 4h1v1H8z"/>
+  <path fill="#c01820" d="M5 5h1v1H5zM4 6h2v1H4zM4 7h2v1H4zM4 8h1v1H4zM3 9h1v1H3z"/>
+  <path fill="#f8f8f8" d="M6 8h8v1H6zM15 8h2v1H15zM4 9h9v1H4zM15 9h2v1H15zM3 10h10v1H3zM15 10h2v1H15zM3 11h1v1H3zM9 11h5v1H9zM16 11h1v1H16zM10 12h7v1H10zM10 13h6v1H10zM9 14h6v1H9zM8 15h6v1H8z"/>
+  <path fill="#4a4250" d="M17 9h1v1H17zM17 10h2v1H17z"/>
+  <path fill="#f8a0b0" d="M14 11h2v1H14z"/>
+  <path fill="#302840" d="M3 12h1v1H3zM8 12h1v1H8zM1 13h8v1H1zM1 14h7v1H1zM3 15h4v1H3z"/>
+  <path fill="#585078" d="M4 12h4v1H4z"/>
+  <path fill="#d0c8dc" d="M16 13h1v1H16zM15 14h2v1H15zM14 15h3v1H14zM7 16h9v1H7z"/>
+  <path fill="#e09078" d="M8 17h1v1H8zM12 17h1v1H12zM7 18h3v1H7zM11 18h3v1H11z"/>
 </svg>
