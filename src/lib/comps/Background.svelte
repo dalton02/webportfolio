@@ -1,233 +1,469 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { hash, WPAL, ZONES, type Art, type Zone } from "$lib/pixel/world.js";
 
-  // Grid spacing must match the dot pattern's background-size below.
-  const G = 44;
-  const MAX_PACKETS = 3;
-  const SPEED = 70; // px/s
-  const TRAIL = 120; // px
-  const COLORS = ["242,197,124", "232,116,74"]; // sun, clay
+  /*
+    The overworld floor, drawn on a low-res canvas and scaled up with crisp pixels.
+    Every room gets its own terrain (meadow, tall grass, dry road, wood, pond side),
+    blended into the next one with a dither. Big props only grow in the side
+    margins so they never sit behind text. The Experience road is painted here
+    too, through anchors the section leaves in the DOM ([data-trail]).
 
-  type Point = { x: number; y: number };
-  type Packet = { path: Point[]; lengths: number[]; total: number; d: number; rgb: string; lit: number };
-  type Glow = { x: number; y: number; life: number; rgb: string };
+    The static ground is rendered once per 256px chunk and cached; only flowers,
+    tufts, water and cloud shadows are redrawn each frame.
+  */
+
+  const PX = 3; // screen pixels per art pixel
+  const TILE = 16;
+  const FPS = 6;
+  const CH = 256; // chunk height in art pixels
+  const CELL = 48; // margin prop grid
+  const BLEND = 6; // half height of the dither between two rooms
+  const WAVE = 18; // how far a room boundary wanders up and down
+  const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+  const ROAD = 6; // road radius
+  const COLUMN = 1152; // max-w-6xl, the content column
+
+  type Item = { frames: HTMLCanvasElement[]; x: number; y: number; phase: number };
+  type Chunk = { canvas: HTMLCanvasElement; anim: Item[] };
+  type Sample = { x: number; y: number; r: number };
+
+  function render(rows: string[]) {
+    const c = document.createElement("canvas");
+    c.width = rows[0].length;
+    c.height = rows.length;
+    const g = c.getContext("2d")!;
+    rows.forEach((row, y) =>
+      [...row].forEach((ch, x) => {
+        if (ch === "." || !WPAL[ch]) return;
+        g.fillStyle = WPAL[ch];
+        g.fillRect(x, y, 1, 1);
+      }),
+    );
+    return c;
+  }
+
+  const rendered = new Map<Art, HTMLCanvasElement[]>();
+  const framesOf = (a: Art) => rendered.get(a) ?? (rendered.set(a, a.frames.map(render)), rendered.get(a)!);
+
+  function pick<T>(list: [T, number][], r: number) {
+    let n = r * list.reduce((s, [, w]) => s + w, 0);
+    return (list.find(([, w]) => (n -= w) < 0) ?? list[0])[0];
+  }
+
+  const rgb = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+
+  /** Smooth value noise in [0, 1). */
+  function noise(x: number, y: number, s: number, seed: number) {
+    const gx = Math.floor(x / s);
+    const gy = Math.floor(y / s);
+    const fx = x / s - gx;
+    const fy = y / s - gy;
+    const ux = fx * fx * (3 - 2 * fx);
+    const uy = fy * fy * (3 - 2 * fy);
+    const a = hash(gx + seed, gy);
+    const b = hash(gx + 1 + seed, gy);
+    const c = hash(gx + seed, gy + 1);
+    const d = hash(gx + 1 + seed, gy + 1);
+    return a + (b - a) * ux + (c - a) * uy + (a - b - c + d) * ux * uy;
+  }
 
   let canvas = $state<HTMLCanvasElement>();
-  let glowEl = $state<HTMLDivElement>();
 
   onMount(() => {
-    const ctx = canvas!.getContext("2d")!;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    const el = canvas!;
+    const ctx = el.getContext("2d")!;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    // cloud shadows: a few blobs made of overlapping circles, in art pixels
+    const clouds = Array.from({ length: 4 }, (_, i) => ({
+      x: Math.random() * 600,
+      y: i * 150 + Math.random() * 60,
+      speed: 2 + Math.random() * 2,
+      blobs: Array.from({ length: 5 }, () => ({
+        dx: Math.random() * 70,
+        dy: Math.random() * 22,
+        r: 16 + Math.random() * 16,
+      })),
+    }));
 
     let w = 0;
     let h = 0;
-    let cols = 0;
-    let rows = 0;
-    let packets: Packet[] = [];
-    let glows: Glow[] = [];
-    let nextSpawn = 0;
-    let raf = 0;
-    let last = 0;
+    let frame = 0;
+    let t = 0;
 
-    const mouse = { x: -9999, y: -9999, tx: -9999, ty: -9999 };
+    // page layout, in art pixels of the world
+    let rooms: { top: number; zone: Zone; colors: number[][] }[] = [];
+    let colL = 0;
+    let colR = 0;
+    let road: Sample[] = [];
+    let signature = "";
+    const chunks = new Map<number, Chunk>();
 
-    function resize() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = window.innerWidth;
-      h = window.innerHeight;
-      canvas!.width = w * dpr;
-      canvas!.height = h * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      cols = Math.ceil(w / G);
-      rows = Math.ceil(h / G);
-    }
+    function measure() {
+      const sy = window.scrollY;
+      const found = [...document.querySelectorAll<HTMLElement>("section[id]")]
+        .filter((s) => ZONES[s.id])
+        .map((s) => ({ id: s.id, top: Math.round((s.getBoundingClientRect().top + sy) / PX) }));
+      if (!found.length) found.push({ id: "home", top: 0 });
+      found[0].top = -Infinity;
 
-    const node = (c: number, r: number): Point => ({ x: G / 2 + c * G, y: G / 2 + r * G });
-    const rand = (a: number, b: number) => a + Math.floor(Math.random() * (b - a + 1));
+      const cw = document.documentElement.clientWidth;
+      const half = Math.min(cw, COLUMN) / 2;
+      const nextL = Math.floor((cw / 2 - half) / PX) - 4;
+      const nextR = Math.ceil((cw / 2 + half) / PX) + 4;
 
-    function spawn() {
-      let c = rand(1, Math.max(1, cols - 2));
-      let r = rand(1, Math.max(1, rows - 2));
-      const path = [node(c, r)];
-      let horizontal = Math.random() > 0.5;
-      const segments = rand(3, 6);
-      for (let i = 0; i < segments; i++) {
-        const step = rand(1, 4) * (Math.random() > 0.5 ? 1 : -1);
-        if (horizontal) c = Math.min(cols - 1, Math.max(0, c + step));
-        else r = Math.min(rows - 1, Math.max(0, r + step));
-        const p = node(c, r);
-        const prev = path[path.length - 1];
-        if (p.x !== prev.x || p.y !== prev.y) path.push(p);
-        horizontal = !horizontal;
-      }
-      if (path.length < 2) return;
-      const lengths = path.slice(1).map((p, i) => Math.abs(p.x - path[i].x) + Math.abs(p.y - path[i].y));
-      packets.push({
-        path,
-        lengths,
-        total: lengths.reduce((a, b) => a + b, 0),
-        d: 0,
-        rgb: COLORS[Math.random() > 0.35 ? 0 : 1],
-        lit: 0,
+      const anchors = [...document.querySelectorAll<HTMLElement>("[data-trail]")]
+        .filter((a) => a.getClientRects().length)
+        .sort((a, b) => Number(a.dataset.trail) - Number(b.dataset.trail));
+      const pts = anchors.map((a) => {
+        const r = a.getBoundingClientRect();
+        return { x: Math.round(r.left / PX), y: Math.round((r.top + sy) / PX) };
       });
-      glows.push({ ...path[0], life: 1, rgb: packets[packets.length - 1].rgb });
+      const fromEdge = anchors[0]?.dataset.trailEdge !== undefined;
+      if (fromEdge && pts.length) pts.unshift({ x: -ROAD * 4, y: pts[0].y });
+
+      const sig = JSON.stringify([w, found, nextL, nextR, pts]);
+      if (sig === signature) return;
+      signature = sig;
+      rooms = found.map((f) => {
+        const zone = ZONES[f.id];
+        return { top: f.top, zone, colors: [zone.base, zone.light, zone.dark, zone.patch].map(rgb) };
+      });
+      colL = nextL;
+      colR = nextR;
+      road = buildRoad(pts, !fromEdge);
+      chunks.clear();
+      draw();
     }
 
-    function pointAt(p: Packet, d: number): Point {
-      d = Math.max(0, Math.min(p.total, d));
-      for (let i = 0; i < p.lengths.length; i++) {
-        if (d <= p.lengths[i]) {
-          const a = p.path[i];
-          const b = p.path[i + 1];
-          const t = p.lengths[i] === 0 ? 0 : d / p.lengths[i];
-          return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+    /**
+      Catmull-Rom style curve through the anchors, one sample per art pixel; the end
+      rounds off into the grass. Tangents are capped by the shorter neighbouring segment,
+      so a long straight stretch can't make the bend before it overshoot into a loop.
+    */
+    function buildRoad(pts: { x: number; y: number }[], clearing: boolean): Sample[] {
+      if (pts.length < 2) return [];
+      const len = (a: { x: number; y: number }, b: { x: number; y: number }) => Math.hypot(b.x - a.x, b.y - a.y);
+      const tangents = pts.map((p, i) => {
+        const a = pts[Math.max(0, i - 1)];
+        const b = pts[Math.min(pts.length - 1, i + 1)];
+        const mx = (b.x - a.x) / 2;
+        const my = (b.y - a.y) / 2;
+        const cap = Math.min(i > 0 ? len(pts[i - 1], p) : Infinity, i < pts.length - 1 ? len(p, pts[i + 1]) : Infinity);
+        const k = Math.min(1, cap / (Math.hypot(mx, my) || 1));
+        return { x: mx * k, y: my * k };
+      });
+      const out: { x: number; y: number }[] = [];
+      for (let i = 0; i < pts.length - 1; i++) {
+        const [p1, p2, m1, m2] = [pts[i], pts[i + 1], tangents[i], tangents[i + 1]];
+        const n = Math.max(1, Math.ceil(len(p1, p2)));
+        for (let k = 0; k < n; k++) {
+          const s = k / n;
+          const s2 = s * s;
+          const s3 = s2 * s;
+          // cubic Hermite basis
+          const h00 = 2 * s3 - 3 * s2 + 1;
+          const h10 = s3 - 2 * s2 + s;
+          const h01 = -2 * s3 + 3 * s2;
+          const h11 = s3 - s2;
+          out.push({
+            x: h00 * p1.x + h10 * m1.x + h01 * p2.x + h11 * m2.x,
+            y: h00 * p1.y + h10 * m1.y + h01 * p2.y + h11 * m2.y,
+          });
         }
-        d -= p.lengths[i];
       }
-      return p.path[p.path.length - 1];
+      const total = out.length;
+      const samples = out.map((p, i) => {
+        const left = total - i;
+        const wobble = hash(Math.floor(i / 14), 41) > 0.82 ? 1 : 0;
+        // a round tip instead of a needle: the radius only drops over the last few pixels
+        const r = left < 16 ? ROAD * Math.sqrt(left / 16) : ROAD + wobble;
+        return { x: Math.round(p.x), y: Math.round(p.y), r };
+      });
+      // a little dirt clearing where the road starts, under the room's signpost
+      if (clearing) {
+        const s = samples[0];
+        for (const [dx, dy, r] of [
+          [0, 0, 10],
+          [-7, 3, 7],
+          [7, 2, 8],
+          [2, -5, 7],
+        ])
+          samples.unshift({ x: s.x + dx, y: s.y + dy, r });
+      }
+      return samples;
     }
 
-    function drawPacket(p: Packet) {
-      const head = Math.min(p.d, p.total);
-      const tail = Math.max(0, p.d - TRAIL);
-      const steps = 16;
-      ctx.lineWidth = 1;
-      ctx.lineCap = "round";
-      let prev = pointAt(p, tail);
-      for (let i = 1; i <= steps; i++) {
-        const d = tail + ((head - tail) * i) / steps;
-        const pt = pointAt(p, d);
-        ctx.strokeStyle = `rgba(${p.rgb},${(i / steps) * 0.3})`;
-        ctx.beginPath();
-        ctx.moveTo(prev.x, prev.y);
-        ctx.lineTo(pt.x, pt.y);
-        ctx.stroke();
-        prev = pt;
+    function nearRoad(x: number, y: number, pad: number) {
+      for (let i = 0; i < road.length; i += 3) {
+        const s = road[i];
+        const lim = s.r + pad;
+        if (Math.abs(s.x - x) < lim && Math.abs(s.y - y) < lim && (s.x - x) ** 2 + (s.y - y) ** 2 < lim * lim) return true;
       }
-      if (p.d <= p.total) {
-        const hp = pointAt(p, head);
-        const g = ctx.createRadialGradient(hp.x, hp.y, 0, hp.x, hp.y, 7);
-        g.addColorStop(0, `rgba(${p.rgb},0.4)`);
-        g.addColorStop(1, `rgba(${p.rgb},0)`);
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(hp.x, hp.y, 7, 0, Math.PI * 2);
-        ctx.fill();
-      }
+      return false;
     }
 
-    function frame(now: number) {
-      const dt = Math.min(0.05, (now - (last || now)) / 1000);
-      last = now;
-      ctx.clearRect(0, 0, w, h);
+    /** Where room j starts at column x: a soft wave, so the seam never reads as a ruler line. */
+    const edge = (j: number, x: number) =>
+      rooms[j].top + Math.round((noise(x, j * 97, 52, 61) * 0.7 + noise(x, j * 97, 13, 83) * 0.3 - 0.5) * 2 * WAVE);
 
-      if (now > nextSpawn && packets.length < MAX_PACKETS) {
-        spawn();
-        nextSpawn = now + 1500 + Math.random() * 2500;
-      }
+    /** Which room a world pixel belongs to, with an ordered dither across each boundary. */
+    function roomAt(x: number, y: number) {
+      let i = 0;
+      while (i + 1 < rooms.length && rooms[i + 1].top - WAVE - BLEND <= y) i++;
+      const t = (BAYER[(y & 3) * 4 + (x & 3)] + 0.5) / 16;
+      if (i > 0 && (y - edge(i, x) + BLEND) / (2 * BLEND) < t) return i - 1;
+      return i;
+    }
 
-      for (const p of packets) {
-        p.d += SPEED * dt;
-        // light up every corner the head has passed
-        let acc = 0;
-        for (let i = 0; i < p.lengths.length; i++) {
-          acc += p.lengths[i];
-          if (i >= p.lit && p.d >= acc) {
-            glows.push({ ...p.path[i + 1], life: 1, rgb: p.rgb });
-            p.lit = i + 1;
+    const blade = (x: number, y: number) => hash(x, y) < 0.014;
+
+    function buildChunk(ci: number): Chunk {
+      const top = ci * CH;
+      const c = document.createElement("canvas");
+      c.width = w;
+      c.height = CH;
+      const g = c.getContext("2d")!;
+      const img = g.createImageData(w, CH);
+      const data = img.data;
+
+      // road layer: 3 dirt, 2 dirt edge, 1 dark grass edge
+      const layer = new Uint8Array(w * CH);
+      for (const s of road) {
+        const R = Math.ceil(s.r) + 2;
+        if (s.r < 0.8 || s.y + R < top || s.y - R >= top + CH) continue;
+        for (let dy = -R; dy <= R; dy++) {
+          const y = s.y + dy - top;
+          if (y < 0 || y >= CH) continue;
+          for (let dx = -R; dx <= R; dx++) {
+            const x = s.x + dx;
+            if (x < 0 || x >= w) continue;
+            const d = dx * dx + dy * dy;
+            const v = d <= s.r * s.r ? 3 : d <= (s.r + 1) ** 2 ? 2 : d <= (s.r + 2) ** 2 ? 1 : 0;
+            const i = y * w + x;
+            if (v > layer[i]) layer[i] = v;
           }
         }
-        drawPacket(p);
       }
-      packets = packets.filter((p) => p.d < p.total + TRAIL);
+      const dirt = [rgb("#e0b070"), rgb("#b07848"), rgb("#f8e0a0")];
 
-      for (const g of glows) {
-        g.life -= dt / 2.2;
-        const a = Math.max(0, g.life);
-        const grad = ctx.createRadialGradient(g.x, g.y, 0, g.x, g.y, 10);
-        grad.addColorStop(0, `rgba(${g.rgb},${a * 0.35})`);
-        grad.addColorStop(1, `rgba(${g.rgb},0)`);
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(g.x, g.y, 10, 0, Math.PI * 2);
-        ctx.fill();
+      for (let y = 0; y < CH; y++) {
+        const wy = top + y;
+        for (let x = 0; x < w; x++) {
+          const room = rooms[roomAt(x, wy)];
+          const [base, light, dark, patch] = room.colors;
+          const l = layer[y * w + x];
+          let col: number[];
+          if (l === 3) {
+            const r = hash(x + 911, wy);
+            col = r < 0.03 ? dirt[1] : r < 0.05 ? dirt[2] : dirt[0];
+          } else if (l === 2) col = dirt[1];
+          else if (l === 1) col = dark;
+          else {
+            // large patches of a second green, with a 1px checker on their edge
+            const n = noise(x, wy, 44, 3) * 0.75 + noise(x, wy, 14, 17) * 0.25;
+            const inPatch = n > 0.66 || (n > 0.645 && (x + wy) % 2 === 0);
+            // grass blades: a dark pixel, a lit one on its left, two pixels tall
+            if (blade(x, wy) || blade(x, wy - 1)) col = dark;
+            else if (blade(x + 1, wy)) col = light;
+            else col = inPatch ? patch : base;
+          }
+          const i = (y * w + x) * 4;
+          data[i] = col[0];
+          data[i + 1] = col[1];
+          data[i + 2] = col[2];
+          data[i + 3] = 255;
+        }
       }
-      glows = glows.filter((g) => g.life > 0);
+      g.putImageData(img, 0, 0);
 
-      if (finePointer && glowEl) {
-        mouse.x += (mouse.tx - mouse.x) * 0.06;
-        mouse.y += (mouse.ty - mouse.y) * 0.06;
-        glowEl.style.setProperty("--mx", `${mouse.x}px`);
-        glowEl.style.setProperty("--my", `${mouse.y}px`);
+      const anim: Item[] = [];
+      const place = (a: Art, x: number, y: number, phase: number) => {
+        const frames = framesOf(a);
+        if (frames.length > 1) {
+          // animated things belong to the chunk their top edge falls in
+          if (y >= top && y < top + CH) anim.push({ frames, x, y, phase });
+        } else g.drawImage(frames[0], x, y - top);
+      };
+
+      const taken: [number, number, number, number][] = [];
+      // big props, margins only; cells from one row above so tall ones aren't cut at the seam
+      for (let cy = Math.floor(top / CELL) - 1; cy * CELL < top + CH; cy++) {
+        for (let cx = -1; cx * CELL < w; cx++) {
+          const room = rooms[roomAt(cx * CELL + 24, cy * CELL + 24)].zone;
+          if (hash(cx + 500, cy + 77) >= room.bigRate) continue;
+          const a = pick(room.big, hash(cx + 13, cy + 501));
+          const x = cx * CELL + Math.floor(hash(cx, cy + 3) * (CELL - a.w));
+          const y = cy * CELL + Math.floor(hash(cx + 5, cy) * (CELL - a.h));
+          if (x + a.w > colL && x < colR) continue;
+          // a prop sits wholly inside one room, never straddling a seam (a pond half in the wood)
+          if (roomAt(x, y) !== roomAt(x + a.w, y + a.h)) continue;
+          if (nearRoad(x + a.w / 2, y + a.h / 2, Math.max(a.w, a.h) / 2 + 4)) continue;
+          place(a, x, y, cx + cy);
+          taken.push([x, y, x + a.w, y + a.h]);
+        }
       }
 
-      raf = requestAnimationFrame(frame);
+      // small details on most of the field, sparser inside the content column
+      for (let ty = Math.floor(top / TILE); ty * TILE < top + CH; ty++) {
+        for (let tx = 0; tx * TILE < w; tx++) {
+          const cxp = tx * TILE + 8;
+          const cyp = ty * TILE + 8;
+          const room = rooms[roomAt(cxp, cyp)].zone;
+          const inside = cxp > colL && cxp < colR;
+          if (hash(tx, ty) >= room.smallRate * (inside ? 0.6 : 1)) continue;
+          if (nearRoad(cxp, cyp, 10)) continue;
+          const [x0, y0] = [tx * TILE, ty * TILE];
+          if (taken.some(([l, t, r, b]) => x0 < r && x0 + TILE > l && y0 < b && y0 + TILE > t)) continue;
+          const a = pick(room.small, hash(ty + 7, tx + 3));
+          place(a, tx * TILE, ty * TILE + TILE - a.h, tx + ty);
+        }
+      }
+
+      return { canvas: c, anim };
     }
 
+    function chunk(ci: number) {
+      let c = chunks.get(ci);
+      if (!c) {
+        c = buildChunk(ci);
+        chunks.set(ci, c);
+        // keep memory small: drop chunks far from the camera
+        if (chunks.size > 12) for (const k of chunks.keys()) if (Math.abs(k - ci) > 4) chunks.delete(k);
+      }
+      return c;
+    }
+
+    function resize() {
+      w = Math.ceil(window.innerWidth / PX);
+      // one spare row: the canvas slides by the sub-art-pixel remainder of the scroll
+      h = Math.ceil(window.innerHeight / PX) + 1;
+      el.width = w;
+      el.height = h;
+      // exact multiple of PX on screen, so every art pixel stays square
+      el.style.width = `${w * PX}px`;
+      el.style.height = `${h * PX}px`;
+      ctx.imageSmoothingEnabled = false;
+      signature = "";
+      measure();
+    }
+
+    function draw() {
+      if (!rooms.length) return;
+      const cam = Math.floor(window.scrollY / PX);
+      // the ground follows the page pixel by pixel instead of jumping PX at a time
+      el.style.transform = `translate3d(0, ${-(window.scrollY - cam * PX)}px, 0)`;
+      const first = Math.floor(cam / CH);
+      const last = Math.floor((cam + h) / CH);
+      for (let ci = first; ci <= last; ci++) ctx.drawImage(chunk(ci).canvas, 0, ci * CH - cam);
+      for (let ci = first - 1; ci <= last; ci++) {
+        for (const it of chunk(ci).anim) {
+          if (it.y - cam > h || it.y - cam < -64) continue;
+          const n = it.frames.length;
+          ctx.drawImage(it.frames[(((frame + it.phase) % n) + n) % n], it.x, it.y - cam);
+        }
+      }
+
+      // cloud shadows, translucent dark green, crisp pixels with a dithered rim. They lie on
+      // the ground, so they scroll with it, and drift sideways on their own.
+      ctx.fillStyle = "rgba(24, 72, 24, 0.16)";
+      for (const c of clouds) {
+        const spanX = w + 280;
+        const spanY = h + 200;
+        const cx = Math.round(((((c.x + t * c.speed) % spanX) + spanX) % spanX) - 140);
+        const cy = Math.round(((((c.y - cam) % spanY) + spanY) % spanY) - 100);
+        for (let y = cy - 34; y < cy + 90; y++) {
+          if (y < 0 || y >= h) continue;
+          let run = -1;
+          for (let x = cx - 34; x <= cx + 106; x++) {
+            let on = false;
+            for (const b of c.blobs) {
+              const d = (x - cx - b.dx) ** 2 + (y - cy - b.dy) ** 2;
+              if (d <= b.r * b.r || (d <= (b.r + 1.5) ** 2 && (x + y) % 2 === 0)) {
+                on = true;
+                break;
+              }
+            }
+            if (on && run < 0) run = x;
+            if (!on && run >= 0) {
+              ctx.fillRect(run, y, x - run, 1);
+              run = -1;
+            }
+          }
+          if (run >= 0) ctx.fillRect(run, y, cx + 107 - run, 1);
+        }
+      }
+
+      prefetch(first - 1);
+      prefetch(last + 1);
+    }
+
+    /** Build the chunk just past either edge of the screen while the browser is idle, so scrolling never waits on one. */
+    const idle = window.requestIdleCallback ?? ((fn: () => void) => setTimeout(fn, 50));
+    const pending = new Set<number>();
+    function prefetch(ci: number) {
+      if (ci < 0 || chunks.has(ci) || pending.has(ci)) return;
+      pending.add(ci);
+      idle(() => {
+        pending.delete(ci);
+        chunk(ci);
+      });
+    }
+
+    let timer: ReturnType<typeof setInterval> | undefined;
     function start() {
-      if (reduced || raf) return;
-      last = 0;
-      raf = requestAnimationFrame(frame);
+      stop();
+      if (reduce.matches || document.hidden) return;
+      timer = setInterval(() => {
+        frame++;
+        t += 1 / FPS;
+        draw();
+      }, 1000 / FPS);
     }
     function stop() {
-      cancelAnimationFrame(raf);
-      raf = 0;
+      if (timer) clearInterval(timer);
+      timer = undefined;
     }
-    function onVisibility() {
-      if (document.hidden) stop();
-      else start();
-    }
-    function onPointer(e: PointerEvent) {
-      if (mouse.x === -9999) {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-      }
-      mouse.tx = e.clientX;
-      mouse.ty = e.clientY;
-    }
+
+    let queued = false;
+    const onScroll = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        draw();
+      });
+    };
+
+    // sections grow when fonts, photos and typed dialogs settle; follow them once they
+    // stop moving, so a dialog typing line by line doesn't rebuild the field every frame
+    let measureTimer: ReturnType<typeof setTimeout> | undefined;
+    const ro = new ResizeObserver(() => {
+      clearTimeout(measureTimer);
+      measureTimer = setTimeout(measure, 150);
+    });
+    ro.observe(document.body);
 
     resize();
     start();
     window.addEventListener("resize", resize);
-    document.addEventListener("visibilitychange", onVisibility);
-    if (finePointer && !reduced) window.addEventListener("pointermove", onPointer, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
+    document.addEventListener("visibilitychange", start);
+    reduce.addEventListener("change", start);
 
     return () => {
       stop();
+      clearTimeout(measureTimer);
+      ro.disconnect();
       window.removeEventListener("resize", resize);
-      document.removeEventListener("visibilitychange", onVisibility);
-      window.removeEventListener("pointermove", onPointer);
+      window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("visibilitychange", start);
+      reduce.removeEventListener("change", start);
     };
   });
 </script>
 
-<div class="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-  <div class="grid-dots absolute inset-0"></div>
-  <canvas bind:this={canvas} class="absolute inset-0 h-full w-full"></canvas>
-  <div bind:this={glowEl} class="mouse-glow absolute inset-0"></div>
-  <div class="vignette absolute inset-0"></div>
-  <div class="grain absolute inset-0"></div>
+<div class="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-grass" aria-hidden="true">
+  <canvas bind:this={canvas} class="block" style="image-rendering: pixelated;"></canvas>
 </div>
-
-<style>
-  .grid-dots {
-    background-image: radial-gradient(circle at center, rgb(239 228 214 / 0.06) 1px, transparent 1.4px);
-    background-size: 44px 44px;
-    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 100%);
-  }
-  .mouse-glow {
-    background: radial-gradient(
-      560px circle at var(--mx, -9999px) var(--my, -9999px),
-      rgb(232 116 74 / 0.045),
-      transparent 70%
-    );
-  }
-  .vignette {
-    background: radial-gradient(ellipse 120% 90% at 50% 30%, transparent 55%, rgb(10 8 12 / 0.7) 100%);
-  }
-  .grain {
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  }
-</style>

@@ -1,9 +1,11 @@
 <script lang="ts">
-  import Icon from "$lib/comps/Icon.svelte";
   import SectionHeading from "$lib/comps/SectionHeading.svelte";
-  import SvgTech from "$lib/comps/SvgTech.svelte";
+  import PixelIcon from "$lib/pixel/PixelIcon.svelte";
+  import PixelSprite from "$lib/pixel/PixelSprite.svelte";
+  import { aws, bolt, book, git, gopher, react, server, shield, tux, type Sprite } from "$lib/pixel/sprites.js";
   import { Text } from "$lib/utils/lang.svelte";
   import { reveal } from "$lib/utils/reveal.js";
+  import sfx from "$lib/utils/sfx.svelte";
   import aboutJSON from "$lib/json/about.json" with { type: "json" };
   import ui from "$lib/json/ui.json" with { type: "json" };
 
@@ -32,52 +34,68 @@
       ),
   );
 
-  const skills = aboutJSON.skills.map((s) => ({ title: new Text(s.title), desc: new Text(s.desc), icon: s.icon }));
+  // one original pixel icon per "equipped" skill, in the order of about.json
+  const skillArt: Sprite[] = [server, shield, bolt];
+  const skills = aboutJSON.skills.map((s, i) => ({
+    title: new Text(s.title),
+    desc: new Text(s.desc),
+    art: skillArt[i % skillArt.length],
+  }));
   const education = aboutJSON.education.map((e) => ({
     title: new Text(e.title),
     subtitle: new Text(e.subtitle),
     desc: new Text(e.desc),
   }));
+
+  const devicon = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/";
+  // hand-drawn stand-ins for logos the automatic pixel pass turns to mush
+  const techArt: Record<string, Sprite> = { Go: gopher, React: react, AWS: aws, Linux: tux, Git: git };
+  let hoveredTech = $state<string | null>(null);
 </script>
 
-<section id="about" class="relative py-28 sm:py-36">
+<section id="about" class="relative py-24 sm:py-32">
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
-    <SectionHeading index={1} title={t.heading.value} kicker={t.kicker.value} />
+    <SectionHeading title={t.heading.value} kicker={t.kicker.value} />
 
-    <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8">
-      <div class="flex flex-col gap-8 lg:col-span-5" use:reveal>
-        <p class="font-display text-3xl leading-tight font-light text-sand sm:text-4xl">
-          <span class="text-dust">{hello.value}</span><br />
-          Dalton Gomes <span class="italic text-clay">Lobato</span>.
-        </p>
+    <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
+      <!-- status card -->
+      <div class="flex flex-col gap-10 lg:col-span-5" use:reveal>
+        <div class="px-box px-dialog flex flex-col gap-1 p-5">
+          <span class="font-label text-[13px] text-mist uppercase">{hello.value}</span>
+          <span class="font-title text-[18px] leading-snug text-gold-hi sm:text-[22px]">Dalton Gomes Lobato</span>
+        </div>
 
-        <div class="flex flex-col gap-4 border-l border-clay/50 pl-5">
-          <span class="font-mono text-[11px] tracking-[0.16em] text-dust uppercase">{t.education.value}</span>
+        <div class="px-box px-parch flex flex-col gap-4 p-5">
+          <span class="flex items-center gap-2.5 font-title text-[11px] uppercase">
+            <PixelSprite sprite={book} scale={2} />
+            {t.education.value}
+          </span>
           {#each education as ed (ed.title)}
-            <div class="flex flex-col gap-0.5">
-              <span class="text-[15px] text-sand">{ed.subtitle.value}</span>
-              <span class="text-[14px] text-dust">{ed.title.value}</span>
-              <span class="font-mono text-[11px] text-dust/70">{ed.desc.value}</span>
+            <div class="flex flex-col gap-0.5 border-l-4 border-path pl-3">
+              <span class="text-[18px] leading-snug font-semibold">{ed.subtitle.value}</span>
+              <span class="text-[16px] leading-snug">{ed.title.value}</span>
+              <span class="font-label text-[12px] text-path-lo">{ed.desc.value}</span>
             </div>
           {/each}
         </div>
 
-        <div class="flex flex-col gap-1.5 border-l border-line pl-5">
-          <span class="font-mono text-[11px] tracking-[0.16em] text-dust uppercase">{t.languages.value}</span>
-          <span class="text-[14px] text-dust">{languages.value}</span>
+        <div class="px-box px-parch flex flex-col gap-1.5 p-5">
+          <span class="font-title text-[11px] uppercase">{t.languages.value}</span>
+          <span class="text-[17px]">{languages.value}</span>
         </div>
       </div>
 
-      <div class="flex flex-col gap-6 text-[17px] leading-[1.75] text-dust lg:col-span-7" use:reveal={1}>
+      <!-- the story itself, on a parchment page -->
+      <div class="px-box px-parch flex flex-col gap-5 p-6 text-[19px] leading-[1.6] sm:p-8 lg:col-span-7" use:reveal={1}>
         {#each paragraphs as p, i (i)}
-          <p class={i === 0 ? "text-sand/90" : ""}>
+          <p>
             {#each p as part, j (j)}
               {#if part.href}
                 <a
                   href={part.href}
                   target="_blank"
                   rel="noopener"
-                  class="text-sand underline decoration-clay/60 underline-offset-4 transition-colors duration-300 hover:text-clay"
+                  class="font-semibold text-water-lo underline decoration-2 underline-offset-4 hover:bg-gold-hi hover:text-bark"
                   >{part.text}</a
                 >
               {:else}
@@ -89,48 +107,57 @@
       </div>
     </div>
 
+    <!-- equipped items -->
     <div class="mt-24">
-      <h3 class="mb-8 font-mono text-[12px] tracking-[0.16em] text-dust uppercase" use:reveal>{t.focus.value}</h3>
-      <ul class="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {#each skills as s, i (s.icon)}
-          <li
-            class="group relative flex flex-col gap-5 overflow-hidden rounded-2xl border border-line bg-surface/60 p-6 backdrop-blur-sm
-            transition-[border-color,transform] duration-500 ease-[var(--ease-soft)] hover:-translate-y-1 hover:border-clay/40"
-            use:reveal={i}
-          >
-            <div
-              class="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-clay/10 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
-              aria-hidden="true"
-            ></div>
-            <div class="flex items-center justify-between">
-              <span class="grid h-11 w-11 place-items-center rounded-xl border border-line bg-ink/70">
-                {#if s.icon.startsWith("http")}
-                  <img
-                    src={s.icon}
-                    alt=""
-                    class="h-6 w-6 opacity-70 grayscale transition-all duration-500 group-hover:opacity-100 group-hover:grayscale-0"
-                    loading="lazy"
-                  />
-                {:else}
-                  <Icon name="lock" class="h-5 w-5 text-dust transition-colors duration-500 group-hover:text-clay" />
-                {/if}
+      <h3 class="mb-8 font-title text-[13px] text-snow uppercase px-outline-sm" use:reveal>{t.focus.value}</h3>
+      <ul class="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-6">
+        {#each skills as s, i (s.title.value)}
+          <li class="group px-box px-dialog flex flex-col gap-4 p-5" use:reveal={i} onmouseenter={() => sfx.cursor()}>
+            <div class="flex items-center gap-4">
+              <!-- hover: the slot frame turns gold, like a selected inventory slot -->
+              <span
+                class="px-box px-slot-dark grid h-16 w-16 shrink-0 place-items-center group-hover:[--c1:var(--color-gold-hi)]"
+              >
+                <span class="group-hover:hop"><PixelSprite sprite={s.art} scale={3} /></span>
               </span>
-              <span class="font-mono text-[11px] text-dust/70">0{i + 1}</span>
+              <h4 class="font-title text-[12px] leading-relaxed text-balance text-gold-hi uppercase">{s.title.value}</h4>
             </div>
-            <h4 class="font-display text-xl leading-snug text-sand">{s.title.value}</h4>
-            <p class="text-[14px] leading-relaxed text-dust">{s.desc.value}</p>
+            <p class="text-[17px] leading-relaxed text-snow/90">{s.desc.value}</p>
           </li>
         {/each}
       </ul>
     </div>
 
-    <div class="mt-20">
-      <h3 class="mb-8 font-mono text-[12px] tracking-[0.16em] text-dust uppercase" use:reveal>{t.stack.value}</h3>
-      <ul class="flex flex-wrap gap-2.5" use:reveal={1}>
-        {#each aboutJSON.techs as tech (tech.name)}
-          <SvgTech url={tech.url} name={tech.name} />
-        {/each}
-      </ul>
+    <!-- inventory -->
+    <div class="mt-24">
+      <h3 class="mb-8 font-title text-[13px] text-snow uppercase px-outline-sm" use:reveal>{t.stack.value}</h3>
+      <div class="px-box px-menu p-3 sm:p-6" use:reveal={1}>
+        <ul class="grid grid-cols-[repeat(auto-fill,minmax(60px,1fr))] gap-x-3 gap-y-4 sm:grid-cols-[repeat(auto-fill,minmax(76px,1fr))] sm:gap-4">
+          {#each aboutJSON.techs as tech (tech.name)}
+            <li
+              class="group flex flex-col items-center gap-2"
+              onmouseenter={() => {
+                hoveredTech = tech.name;
+                sfx.cursor();
+              }}
+              onmouseleave={() => (hoveredTech = null)}
+            >
+              <span class="px-box px-slot grid h-14 w-14 place-items-center sm:h-16 sm:w-16 group-hover:-translate-y-1">
+                {#if techArt[tech.name]}
+                  <PixelSprite sprite={techArt[tech.name]} scale={2} />
+                {:else}
+                  <PixelIcon src={devicon + tech.url} />
+                {/if}
+              </span>
+              <span
+                class="text-center font-label text-[11px] leading-tight uppercase {hoveredTech === tech.name
+                  ? 'text-gold-hi'
+                  : 'text-snow'}">{tech.name}</span
+              >
+            </li>
+          {/each}
+        </ul>
+      </div>
     </div>
   </div>
 </section>

@@ -8,8 +8,8 @@
     "ptBr": "Código que entrega. Sistemas que aguentam o tranco."
   },
   "paragraph": {
-    "ptBr": "Sou engenheiro de software full-stack e há mais de dois anos coloco sistemas em produção com Node.js (NestJS), Go, React e PostgreSQL na AWS. Hoje estou na Bestfy, um gateway de pagamento que já processou mais de R$47 milhões em transações, onde entrego funcionalidades que o cliente usa todo dia, reforço a segurança da aplicação e cuido de performance sob carga real.<br/>Nos meus projetos pessoais eu gosto de ir mais fundo: construí do zero um servidor de mídia WebRTC em Go e um motor de telemetria em Elixir/OTP que aguenta milhares de sensores sem perder evento. É isso que me faz pensar não só em entregar a feature, mas em como ela vai se comportar quando o sistema crescer.<br/>Hoje também estou construindo a [Diligens](https://app.diligensai.com.br/), um SaaS que coloca um assistente de IA dentro de ERPs, com API em Go, painel em SvelteKit e um SDK de chat que o cliente embute no próprio site.",
-    "enUs": "I'm a full-stack software engineer who has spent the last two-plus years putting systems into production with Node.js (NestJS), Go, React and PostgreSQL on AWS. Today I'm at Bestfy, a payment gateway that has processed more than R$47M in transactions, where I ship features customers use every day, harden application security and take care of performance under real load.<br/>In my own projects I like to go deeper: I built a WebRTC media server in Go from scratch and an Elixir/OTP telemetry engine that handles thousands of sensors without losing an event. That's what makes me think not only about shipping the feature, but about how it will behave once the system grows.<br/>I'm also building [Diligens](https://app.diligensai.com.br/), a SaaS that puts an AI assistant inside ERPs, with a Go API, a SvelteKit dashboard and a chat SDK that customers embed on their own site."
+    "ptBr": "Sou engenheiro de software full-stack, com mais de dois anos de experiência, e hoje trabalho com sistemas de pagamento na Bestfy.<br/>Formado em Ciência da Computação pela UFCA desde agosto de 2026. Antes da Bestfy, passei quase dois anos na Pináculo Digital, onde comecei a trabalhar com os mais variados projetos e tecnologias, das quais menciono aqui um sistema de orquestração de times com bate-papo e videochamada utilizando Golang com tecnologia WebRTC. Também liderei um pequeno time de back-end na Calang.io, uma empresa júnior de software.<br/>Paralelamente, desenvolvo a [DiligensAI](https://app.diligensai.com.br/), um assistente de IA que entra no painel de ERPs e checkouts e responde a perguntas com os dados da própria loja. Sou o único desenvolvedor, e o produto está em beta.<br/>Gosto de depuração, performance e segurança de aplicações, e tenho estudado Elixir/OTP para sistemas concorrentes.",
+    "enUs": "I'm a full-stack software engineer with more than two years of experience, and today I work on payment systems at Bestfy.<br/>I graduated in Computer Science from UFCA in August 2026. Before Bestfy, I spent almost two years at Pináculo Digital, where I started working on all kinds of projects and technologies. One I'd point out is a team orchestration system with chat and video calls, built in Go with WebRTC. I also led a small back-end team at Calang.io, a student-run software company.<br/>On the side, I'm building [DiligensAI](https://app.diligensai.com.br/), an AI assistant that plugs into ERP and checkout dashboards and answers questions using the store's own data. I'm the only developer, and the product is in beta.<br/>I enjoy debugging, performance and application security, and I've been studying Elixir/OTP for concurrent systems."
   },
 
   "skills": [
@@ -19,8 +19,8 @@
         "ptBr": "Back-end em produção"
       },
       "desc": {
-        "enUs": "APIs in NestJS and Go on top of PostgreSQL, Redis and AWS. I care about what happens after the deploy: I once took a production search from 9s down to 1.2s, and I keep errors visible with Sentry, Grafana and Prometheus.",
-        "ptBr": "APIs em NestJS e Go sobre PostgreSQL, Redis e AWS. Me importo com o que acontece depois do deploy: já levei uma busca em produção de 9s para 1,2s e mantenho os erros visíveis com Sentry, Grafana e Prometheus."
+        "enUs": "I build and maintain APIs that real customers rely on every day. I care as much about what happens after the deploy as before it, so I spend time on performance, monitoring and catching problems before users notice them.",
+        "ptBr": "Construo e mantenho APIs das quais clientes de verdade dependem todo dia. Me importo tanto com o que acontece depois do deploy quanto antes dele, então dedico tempo a performance, monitoramento e a encontrar os problemas antes que o usuário perceba."
       },
       "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nestjs/nestjs-original.svg"
     },
@@ -30,8 +30,8 @@
         "ptBr": "Pagamentos & segurança"
       },
       "desc": {
-        "enUs": "Checkout flows that move real money. I implemented 3D Secure (3DS2) on a public checkout, designed Redis sessions for horizontally scaled instances, and added CSRF protection, secure cookies and Cloudflare Turnstile against bots.",
-        "ptBr": "Fluxos de checkout que movimentam dinheiro de verdade. Implementei 3D Secure (3DS2) em um checkout público, desenhei sessões em Redis para instâncias escaladas horizontalmente e adicionei proteção CSRF, cookies seguros e Cloudflare Turnstile contra bots."
+        "enUs": "Most of my day-to-day is in payment systems, where a bug means someone's money. That taught me to treat security as part of the feature, from how sessions are stored to how the checkout protects itself against fraud and bots.",
+        "ptBr": "Boa parte do meu dia a dia é em sistemas de pagamento, onde um bug mexe com o dinheiro de alguém. Isso me ensinou a tratar segurança como parte da funcionalidade, desde como as sessões são guardadas até como o checkout se protege de fraude e de bots."
       },
       "icon": "lock"
     },
@@ -41,8 +41,8 @@
         "ptBr": "Tempo real & concorrência"
       },
       "desc": {
-        "enUs": "Low-level systems where timing matters: a WebRTC SFU with per-subscriber simulcast in Go, and event-driven telemetry with Elixir/OTP, ETS and Phoenix LiveView.",
-        "ptBr": "Sistemas de baixo nível em que o tempo importa: um SFU WebRTC com simulcast por inscrito em Go e telemetria orientada a eventos com Elixir/OTP, ETS e Phoenix LiveView."
+        "enUs": "I also like systems where timing matters, like video calls and live data. It's where I've been learning the most lately, mostly with Go and Elixir.",
+        "ptBr": "Também gosto de sistemas em que o tempo importa, como videochamadas e dados ao vivo. É onde mais tenho aprendido ultimamente, principalmente com Go e Elixir."
       },
       "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/go/go-original-wordmark.svg"
     }
@@ -62,7 +62,7 @@
     { "url": "sqlite/sqlite-original.svg", "name": "SQLite" },
     { "url": "prisma/prisma-original.svg", "name": "Prisma" },
     { "url": "rabbitmq/rabbitmq-original.svg", "name": "RabbitMQ" },
-    { "url": "amazonwebservices/amazonwebservices-plain-wordmark.svg", "name": "AWS" },
+    { "url": "amazonwebservices/amazonwebservices-original.svg", "name": "AWS" },
     { "url": "docker/docker-original.svg", "name": "Docker" },
     { "url": "cloudflare/cloudflare-original.svg", "name": "Cloudflare" },
     { "url": "linux/linux-original.svg", "name": "Linux" },

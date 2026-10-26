@@ -1,11 +1,14 @@
 <script lang="ts">
   import Button from "$lib/comps/Button.svelte";
   import Icon from "$lib/comps/Icon.svelte";
-  import globalState from "$lib/utils/global.svelte";
-  import { Text } from "$lib/utils/lang.svelte";
+  import DialogBox from "$lib/pixel/DialogBox.svelte";
+  import PixelSprite from "$lib/pixel/PixelSprite.svelte";
+  import { dalton, daltonHi, groundShadow, nextArrow, sparkle } from "$lib/pixel/sprites.js";
+  import Soldadinho from "$lib/pixel/Soldadinho.svelte";
+  import language, { Text } from "$lib/utils/lang.svelte";
   import { reveal } from "$lib/utils/reveal.js";
   import { resumeUrl } from "$lib/utils/resume.js";
-  import aboutJSON from "$lib/json/about.json" with { type: "json" };
+  import sfx from "$lib/utils/sfx.svelte";
   import homeJSON from "$lib/json/home.json" with { type: "json" };
   import ui from "$lib/json/ui.json" with { type: "json" };
 
@@ -13,137 +16,156 @@
     keyof typeof ui.hero,
     Text
   >;
+  const speaker = new Text(ui.dialog.speaker);
 
-  const catchPhrase = new Text(aboutJSON.catchPhrase);
-  const doing = new Text(homeJSON.doing);
-
-  const current = aboutJSON.timeline.find((j) => j.to === null);
   const resume = new Text(resumeUrl);
+
+  const socials = [
+    { href: ui.links.github, label: "GitHub", icon: "github" },
+    { href: ui.links.linkedin, label: "LinkedIn", icon: "linkedin" },
+  ] as const;
+
+  // Soldadinho introduces Dalton in his own words; the whole line lives in ui.json (hero.greet)
+  let line = $derived(t.greet.value);
+
+  // hover (or tap) Dalton and he raises his hand and says hi
+  let hi = $state(false);
+  let hiTimer: ReturnType<typeof setTimeout> | undefined;
+  function sayHi() {
+    if (!hi) sfx.hi(language.value);
+    hi = true;
+  }
+  // a tap has no "leave", so on touch the hand comes down by itself
+  function tapHi() {
+    sayHi();
+    clearTimeout(hiTimer);
+    hiTimer = setTimeout(() => (hi = false), 1600);
+  }
+  $effect(() => () => clearTimeout(hiTimer));
 </script>
 
-<section id="home" class="relative flex min-h-svh flex-col justify-center overflow-hidden pt-24 pb-16">
-  <!-- dusk: a warm horizon glow sitting behind the hero -->
-  <div
-    class="pointer-events-none absolute inset-x-0 -top-40 h-[640px]"
-    style="background: radial-gradient(ellipse 60% 55% at 72% 30%, rgb(232 116 74 / 0.13), transparent 70%), radial-gradient(ellipse 40% 35% at 20% 10%, rgb(242 197 124 / 0.05), transparent 70%);"
-    aria-hidden="true"
-  ></div>
-
-  <div class="relative mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-14 px-5 sm:px-8 lg:grid-cols-12 lg:gap-8">
+<section id="home" class="relative flex min-h-svh flex-col justify-center pt-32 pb-24 sm:pt-28">
+  <div class="relative mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-14 px-5 sm:px-8 lg:grid-cols-12 lg:gap-10">
     <div class="flex flex-col lg:col-span-7">
-      {#if current}
-        <p
-          class="mb-8 inline-flex w-fit items-center gap-2.5 whitespace-nowrap rounded-full border border-line bg-surface/70 px-3.5 py-1.5 font-mono text-[11px] tracking-[0.08em] text-dust backdrop-blur-sm"
-          use:reveal={0}
-        >
-          <span class="relative flex h-1.5 w-1.5">
-            <span class="absolute inset-0 animate-ping rounded-full bg-clay/70 [animation-duration:2.4s]"></span>
-            <span class="relative h-1.5 w-1.5 rounded-full bg-clay"></span>
-          </span>
-          {t.currently.value} <span class="text-sand">{current.title}</span>
-          <span class="hidden text-dust/40 sm:inline">·</span>
-          <span class="hidden sm:inline">{t.location.value}</span>
-        </p>
-      {/if}
-
-      <p class="mb-3 font-mono text-[12px] tracking-[0.2em] text-clay uppercase" use:reveal={1}>
+      <p class="mb-4 font-title text-[11px] leading-relaxed text-path-hi uppercase px-outline-sm sm:text-[13px]" use:reveal={1}>
         {t.role.value}
       </p>
 
       <h1
-        class="font-display font-soft text-[clamp(3.6rem,12vw,8.5rem)] leading-[0.88] font-light tracking-[-0.035em] text-sand"
+        class="font-title text-[clamp(2.4rem,9vw,5rem)] leading-[1.15] text-gold-hi uppercase px-outline"
         use:reveal={2}
       >
         Dalton<br />
-        <span class="italic text-clay">Gomes</span><span class="text-sun">.</span>
+        <span class="text-snow">Gomes</span>
       </h1>
 
-      <p
-        class="mt-8 max-w-xl font-display text-2xl leading-snug font-light text-sand/90 text-balance sm:text-[1.9rem]"
-        use:reveal={3}
-      >
-        {catchPhrase.value}
-      </p>
-      <p class="mt-3 max-w-lg text-[15px] leading-relaxed text-dust" use:reveal={4}>
-        {doing.value}
-      </p>
+      <div class="mt-10" use:reveal={3}>
+        <DialogBox speaker={speaker.value} text={line} cps={60}>
+          <!-- 6px inset = the button's pixel border, so its visible edge lines up with the text -->
+          <div class="grid grid-cols-1 gap-7 px-1.5 pt-2 sm:grid-cols-2">
+            <Button href="#projects" class="w-full">{t.ctaProjects.value}</Button>
+            <Button href="#contact" variant="ghost" class="w-full">{t.ctaContact.value}</Button>
+            <Button href={resume.value} variant="gold" external class="w-full sm:col-span-2">
+              <Icon name="download" class="h-4 w-4" />
+              {t.resume.value}
+            </Button>
+          </div>
+        </DialogBox>
+      </div>
 
-      <div class="mt-10 flex flex-wrap items-center gap-3" use:reveal={5}>
-        <Button href="#contact">
-          {t.ctaContact.value}
-          <Icon name="arrow" class="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
-        </Button>
-        <Button href="#projects" variant="ghost">{t.ctaProjects.value}</Button>
-        <Button href={resume.value} variant="ghost" external>
-          <Icon name="download" class="h-4 w-4" />
-          {t.resume.value}
-        </Button>
-
-        <span class="mx-1 hidden h-6 w-px bg-line sm:block"></span>
-
-        <a
-          href={ui.links.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="GitHub"
-          class="grid h-11 w-11 place-items-center rounded-full text-dust transition-colors duration-300 hover:text-clay"
-        >
-          <Icon name="github" class="h-5 w-5" />
-        </a>
-        <a
-          href={ui.links.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="LinkedIn"
-          class="grid h-11 w-11 place-items-center rounded-full text-dust transition-colors duration-300 hover:text-clay"
-        >
-          <Icon name="linkedin" class="h-[18px] w-[18px]" />
-        </a>
+      <div class="mt-8 flex items-center gap-5 pl-1" use:reveal={4}>
+        {#each socials as l (l.label)}
+          <a
+            href={l.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={l.label}
+            class="px-box px-slot-dark grid h-12 w-12 place-items-center text-snow hover:text-gold-hi"
+          >
+            <Icon name={l.icon} class="h-8 w-8" />
+          </a>
+        {/each}
       </div>
     </div>
 
-    <div class="relative mx-auto w-full max-w-[280px] sm:max-w-[320px] lg:col-span-5 lg:max-w-[380px]" use:reveal={2}>
-      <!-- setting sun behind the arch -->
-      <div
-        class="sun-disc pointer-events-none absolute -top-6 -right-4 aspect-square w-[78%] rounded-full sm:-top-10 sm:-right-10"
-        aria-hidden="true"
-      ></div>
-
-      <div class="relative aspect-[4/5] overflow-hidden rounded-t-full rounded-b-[28px] border border-line bg-surface">
-        <img
-          src="{globalState.basePath}/photo.webp"
-          alt="Dalton Gomes"
-          class="h-full w-full scale-[1.04] object-cover object-[50%_20%] saturate-[0.8] sepia-[0.25] hue-rotate-[-8deg]"
-          fetchpriority="high"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/5 to-transparent" aria-hidden="true"></div>
-        <div class="absolute inset-0 rounded-t-full rounded-b-[28px] ring-1 ring-sand/5 ring-inset" aria-hidden="true"></div>
-
-        <div
-          class="absolute inset-0 bg-gradient-to-b from-clay/25 via-sun/5 to-transparent mix-blend-soft-light"
-          aria-hidden="true"
-        ></div>
-        <span class="absolute bottom-4 left-5 font-mono text-[10px] tracking-[0.18em] text-sun/80 uppercase">
-          {homeJSON.stack}
+    <!-- Dalton in pixel form, standing in the field breathing, with the soldadinho at his feet -->
+    <div class="relative mx-auto flex w-full max-w-[300px] flex-col items-center lg:col-span-5 lg:max-w-[340px]" use:reveal={2}>
+      <div class="relative flex flex-col items-center">
+        <span class="absolute -top-4 right-2 z-10 blink sm:right-[20px]" aria-hidden="true"><PixelSprite sprite={sparkle} scale={4} fps={3} /></span>
+        <span class="absolute top-1/3 left-0 z-10 blink [animation-delay:.5s] sm:left-[12px]" aria-hidden="true"
+          ><PixelSprite sprite={sparkle} scale={3} fps={3} /></span
+        >
+        <button
+          type="button"
+          class="relative z-[1] cursor-pointer"
+          aria-label="Dalton Gomes, say hi"
+          onmouseenter={sayHi}
+          onmouseleave={() => (hi = false)}
+          onclick={tapHi}
+        >
+          {#if hi}
+            <span class="hi-bubble absolute -top-2 right-10 z-10 font-title text-[16px] whitespace-nowrap text-ink uppercase sm:-top-1 sm:right-12 sm:text-[20px]" aria-hidden="true"
+              >{t.hi.value}</span
+            >
+          {/if}
+          <PixelSprite sprite={hi ? daltonHi : dalton} scale={4} fps={hi ? 0 : 3} class="sm:hidden" />
+          <PixelSprite sprite={hi ? daltonHi : dalton} scale={5} fps={hi ? 0 : 3} class="hidden sm:block" />
+        </button>
+        <span class="-mt-5 sm:-mt-8" aria-hidden="true">
+          <PixelSprite sprite={groundShadow} scale={8} class="sm:hidden" />
+          <PixelSprite sprite={groundShadow} scale={10} class="hidden sm:block" />
         </span>
+        <span class="absolute -right-4 bottom-3 hop sm:-right-5" aria-hidden="true"
+          ><Soldadinho scale={3} /></span
+        >
       </div>
+
+      <span class="mt-6 px-box px-wood px-3 py-1.5 font-label text-[12px] tracking-wide">{homeJSON.stack}</span>
     </div>
   </div>
+
+  <a
+    href="#about"
+    class="absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 font-label text-[12px] text-snow uppercase px-outline-sm"
+  >
+    {t.scroll.value}
+    <span class="bob"><PixelSprite sprite={nextArrow} scale={3} /></span>
+  </a>
 </section>
 
 <style>
-  .sun-disc {
-    background: radial-gradient(circle at 40% 40%, rgb(242 197 124 / 0.22), rgb(232 116 74 / 0.12) 45%, transparent 70%);
-    filter: blur(8px);
-    animation: drift 18s ease-in-out infinite alternate;
+  /* speech bubble beside his head (the waving hand is on the other side), tail pointing at him */
+  .hi-bubble {
+    padding: 6px 10px 4px;
+    background: var(--color-snow);
+    box-shadow:
+      0 -3px 0 0 var(--color-ink),
+      0 3px 0 0 var(--color-ink),
+      -3px 0 0 0 var(--color-ink),
+      3px 0 0 0 var(--color-ink);
+    animation: hi-pop 0.18s steps(3) both;
   }
-  @keyframes drift {
-    to {
-      transform: translate(-14px, 10px) scale(1.04);
+  .hi-bubble::after {
+    content: "";
+    position: absolute;
+    left: -9px;
+    bottom: -9px;
+    width: 9px;
+    height: 9px;
+    background: var(--color-snow);
+    box-shadow:
+      -3px 0 0 0 var(--color-ink),
+      0 3px 0 0 var(--color-ink),
+      3px 0 0 0 var(--color-ink);
+  }
+  @keyframes hi-pop {
+    from {
+      transform: translateY(6px) scale(0.6);
+      opacity: 0;
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .sun-disc {
+    .hi-bubble {
       animation: none;
     }
   }

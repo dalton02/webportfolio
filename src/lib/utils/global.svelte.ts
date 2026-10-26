@@ -19,8 +19,15 @@ export const headerSections: { label: Text; id: SectionsType }[] = [
   { label: new Text(ui.nav.contact), id: "contact" },
 ];
 
+/** Every room, in page order, for the pause-menu map. */
+export const allSections: { label: Text; id: SectionsType }[] = [
+  { label: new Text(ui.nav.home), id: "home" },
+  ...headerSections,
+];
+
 class Global {
   activeSection = $state<SectionsType>("home");
+  menuOpen = $state(false);
   basePath = dev ? "" : "/webportfolio";
 }
 

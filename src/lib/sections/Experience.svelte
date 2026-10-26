@@ -1,6 +1,9 @@
 <script lang="ts">
   import { differenceInMonths, format } from "date-fns";
   import SectionHeading from "$lib/comps/SectionHeading.svelte";
+  import PixelSprite from "$lib/pixel/PixelSprite.svelte";
+  import { sign } from "$lib/pixel/sprites.js";
+  import Soldadinho from "$lib/pixel/Soldadinho.svelte";
   import language, { Text } from "$lib/utils/lang.svelte";
   import { firstCap } from "$lib/utils/text.js";
   import { reveal } from "$lib/utils/reveal.js";
@@ -40,56 +43,75 @@
   }
 </script>
 
-<section id="experience" class="relative py-28 sm:py-36">
+<section id="experience" class="relative py-24 sm:py-32">
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
-    <SectionHeading index={2} title={t.heading.value} kicker={t.kicker.value} />
+    <!--
+      The dirt road is painted by the Background canvas through these [data-trail] anchors.
+      On wide screens it comes in from the left edge, turns at the room's signpost, runs down
+      the margin and swings over to the signs; on smaller ones it starts in a clearing.
+    -->
+    <div class="relative flow-root xl:pb-8">
+      <SectionHeading title={t.heading.value} kicker={t.kicker.value} />
+      <span data-trail="0" data-trail-edge class="anchor hidden top-[44px] left-[-56px] xl:block"></span>
+      <span data-trail="1" class="anchor hidden bottom-[56px] left-[-56px] xl:block"></span>
+      <span data-trail="2" class="anchor hidden bottom-[40px] left-[calc(50%-110px)] xl:block"></span>
+      <span data-trail="2" class="anchor hidden bottom-[20px] left-1/2 md:block xl:hidden"></span>
+      <span data-trail="2" class="anchor bottom-[16px] left-[26px] md:hidden"></span>
+    </div>
 
-    <ol class="border-b border-line">
-      {#each jobs as job (job.company + job.from.getTime())}
-        {@const current = job.to === null}
-        <li
-          class="group relative isolate grid grid-cols-1 gap-4 border-t border-line py-9 transition-colors duration-500 md:grid-cols-12 md:gap-8"
-          use:reveal
-        >
-          <div
-            class="pointer-events-none absolute inset-y-0 -inset-x-4 -z-10 rounded-2xl bg-surface/0 transition-colors duration-500 group-hover:bg-surface/50 sm:-inset-x-6"
-            aria-hidden="true"
-          ></div>
-
-          <div class="flex flex-col gap-1.5 font-mono text-[12px] tracking-[0.04em] text-dust md:col-span-3">
-            <span class="flex items-center gap-2.5">
+    <!-- each job is a signpost along the road -->
+    <div class="relative">
+      <span data-trail="3" class="anchor hidden top-[40px] left-1/2 md:block"></span>
+      <span data-trail="4" class="anchor bottom-[-48px] left-1/2 hidden md:block"></span>
+      <span data-trail="4" class="anchor bottom-[-48px] left-[26px] md:hidden"></span>
+      <ol class="relative">
+        {#each jobs as job, i (job.company + job.from.getTime())}
+          {@const current = job.to === null}
+          {@const right = i % 2 === 1}
+          <li class="relative grid grid-cols-[52px_1fr] gap-3 pb-16 last:pb-4 md:grid-cols-[1fr_96px_1fr] md:gap-6">
+            <div class="relative col-start-1 row-start-1 flex justify-center pt-1 md:col-start-2">
+              <PixelSprite sprite={sign} scale={3} />
               {#if current}
-                <span class="relative flex h-1.5 w-1.5">
-                  <span class="absolute inset-0 animate-ping rounded-full bg-clay/70 [animation-duration:2.4s]"></span>
-                  <span class="relative h-1.5 w-1.5 rounded-full bg-clay"></span>
+                <span class="absolute top-0 -right-6 hidden hop md:block" aria-hidden="true">
+                  <Soldadinho scale={2} />
                 </span>
               {/if}
-              {fmt(job.from)} — {job.to ? fmt(job.to) : t.present.value}
-            </span>
-            <span class="text-dust/60">{duration(job.from, job.to)}</span>
-            <span class="text-dust/60">{job.location.value}</span>
-          </div>
+            </div>
 
-          <div class="flex flex-col gap-1 md:col-span-4">
-            <h3 class="flex items-center gap-3 font-display text-2xl leading-tight text-sand transition-transform duration-500 ease-[var(--ease-soft)] group-hover:translate-x-1 sm:text-[1.7rem]">
-              {job.company}
-              {#if current}
-                <span class="rounded-full border border-clay/40 bg-clay/10 px-2 py-0.5 font-mono text-[10px] tracking-[0.16em] text-clay uppercase">
-                  {t.now.value}
+            <article
+              class="px-box px-parch col-start-2 row-start-1 flex flex-col gap-3 p-5 sm:p-6
+              {right ? 'md:col-start-3' : 'md:col-start-1'}"
+              use:reveal
+            >
+              <header class="flex flex-col gap-1">
+                <div class="flex flex-wrap items-center gap-3">
+                  <h3 class="font-title text-[15px] leading-snug sm:text-[17px]">{job.company}</h3>
+                  {#if current}
+                    <span class="bg-heart px-2 py-1 font-label text-[11px] text-snow uppercase blink">{t.here.value}</span>
+                  {/if}
+                </div>
+                <span class="text-[18px] font-semibold text-grass-lo">{job.role.value}</span>
+                {#if job.note}
+                  <span class="font-label text-[12px] text-gold-lo">↑ {job.note.value}</span>
+                {/if}
+                <span class="font-label text-[12px] text-path-lo uppercase">
+                  {fmt(job.from)} — {job.to ? fmt(job.to) : t.present.value} · {duration(job.from, job.to)} · {job.location.value}
                 </span>
-              {/if}
-            </h3>
-            <span class="text-[14px] text-clay/90">{job.role.value}</span>
-            {#if job.note}
-              <span class="font-mono text-[11px] tracking-[0.04em] text-sun/80">↑ {job.note.value}</span>
-            {/if}
-          </div>
-
-          <p class="text-[15px] leading-relaxed text-dust md:col-span-5">
-            {job.highlights.value}
-          </p>
-        </li>
-      {/each}
-    </ol>
+              </header>
+              <p class="text-[17px] leading-relaxed">{job.highlights.value}</p>
+            </article>
+          </li>
+        {/each}
+      </ol>
+    </div>
   </div>
 </section>
+
+<style>
+  .anchor {
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+</style>

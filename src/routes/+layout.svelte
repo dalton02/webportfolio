@@ -28,6 +28,24 @@
   <meta name="description" content={description.value} />
 </svelte:head>
 
+<!--
+  Mosaic filters for the room-entry reveal (layout.css → px-mosaic).
+  Sample one pixel per n×n block, then grow it back to fill the block.
+-->
+<svg width="0" height="0" class="absolute" aria-hidden="true">
+  <defs>
+    {#each [2, 4, 8, 12] as n (n)}
+      <filter id="px-mosaic-{n}" x="0" y="0" width="100%" height="100%">
+        <feFlood x={n / 2} y={n / 2} width="1" height="1" />
+        <feComposite width={n} height={n} />
+        <feTile result="grid" />
+        <feComposite in="SourceGraphic" in2="grid" operator="in" />
+        <feMorphology operator="dilate" radius={n / 2} />
+      </filter>
+    {/each}
+  </defs>
+</svg>
+
 <Background />
 {#if mounted}
   <Header />

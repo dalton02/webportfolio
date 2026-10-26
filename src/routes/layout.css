@@ -2,78 +2,274 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
+/*
+  GBA overworld palette. Every channel is a multiple of 8, like the console's
+  15-bit colour, so nothing drifts into a "modern" in-between tone.
+*/
 @theme {
-  --color-ink: #121014;
-  --color-surface: #1a171d;
-  --color-line: #2a2530;
-  --color-sand: #efe4d6;
-  --color-dust: #9a8f8a;
-  --color-clay: #e8744a;
-  --color-sun: #f2c57c;
+  --color-grass-hi: #88d058;
+  --color-grass: #58a840;
+  --color-grass-lo: #307830;
+  --color-grass-deep: #184818;
 
-  --font-display: "Fraunces", ui-serif, Georgia, serif;
-  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, monospace;
+  --color-path-hi: #f8e0a0;
+  --color-path: #e0b070;
+  --color-path-lo: #b07848;
+  --color-path-deep: #704828;
 
-  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --color-sky: #a8d8f8;
+  --color-water: #4890e0;
+  --color-water-lo: #2858a8;
+
+  --color-heart: #f83838;
+  --color-heart-lo: #c81818;
+  --color-gem: #40d840;
+  --color-gem-blue: #58a8f8;
+  --color-gem-red: #f85858;
+  --color-gold-hi: #f8e070;
+  --color-gold: #e0a820;
+  --color-gold-lo: #985800;
+
+  --color-night: #101828;
+  --color-night-hi: #283860;
+  --color-snow: #f8f8f8;
+  --color-mist: #b8c0d0;
+  --color-ink: #181018;
+  --color-parch: #f8f0d0;
+  --color-parch-lo: #e8d8a8;
+  --color-bark: #482810;
+  --color-menu: #2850a0;
+
+  --font-pixel: "Pixelify Sans", ui-monospace, monospace;
+  --font-title: "Press Start 2P", ui-monospace, monospace;
+  --font-label: "Silkscreen", ui-monospace, monospace;
+  --font-sans: var(--font-pixel);
 }
 
 @layer base {
   html {
-    color-scheme: dark;
+    color-scheme: light;
     scroll-behavior: smooth;
-    scrollbar-color: var(--color-line) transparent;
-    scrollbar-width: thin;
+    scrollbar-color: var(--color-grass-lo) var(--color-grass-deep);
   }
 
   body {
-    @apply bg-ink font-sans text-sand antialiased;
-    font-optical-sizing: auto;
-    /* safety net: decorative bits (glows, outlined numbers) must never cause sideways scroll */
+    @apply bg-grass font-pixel text-snow;
+    font-size: 18px;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+    font-smooth: never;
+    /* safety net: decorative sprites must never cause sideways scroll */
     overflow-x: clip;
   }
 
+  img,
+  canvas,
+  svg {
+    image-rendering: pixelated;
+  }
+
   ::selection {
-    background: color-mix(in oklab, var(--color-clay) 32%, transparent);
-    color: var(--color-sand);
+    background: var(--color-gold-hi);
+    color: var(--color-ink);
   }
 
   section[id] {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: 4.5rem;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-clay);
-    outline-offset: 3px;
-    border-radius: 4px;
+    outline: 3px dashed var(--color-gold-hi);
+    outline-offset: 4px;
   }
 }
 
-@utility font-soft {
-  font-variation-settings: "SOFT" 100, "opsz" 144;
+/*
+  Pixel frames. The notched, two-ring border is built from hard box-shadows
+  (no radius, no blur), the same trick NES.css uses. Shadows don't take layout
+  space, so frames need ~2 * --px of room around them.
+*/
+@layer components {
+  .px-box {
+    --px: 3px;
+    --c1: var(--color-snow);
+    --c2: var(--color-ink);
+    --fill: var(--color-night);
+    --drop: rgb(24 16 24 / 0.35);
+    position: relative;
+    background: var(--fill);
+    box-shadow:
+      0 calc(-1 * var(--px)) 0 0 var(--c1),
+      0 var(--px) 0 0 var(--c1),
+      calc(-1 * var(--px)) 0 0 0 var(--c1),
+      var(--px) 0 0 0 var(--c1),
+      calc(-1 * var(--px)) calc(-1 * var(--px)) 0 0 var(--c2),
+      var(--px) calc(-1 * var(--px)) 0 0 var(--c2),
+      calc(-1 * var(--px)) var(--px) 0 0 var(--c2),
+      var(--px) var(--px) 0 0 var(--c2),
+      0 calc(-2 * var(--px)) 0 0 var(--c2),
+      0 calc(2 * var(--px)) 0 0 var(--c2),
+      calc(-2 * var(--px)) 0 0 0 var(--c2),
+      calc(2 * var(--px)) 0 0 0 var(--c2),
+      0 calc(4 * var(--px)) 0 0 var(--drop);
+  }
+
+  .px-dialog {
+    --fill: rgb(16 24 40 / 0.95);
+    color: var(--color-snow);
+  }
+  .px-parch {
+    --fill: var(--color-parch);
+    --c1: var(--color-path-lo);
+    --c2: var(--color-bark);
+    color: var(--color-bark);
+  }
+  .px-wood {
+    --fill: var(--color-path-lo);
+    --c1: var(--color-path);
+    --c2: var(--color-bark);
+    color: var(--color-parch);
+  }
+  .px-menu {
+    --fill: var(--color-menu);
+    --c1: var(--color-gold-hi);
+    --c2: var(--color-ink);
+    color: var(--color-snow);
+  }
+  .px-gold {
+    --c1: var(--color-gold-hi);
+    --c2: var(--color-gold-lo);
+  }
+  .px-slot {
+    --px: 2px;
+    --fill: var(--color-parch-lo);
+    --c1: var(--color-path-lo);
+    --c2: var(--color-bark);
+    --drop: transparent;
+  }
+  .px-slot-dark {
+    --px: 2px;
+    --fill: var(--color-night-hi);
+    --c1: var(--color-mist);
+    --c2: var(--color-ink);
+    --drop: transparent;
+  }
+
+  /* hard text outline for titles sitting straight on the grass */
+  .px-outline {
+    text-shadow:
+      3px 0 0 var(--color-ink),
+      -3px 0 0 var(--color-ink),
+      0 3px 0 var(--color-ink),
+      0 -3px 0 var(--color-ink),
+      3px 3px 0 var(--color-ink),
+      -3px 3px 0 var(--color-ink),
+      3px -3px 0 var(--color-ink),
+      -3px -3px 0 var(--color-ink),
+      0 6px 0 var(--color-ink);
+  }
+  .px-outline-sm {
+    text-shadow:
+      2px 0 0 var(--color-ink),
+      -2px 0 0 var(--color-ink),
+      0 2px 0 var(--color-ink),
+      0 -2px 0 var(--color-ink),
+      2px 2px 0 var(--color-ink),
+      -2px 2px 0 var(--color-ink),
+      2px -2px 0 var(--color-ink),
+      -2px -2px 0 var(--color-ink);
+  }
 }
 
-/* scroll reveal — see $lib/utils/reveal.ts */
+/* GBA-style motion: a handful of frames, no easing curves */
+@utility blink {
+  animation: px-blink 1s steps(1) infinite;
+}
+@utility bob {
+  animation: px-bob 0.6s linear infinite;
+}
+@utility hop {
+  animation: px-hop 1.2s linear infinite;
+}
+
+@keyframes px-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes px-bob {
+  0%,
+  49.9% {
+    transform: translateY(0);
+  }
+  50%,
+  100% {
+    transform: translateY(3px);
+  }
+}
+@keyframes px-hop {
+  0%,
+  70% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(-6px);
+  }
+  85% {
+    transform: translateY(-9px);
+  }
+  95% {
+    transform: translateY(-3px);
+  }
+}
+
+/*
+  Scroll reveal (see $lib/utils/reveal.ts): each block "mosaics" in, the way
+  GBA rooms faded through the hardware mosaic. Filters live in +layout.svelte.
+*/
 [data-reveal] {
   opacity: 0;
-  transform: translateY(12px);
-  transition:
-    opacity 0.9s var(--ease-soft),
-    transform 0.9s var(--ease-soft);
-  transition-delay: calc(var(--d, 0) * 90ms);
 }
 [data-reveal="in"] {
-  opacity: 1;
-  transform: none;
+  /* steps(1) per keyframe: the filter snaps 12 → 8 → 4 → 2 → sharp */
+  animation: px-mosaic 0.5s steps(1, end) both;
+  animation-delay: calc(var(--d, 0) * 110ms);
 }
-
+@keyframes px-mosaic {
+  0% {
+    opacity: 0;
+    filter: url(#px-mosaic-12);
+  }
+  20% {
+    opacity: 1;
+    filter: url(#px-mosaic-12);
+  }
+  40% {
+    filter: url(#px-mosaic-8);
+  }
+  60% {
+    filter: url(#px-mosaic-4);
+  }
+  80% {
+    filter: url(#px-mosaic-2);
+  }
+  100% {
+    opacity: 1;
+    filter: none;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  [data-reveal] {
+  [data-reveal],
+  [data-reveal="in"] {
     opacity: 1;
-    transform: none;
-    transition: none;
+    animation: none;
+  }
+  .blink,
+  .bob,
+  .hop {
+    animation: none;
   }
 }

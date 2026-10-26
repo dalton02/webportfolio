@@ -33,3 +33,6 @@ resume/*.log
 resume/*.out
 resume/*.fls
 resume/*.fdb_latexmk
+
+# Currículos adaptados por vaga (skill resume-to): ficam só na máquina
+resume/vagas/

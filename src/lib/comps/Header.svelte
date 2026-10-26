@@ -1,58 +1,63 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { fade, fly } from "svelte/transition";
-  import { quintOut } from "svelte/easing";
-  import globalState, { headerSections } from "$lib/utils/global.svelte";
+  import PixelSprite from "$lib/pixel/PixelSprite.svelte";
+  import PauseMenu from "$lib/pixel/PauseMenu.svelte";
+  import { heart } from "$lib/pixel/sprites.js";
+  import globalState, { type SectionsType } from "$lib/utils/global.svelte";
   import language, { Text } from "$lib/utils/lang.svelte";
+  import sfx from "$lib/utils/sfx.svelte";
   import ui from "$lib/json/ui.json" with { type: "json" };
 
-  let list = $state<HTMLUListElement>();
+  const t = Object.fromEntries(Object.entries(ui.hud).map(([k, v]) => [k, new Text(v)])) as Record<
+    keyof typeof ui.hud,
+    Text
+  >;
+
+  const HEARTS = 5;
+
+  /** scroll progress in quarter-hearts; you always start with one full heart */
+  let quarters = $state(4);
   let scrolled = $state(false);
-  let open = $state(false);
-  let slider = $state({ x: 0, width: 0, ready: false });
+  /** HUD tucks away while you walk down the page and comes back on scroll up */
+  let goingDown = $state(false);
+  /** mouse resting where the HUD lives */
+  let peek = $state(false);
+  let focused = $state(false);
 
-  let activeIndex = $derived(headerSections.findIndex((s) => s.id === globalState.activeSection));
-
-  const talk = new Text(ui.nav.talk);
-  const menu = new Text(ui.nav.menu);
-  const close = new Text(ui.nav.close);
-
-  function measure() {
-    if (!list || activeIndex < 0) {
-      slider.ready = false;
-      return;
-    }
-    const item = list.children[activeIndex] as HTMLElement | undefined;
-    if (!item) return;
-    const listRect = list.getBoundingClientRect();
-    const itemRect = item.getBoundingClientRect();
-    slider = { x: itemRect.left - listRect.left, width: itemRect.width, ready: true };
-  }
-
-  $effect(() => {
-    // re-measure when the active section changes or labels change width
-    void activeIndex;
-    void language.value;
-    measure();
-  });
-
-  $effect(() => {
-    if (!list) return;
-    const ro = new ResizeObserver(measure);
-    ro.observe(list);
-    for (const child of Array.from(list.children)) ro.observe(child);
-    return () => ro.disconnect();
-  });
+  let hidden = $derived(scrolled && goingDown && !peek && !focused && !globalState.menuOpen);
 
   onMount(() => {
-    const onScroll = () => (scrolled = window.scrollY > 24);
+    sfx.init();
+
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      // a few px of slack so tiny trackpad jitters don't flicker the HUD
+      if (Math.abs(y - lastY) > 6) {
+        goingDown = y > lastY;
+        lastY = y;
+      }
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const p = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+      quarters = 4 + Math.round(p * (HEARTS - 1) * 4);
+      scrolled = window.scrollY > 24;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
+
+    // the zone grows a bit once the HUD is out, so it doesn't drop the moment you reach a button
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType === "mouse") peek = e.clientY < (hidden ? 48 : 96);
+    };
+    const onLeave = () => (peek = false);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    document.documentElement.addEventListener("pointerleave", onLeave);
 
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
-          if (e.isIntersecting) globalState.activeSection = e.target.id as typeof globalState.activeSection;
+          if (!e.isIntersecting) continue;
+          globalState.activeSection = e.target.id as SectionsType;
         }
       },
       { rootMargin: "-45% 0px -50% 0px" },
@@ -61,113 +66,202 @@
 
     return () => {
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("pointermove", onMove);
+      document.documentElement.removeEventListener("pointerleave", onLeave);
       io.disconnect();
     };
   });
 
-  function toggleLanguage() {
-    language.toggle();
+  /** The HUD keys do what their badges say: B sound, A language, R (or M) menu. */
+  function onKey(e: KeyboardEvent) {
+    const typing = (e.target as HTMLElement | null)?.closest("input, textarea, select, [contenteditable]");
+    if (typing || e.defaultPrevented || e.repeat || e.ctrlKey || e.metaKey || e.altKey || globalState.menuOpen) return;
+    const key = e.key.toLowerCase();
+    if (key === "b") sfx.toggle();
+    else if (key === "a") {
+      language.toggle();
+      sfx.cursor();
+    } else if (key === "r" || key === "m") openMenu();
+    else return;
+    e.preventDefault();
+  }
+
+  function openMenu() {
+    sfx.select();
+    globalState.menuOpen = true;
   }
 </script>
 
-<svelte:window onkeydown={(e) => e.key === "Escape" && (open = false)} />
+<svelte:window onkeydown={onKey} />
 
-<header
-  class="fixed inset-x-0 top-0 z-40 border-b transition-[background-color,border-color,backdrop-filter] duration-500
-  {scrolled || open ? 'border-line/80 bg-ink/85 backdrop-blur-xl' : 'border-transparent bg-transparent'}"
->
-  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-5 sm:gap-4 sm:px-8">
-    <a
-      href="#home"
-      class="group flex shrink-0 items-baseline font-display text-[18px] leading-none font-normal tracking-[-0.02em] whitespace-nowrap text-sand sm:text-[20px]"
-      aria-label="Dalton Gomes"
-    >
-      Dalton Gomes<span
-        class="ml-0.5 inline-block h-[6px] w-[6px] rounded-full bg-sun transition-[background-color,transform] duration-500
-        ease-[var(--ease-soft)] group-hover:scale-125 group-hover:bg-clay"
-        aria-hidden="true"
-      ></span>
-    </a>
+<header class="pointer-events-none fixed inset-x-0 top-0 z-40">
+  <div
+    class="hud {hidden ? 'tucked' : ''}"
+    onfocusin={(e) => (focused = (e.target as HTMLElement).matches(":focus-visible"))}
+    onfocusout={() => (focused = false)}
+  >
+    <!-- no strip behind the HUD: the buttons carry their own frames and the hearts a hard shadow -->
+    <div class="relative mx-auto flex max-w-6xl items-start justify-between gap-3 px-3 pt-3 sm:px-6 sm:pt-4">
+      <!-- left: life and gems, like the top-left of a GBA screen -->
+      <div class="pointer-events-auto flex flex-col gap-1.5">
+        <div
+          class="hearts flex gap-[3px] sm:gap-1"
+          role="meter"
+          aria-label={t.health.value}
+          aria-valuemin={0}
+          aria-valuemax={HEARTS * 4}
+          aria-valuenow={quarters}
+        >
+          {#each Array(HEARTS) as _, i (i)}
+            {@const q = Math.max(0, Math.min(4, quarters - i * 4))}
+            <span class={q > 0 && q < 4 ? "hop" : ""}>
+              <PixelSprite sprite={heart(q)} scale={3} class="hidden sm:block" />
+              <PixelSprite sprite={heart(q)} scale={2} class="sm:hidden" />
+            </span>
+          {/each}
+        </div>
+      </div>
 
-    <nav aria-label="Primary" class="relative hidden md:block">
-      <ul class="flex items-center gap-1" bind:this={list}>
-        {#each headerSections as sec, i (sec.id)}
-          <li>
-            <a
-              href="#{sec.id}"
-              aria-current={i === activeIndex ? "true" : undefined}
-              class="block px-3 py-2 text-[14px] transition-colors duration-300
-              {i === activeIndex ? 'text-sand' : 'text-dust hover:text-sand'}"
-            >
-              {sec.label.value}
-            </a>
-          </li>
-        {/each}
-      </ul>
-      <div
-        class="absolute -bottom-px h-px bg-clay transition-all duration-500 ease-[var(--ease-soft)]
-        {slider.ready ? 'opacity-100' : 'opacity-0'}"
-        style="transform: translateX({slider.x}px); width: {slider.width}px;"
-        aria-hidden="true"
-      ></div>
-    </nav>
+      <!-- right: B / A / R buttons -->
+      <div class="pointer-events-auto flex items-center gap-4 pt-1">
+        <button
+          type="button"
+          class="hud-btn"
+          aria-pressed={!sfx.muted}
+          aria-label={sfx.muted ? t.soundOff.value : t.soundOn.value}
+          aria-keyshortcuts="B"
+          onclick={() => sfx.toggle()}
+        >
+          <span class="hud-key">B</span>
+          <span class="flex items-center gap-1.5">
+            <svg viewBox="0 0 8 8" class="h-4 w-4" shape-rendering="crispEdges" aria-hidden="true">
+              <path fill="currentColor" d="M0 3h2v2H0zM2 2h1v4H2zM3 1h1v6H3z" />
+              {#if sfx.muted}
+                <path fill="var(--color-gem-red)" d="M5 2h1v1H5zM7 2h1v1H7zM6 3h1v2H6zM5 5h1v1H5zM7 5h1v1H7z" />
+              {:else}
+                <path fill="currentColor" d="M5 3h1v2H5zM6 1h1v1H6zM7 2h1v4H7zM6 6h1v1H6z" />
+              {/if}
+            </svg>
+            <span class="hidden sm:inline">{t.sound.value}</span>
+          </span>
+        </button>
 
-    <div class="flex items-center gap-2">
-      <button
-        type="button"
-        onclick={toggleLanguage}
-        aria-label="Toggle language"
-        class="flex cursor-pointer items-center gap-1 rounded-full border border-line px-3 py-1.5 font-mono text-[11px] tracking-[0.14em]
-        transition-colors duration-300 hover:border-clay/50"
-      >
-        <span class={language.value === "ptBr" ? "text-clay" : "text-dust"}>PT</span>
-        <span class="text-line">/</span>
-        <span class={language.value === "enUs" ? "text-clay" : "text-dust"}>EN</span>
-      </button>
+        <button
+          type="button"
+          class="hud-btn"
+          aria-label={t.language.value}
+          aria-keyshortcuts="A"
+          onclick={() => {
+            language.toggle();
+            sfx.cursor();
+          }}
+        >
+          <span class="hud-key">A</span>
+          <span>
+            <span class={language.value === "ptBr" ? "text-gold-hi" : "text-mist/70"}>PT</span><span class="text-mist/50"
+              >/</span
+            ><span class={language.value === "enUs" ? "text-gold-hi" : "text-mist/70"}>EN</span>
+          </span>
+        </button>
 
-      <a
-        href="#contact"
-        class="hidden rounded-full bg-sand px-4 py-1.5 text-[13px] font-medium text-ink transition-colors duration-300 hover:bg-clay lg:inline-block"
-      >
-        {talk.value}
-      </a>
-
-      <button
-        type="button"
-        class="grid h-9 w-9 cursor-pointer place-items-center rounded-full border border-line md:hidden"
-        aria-expanded={open}
-        aria-label={open ? close.value : menu.value}
-        onclick={() => (open = !open)}
-      >
-        <span class="relative block h-2.5 w-4">
-          <span
-            class="absolute left-0 h-px w-4 bg-sand transition-all duration-300 {open ? 'top-1/2 rotate-45' : 'top-0'}"
-          ></span>
-          <span
-            class="absolute left-0 h-px w-4 bg-sand transition-all duration-300 {open ? 'top-1/2 -rotate-45' : 'top-full'}"
-          ></span>
-        </span>
-      </button>
+        <button
+          type="button"
+          class="hud-btn"
+          aria-haspopup="dialog"
+          aria-expanded={globalState.menuOpen}
+          aria-keyshortcuts="R M"
+          onclick={openMenu}
+        >
+          <span class="hud-key hud-key-r">R</span>
+          <span>{t.menu.value}</span>
+        </button>
+      </div>
     </div>
   </div>
-
-  {#if open}
-    <div class="border-t border-line/80 md:hidden" transition:fade={{ duration: 200 }}>
-      <ul class="mx-auto flex max-w-6xl flex-col px-5 py-4">
-        {#each headerSections as sec, i (sec.id)}
-          <li in:fly={{ y: -8, duration: 400, delay: i * 50, easing: quintOut }}>
-            <a
-              href="#{sec.id}"
-              onclick={() => (open = false)}
-              class="flex items-baseline gap-3 py-3 font-display text-2xl
-              {i === activeIndex ? 'text-sand' : 'text-dust'}"
-            >
-              <span class="font-mono text-[11px] text-clay">0{i + 1}</span>
-              {sec.label.value}
-            </a>
-          </li>
-        {/each}
-      </ul>
-    </div>
-  {/if}
 </header>
+
+<PauseMenu />
+
+<style>
+  .hud {
+    transition: transform 0.24s steps(4, end);
+  }
+  /* clears the HUD and the key badges that poke above the buttons */
+  .hud.tucked {
+    transform: translateY(-96px);
+  }
+  /* hard pixel drop shadow, same as the buttons, so the hearts read on grass and on text */
+  .hearts {
+    filter: drop-shadow(0 3px 0 rgb(24 16 24 / 0.55)) drop-shadow(2px 0 0 var(--color-ink))
+      drop-shadow(-2px 0 0 var(--color-ink));
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hud {
+      transition: none;
+    }
+  }
+  .hud-btn {
+    --px: 2px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.25rem;
+    padding: 0.35rem 0.55rem 0.35rem 1.1rem;
+    cursor: pointer;
+    font-family: var(--font-label);
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-snow);
+    background: rgb(16 24 40 / 0.9);
+    box-shadow:
+      0 -2px 0 0 var(--color-snow),
+      0 2px 0 0 var(--color-snow),
+      -2px 0 0 0 var(--color-snow),
+      2px 0 0 0 var(--color-snow),
+      0 -4px 0 0 var(--color-ink),
+      0 4px 0 0 var(--color-ink),
+      -4px 0 0 0 var(--color-ink),
+      4px 0 0 0 var(--color-ink),
+      -2px -2px 0 0 var(--color-ink),
+      2px -2px 0 0 var(--color-ink),
+      -2px 2px 0 0 var(--color-ink),
+      2px 2px 0 0 var(--color-ink),
+      0 7px 0 0 rgb(24 16 24 / 0.35);
+  }
+  @media (min-width: 640px) {
+    .hud-btn {
+      padding: 0.35rem 0.8rem 0.35rem 1.35rem;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+    }
+  }
+  .hud-btn:hover {
+    color: var(--color-gold-hi);
+  }
+  .hud-btn:active {
+    transform: translateY(2px);
+  }
+  .hud-key {
+    position: absolute;
+    top: -0.7rem;
+    left: -0.7rem;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-family: var(--font-title);
+    font-size: 9px;
+    color: var(--color-ink);
+    background: var(--color-gold-hi);
+    box-shadow:
+      0 -2px 0 0 var(--color-ink),
+      0 2px 0 0 var(--color-ink),
+      -2px 0 0 0 var(--color-ink),
+      2px 0 0 0 var(--color-ink);
+  }
+  .hud-key-r {
+    background: var(--color-gem-blue);
+  }
+</style>

@@ -9,6 +9,7 @@
 # Uso:
 #   ./build.sh                # compila os dois
 #   ./build.sh resume-pt      # compila apenas um
+#   ./build.sh vagas/x/resume-pt   # compila um .tex em subpasta (PDF sai ao lado)
 #   ./build.sh --docker       # força o uso do Docker
 #   ./build.sh --keep-aux     # mantém .aux/.log/.out para depurar
 #
@@ -26,7 +27,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --docker)   FORCE_DOCKER=1 ;;
     --keep-aux) KEEP_AUX=1 ;;
-    -h|--help)  sed -n '3,13p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    -h|--help)  sed -n '3,14p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
     -*)         echo "Opção desconhecida: $1" >&2; exit 2 ;;
     *)          DOCS+=("${1%.tex}") ;;
   esac
@@ -64,13 +65,13 @@ fi
 run_pdflatex() {
   local doc="$1"
   if [[ "$ENGINE" == "local" ]]; then
-    pdflatex -interaction=nonstopmode -halt-on-error "$doc.tex"
+    pdflatex -interaction=nonstopmode -halt-on-error -output-directory "$(dirname "$doc")" "$doc.tex"
   else
     docker run --rm \
       --user "$(id -u):$(id -g)" \
       -v "$PWD:/work" -w /work \
       "$DOCKER_IMAGE" \
-      pdflatex -interaction=nonstopmode -halt-on-error "$doc.tex"
+      pdflatex -interaction=nonstopmode -halt-on-error -output-directory "$(dirname "$doc")" "$doc.tex"
   fi
 }
 

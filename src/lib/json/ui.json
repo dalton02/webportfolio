@@ -37,6 +37,10 @@
     "close": {
       "enUs": "Close",
       "ptBr": "Fechar"
+    },
+    "home": {
+      "enUs": "Home",
+      "ptBr": "Início"
     }
   },
   "hero": {
@@ -54,7 +58,7 @@
     },
     "ctaProjects": {
       "enUs": "See my work",
-      "ptBr": "Ver meus projetos"
+      "ptBr": "Ver projetos"
     },
     "ctaContact": {
       "enUs": "Get in touch",
@@ -63,6 +67,18 @@
     "resume": {
       "enUs": "Resume",
       "ptBr": "Currículo"
+    },
+    "greet": {
+      "ptBr": "Ei, você chegou! Esse é o {g:Dalton}, um dev lá do Crato. Fica à vontade pra dar uma volta, os baús mais abaixo guardam os projetos dele. Se quiser bater um papo, a caixa de correio fica no fim do caminho.",
+      "enUs": "Hey, you made it! This is {g:Dalton}, a dev from Crato, Brazil. Feel free to look around, the chests further down hold his projects. If you want to chat, the mailbox is at the end of the path."
+    },
+    "scroll": {
+      "enUs": "Scroll to explore",
+      "ptBr": "Role para explorar"
+    },
+    "hi": {
+      "enUs": "Hi!",
+      "ptBr": "Olá!"
     }
   },
   "about": {
@@ -123,6 +139,10 @@
     "months": {
       "enUs": "mos",
       "ptBr": "meses"
+    },
+    "here": {
+      "enUs": "You are here",
+      "ptBr": "Você está aqui"
     }
   },
   "projects": {
@@ -145,6 +165,22 @@
     "private": {
       "enUs": "Private project",
       "ptBr": "Projeto privado"
+    },
+    "open": {
+      "enUs": "Open chest",
+      "ptBr": "Abrir baú"
+    },
+    "opened": {
+      "enUs": "Close chest",
+      "ptBr": "Fechar baú"
+    },
+    "got": {
+      "enUs": "You got",
+      "ptBr": "Você obteve"
+    },
+    "details": {
+      "enUs": "How it was built",
+      "ptBr": "Como foi construído"
     }
   },
   "contact": {
@@ -215,16 +251,24 @@
     "resumeValue": {
       "enUs": "Download the English version",
       "ptBr": "Baixar a versão em português"
+    },
+    "sent": {
+      "enUs": "Message on its way!",
+      "ptBr": "Mensagem a caminho!"
     }
   },
   "footer": {
     "made": {
-      "enUs": "Built with SvelteKit, somewhere in the Cariri.",
-      "ptBr": "Feito com SvelteKit, em algum lugar do Cariri."
+      "enUs": "Built somewhere in the Cariri.",
+      "ptBr": "Feito em algum lugar do Cariri."
     },
     "top": {
       "enUs": "Back to top",
       "ptBr": "Voltar ao topo"
+    },
+    "thanks": {
+      "enUs": "Thanks for stopping by!",
+      "ptBr": "Obrigado pela visita!"
     }
   },
   "links": {
@@ -235,5 +279,99 @@
     "githubLabel": "@dalton02",
     "linkedin": "https://www.linkedin.com/in/dalton-gomes/",
     "linkedinLabel": "dalton-gomes"
+  },
+  "hud": {
+    "soundOn": {
+      "enUs": "Sound on",
+      "ptBr": "Som ligado"
+    },
+    "soundOff": {
+      "enUs": "Sound off",
+      "ptBr": "Som desligado"
+    },
+    "sound": {
+      "enUs": "Sound",
+      "ptBr": "Som"
+    },
+    "language": {
+      "enUs": "Language",
+      "ptBr": "Idioma"
+    },
+    "menu": {
+      "enUs": "Menu",
+      "ptBr": "Menu"
+    },
+    "health": {
+      "enUs": "How far you've explored",
+      "ptBr": "Quanto você já explorou"
+    }
+  },
+  "pause": {
+    "title": {
+      "enUs": "Menu",
+      "ptBr": "Menu"
+    },
+    "map": {
+      "enUs": "Map",
+      "ptBr": "Mapa"
+    },
+    "items": {
+      "enUs": "Items",
+      "ptBr": "Itens"
+    },
+    "status": {
+      "enUs": "Status",
+      "ptBr": "Status"
+    },
+    "here": {
+      "enUs": "You are here",
+      "ptBr": "Você está aqui"
+    },
+    "close": {
+      "enUs": "Close",
+      "ptBr": "Fechar"
+    },
+    "prev": {
+      "enUs": "Previous tab",
+      "ptBr": "Aba anterior"
+    },
+    "next": {
+      "enUs": "Next tab",
+      "ptBr": "Próxima aba"
+    },
+    "resumePt": {
+      "enUs": "Resume in Portuguese",
+      "ptBr": "Currículo em português"
+    },
+    "resumeEn": {
+      "enUs": "Resume in English",
+      "ptBr": "Currículo em inglês"
+    },
+    "email": {
+      "enUs": "Send an email",
+      "ptBr": "Mandar um e-mail"
+    },
+    "role": {
+      "enUs": "Role",
+      "ptBr": "Função"
+    },
+    "guild": {
+      "enUs": "Current guild",
+      "ptBr": "Guilda atual"
+    },
+    "home": {
+      "enUs": "Home base",
+      "ptBr": "Base"
+    },
+    "hint": {
+      "enUs": "L / R or the arrow keys switch tabs, B or Esc closes.",
+      "ptBr": "L / R ou as setas trocam de aba, B ou Esc fecha."
+    }
+  },
+  "dialog": {
+    "speaker": {
+      "enUs": "Soldadinho",
+      "ptBr": "Soldadinho"
+    }
   }
 }
