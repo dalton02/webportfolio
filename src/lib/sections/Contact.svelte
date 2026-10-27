@@ -6,7 +6,7 @@
   import SectionHeading from "$lib/comps/SectionHeading.svelte";
   import DialogBox from "$lib/pixel/DialogBox.svelte";
   import PixelSprite from "$lib/pixel/PixelSprite.svelte";
-  import { cursor, groundShadow, mailbox, medallionLeft, medallionRight, sparkle } from "$lib/pixel/sprites.js";
+  import { cursor, mailbox, shadowOval, medallionLeft, medallionRight, sparkle } from "$lib/pixel/sprites.js";
   import { Text } from "$lib/utils/lang.svelte";
   import { reducedMotion } from "$lib/utils/motion.svelte";
   import { reveal } from "$lib/utils/reveal.js";
@@ -96,7 +96,7 @@
       <!-- planted on the ground like the props in the field, the flag flutters instead of the box hopping -->
       <span class="mr-4 hidden shrink-0 flex-col items-center md:flex" aria-hidden="true">
         <PixelSprite sprite={mailbox} scale={3} fps={1.5} class="relative z-[1]" />
-        <span class="-mt-2"><PixelSprite sprite={groundShadow} scale={4} /></span>
+        <span class="-mt-2"><PixelSprite sprite={shadowOval(32, 7)} scale={3} /></span>
       </span>
     </div>
 
@@ -217,7 +217,7 @@
                 <div class="relative flex">
                   <span class="half-l"><PixelSprite sprite={medallionLeft} scale={3} /></span>
                   <span class="half-r -ml-[84px]"><PixelSprite sprite={medallionRight} scale={3} /></span>
-                  <span class="spark absolute -top-6 -left-6"><PixelSprite sprite={sparkle} scale={4} fps={5} /></span>
+                  <span class="spark absolute -top-6 -left-6"><PixelSprite sprite={sparkle} scale={3} fps={5} /></span>
                   <span class="spark absolute -right-6 -bottom-4"><PixelSprite sprite={sparkle} scale={3} fps={5} /></span>
                 </div>
                 <span class="font-title text-[12px] text-gold-hi">{t.sent.value}</span>

@@ -72,8 +72,9 @@
             <div class="relative col-start-1 row-start-1 flex justify-center pt-1 md:col-start-2">
               <PixelSprite sprite={sign} scale={3} />
               {#if current}
-                <span class="absolute top-0 -right-6 hidden hop md:block" aria-hidden="true">
-                  <Soldadinho scale={2} />
+                <!-- perched on top of the current job's sign, shadow on the wood -->
+                <span class="absolute -top-[50px] left-1/2 hidden -translate-x-1/2 md:block" aria-hidden="true">
+                  <Soldadinho scale={3} shade="#2a181098" />
                 </span>
               {/if}
             </div>

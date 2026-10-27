@@ -3,7 +3,7 @@
   import Icon from "$lib/comps/Icon.svelte";
   import DialogBox from "$lib/pixel/DialogBox.svelte";
   import PixelSprite from "$lib/pixel/PixelSprite.svelte";
-  import { dalton, daltonHi, groundShadow, nextArrow, sparkle } from "$lib/pixel/sprites.js";
+  import { dalton, daltonHi, nextArrow, shadowOval, sparkle } from "$lib/pixel/sprites.js";
   import Soldadinho from "$lib/pixel/Soldadinho.svelte";
   import language, { Text } from "$lib/utils/lang.svelte";
   import { reveal } from "$lib/utils/reveal.js";
@@ -91,7 +91,7 @@
     <!-- Dalton in pixel form, standing in the field breathing, with the soldadinho at his feet -->
     <div class="relative mx-auto flex w-full max-w-[300px] flex-col items-center lg:col-span-5 lg:max-w-[340px]" use:reveal={2}>
       <div class="relative flex flex-col items-center">
-        <span class="absolute -top-4 right-2 z-10 blink sm:right-[20px]" aria-hidden="true"><PixelSprite sprite={sparkle} scale={4} fps={3} /></span>
+        <span class="absolute -top-4 right-2 z-10 blink sm:right-[20px]" aria-hidden="true"><PixelSprite sprite={sparkle} scale={3} fps={3} /></span>
         <span class="absolute top-1/3 left-0 z-10 blink [animation-delay:.5s] sm:left-[12px]" aria-hidden="true"
           ><PixelSprite sprite={sparkle} scale={3} fps={3} /></span
         >
@@ -105,20 +105,17 @@
           onmouseleave={() => (hi = false)}
           onclick={tapHi}
         >
-          <span class="pointer-events-auto absolute inset-y-0 right-12 left-12 cursor-pointer sm:right-[60px] sm:left-[60px]" aria-hidden="true"></span>
+          <span class="pointer-events-auto absolute inset-y-0 right-12 left-12 cursor-pointer" aria-hidden="true"></span>
           {#if hi}
-            <span class="hi-bubble absolute -top-2 right-10 z-10 font-title text-[16px] whitespace-nowrap text-ink uppercase sm:-top-1 sm:right-12 sm:text-[20px]" aria-hidden="true"
+            <span class="hi-bubble absolute -top-8 right-2 z-10 font-title text-[14px] whitespace-nowrap text-ink uppercase" aria-hidden="true"
               >{t.hi.value}</span
             >
           {/if}
-          <PixelSprite sprite={hi ? daltonHi : dalton} scale={4} fps={hi ? 0 : 3} class="sm:hidden" />
-          <PixelSprite sprite={hi ? daltonHi : dalton} scale={5} fps={hi ? 0 : 3} class="hidden sm:block" />
+          <!-- one step above the field's 3px pixel, so the hero still stands out -->
+          <PixelSprite sprite={hi ? daltonHi : dalton} scale={4} fps={hi ? 0 : 3} />
         </button>
-        <span class="-mt-5 sm:-mt-8" aria-hidden="true">
-          <PixelSprite sprite={groundShadow} scale={8} class="sm:hidden" />
-          <PixelSprite sprite={groundShadow} scale={10} class="hidden sm:block" />
-        </span>
-        <span class="absolute -right-4 bottom-3 z-[2] hop sm:-right-5" aria-hidden="true"
+        <span class="-mt-5" aria-hidden="true"><PixelSprite sprite={shadowOval(64, 12)} scale={3} /></span>
+        <span class="absolute -right-4 bottom-1 z-[2]" aria-hidden="true"
           ><Soldadinho scale={3} /></span
         >
       </div>

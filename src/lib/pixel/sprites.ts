@@ -199,6 +199,74 @@ export const soldadinhoChirp = { ...soldadinho, frames: [
 const daltonStanding = sprite(
   { A: "#2e1a0c", B: "#a8784a", C: "#553620", D: "#10401a", E: "#2e9a40", F: "#1e7a30", a: "#1e1008", b: "#86582e", c: "#5c3a20", d: "#3a2010", e: "#e8a878", f: "#2a1608", g: "#202c68", h: "#6a3020", i: "#f8f0e0", j: "#b8d8f0", m: "#c07850", n: "#181018", o: "#8a3828", p: "#f8c8a0", q: "#0c2a36", r: "#1f6678", s: "#f8d040", t: "#3a8a9a", u: "#164f60", v: "#154a5a", x: "#b07818", y: "#0f3644", z: "#7a5232" },
   [
+    "................................................",
+    "................aaa.aaaaaaaaaa..................",
+    ".................ababbbbbbbbbbaa................",
+    "................abcbccccccccccbda...............",
+    "...............abccccccccccccccda...............",
+    ".............aabcccccccccccccccccaa.............",
+    ".............abccccccccccccccccccda.............",
+    "..............abccccccccccccccccda..............",
+    "..............abcccccccaacccccccda..............",
+    "..............abcccaadaeeaaaccccda..............",
+    "..............abceffffeeeeffffecda..............",
+    "..............aaegggggeeeegggggeaa..............",
+    "..............hggienneggggienneggh..............",
+    "..............hmgeennegeegeennegmh..............",
+    "..............hhegggggeemegggggehh..............",
+    "................hpeeeeemmeeeeemh................",
+    "................hpeeecccccceeemh................",
+    ".................heeceooooecemh.................",
+    "..................hpeeeeeeeemh..................",
+    "...................hmeeeeeemh...................",
+    "...................hmhhhhhhmh...................",
+    "...................hpeeeeeemh...................",
+    ".........qqqqqqqqqqqmeeeeeemqqqqqqqqqqq.........",
+    "......qqqtttrrqttttqsmeeeemsqttttqrrvvvqqq......",
+    "....qqttrururrrqttttqspeemsqttttqrrrururvvqq....",
+    "...qttururuvrrrrqtttqussssuqtttqrrrrvururuvvq...",
+    "..qtururuurvrrrruqtttqhxshqtttqruurrvruururuvq..",
+    "..qturuurrrvrruuruqtttqhhqtttqurururvrrruuruvq..",
+    "..qtuurrrrrvrurururrqqrrvrqqrrrrruruvrrrrruuvq..",
+    "..qyvvvvvvvvururrrrrrrrrvrrrrrrrrrrrvvvvvvvvyq..",
+    "..qqqqqqqqqmrrrrrrrrrrrivrrrrrrrrrrrmqqqqqqqqq..",
+    "..hmmmmmmmmhqtrrrrrrrrrrvrrrrrrrrryqhmmmmmmmmh..",
+    "..hppeeeeemhqtrrrrrrrrrrvrrrrrrruuyqhmeeeeemmh..",
+    "..hpeeeeeemhqtururrrrrrrvrrrrruuruyqhmeeeeeemh..",
+    "..hpeeeeeemhqtrurururrrivrrruururuvqhmeeeeeemh..",
+    "..hpeeeeemmhqtrruurururrvrrurururrvqhmmeeeeemh..",
+    "..hpeeeeemh.qtrrrruururuvrururrrrrvq.hmeeeeemh..",
+    "..hpeeeeemh.qtrrruuruuruvurrrrrrrrvq.hmeeeeemh..",
+    "..hpeeeemmh.qtrrruruuruivrrrrrrrrrvq.hmmeeeemh..",
+    "..hpeeeemh..qtrrrururuurvrrrrrrrruvq..hmeeeemh..",
+    "..hpeeeemh..qtrrrrrururuvrrrrrruruvq..hmeeeemh..",
+    "..hpeeeemh..qqvvvvvvvyvyqyvvvyvyvyqq..hmeeeemh..",
+    "..hppeeemh..qqqqqqqqqqqqqqqqqqqqqqqq..hmeeemmh..",
+    "...hpeemh...hzzzzzzzzzzzzzzzzzzzzzzh...hmeemh...",
+    "..hpeeeemh..zzzzzzzzzzzzzzzzzzzzzzzz..hmeeeemh..",
+    "..hpeeeemehABzzzzzzzzzzAAzzzzzzzzzzCAhemeeeemh..",
+    "..hpeeeemh.ABzzzzzzzzzzAAzzzzzzzzzzCA.hmeeeemh..",
+    "..hmememh.ABzzzzzzzzzCA..ABzzzzzzzzzCA.hmememh..",
+    "...hhhhh..ABzzzzzzzzzCA..ABzzzzzzzzzCA..hhhhh...",
+    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
+    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
+    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
+    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
+    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
+    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
+    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
+    ".........ACCCCCCCCCCCCA..ACCCCCCCCCCCCA.........",
+    ".........AAAAAAAAAAAAAA..AAAAAAAAAAAAAA.........",
+    "...........hpeeeeeemh......hpeeeeeemh...........",
+    "...........hmmmmsmsmh......hmsmsmmmmh...........",
+    "...........hhhhshshsh......hshshshhhh...........",
+    "..........DEEExEEEEExD....DxEEEEExEEFD..........",
+    "..........DFFFFFFFFFFD....DFFFFFFFFFFD..........",
+    "...........DDDDDDDDDD......DDDDDDDDDD...........",
+    "................................................",
+  ],
+  [
+    "................................................",
     "................aaa.aaaaaaaaaa..................",
     ".................ababbbbbbbbbbaa................",
     "................abcbccccccccccbda...............",
@@ -305,14 +373,15 @@ const daltonStanding = sprite(
     "..hpeeeemmh.qtrrruruuruivrrrrrrrrrvq.hmmeeeemh..",
     "..hpeeeemh..qtrrrururuurvrrrrrrrruvq..hmeeeemh..",
     "..hpeeeemh..qtrrrrrururuvrrrrrruruvq..hmeeeemh..",
-    "..hpeeeemh..qqvvvvvvvyvyqyvvvyvyvyqq..hmeeeemh..",
-    "..hppeeemh..qqqqqqqqqqqqqqqqqqqqqqqq..hmeeemmh..",
-    "...hpeemh...hzzzzzzzzzzzzzzzzzzzzzzh...hmeemh...",
+    "..hpeeeemh..qtrrrrrrruruvurrrururuyq..hmeeeemh..",
+    "..hppeeemh..qqvvvvvvvvvvqvyvvyvyyvqq..hmeeemmh..",
+    "...hpeemh...qqqqqqqqqqqqqqqqqqqqqqqq...hmeemh...",
     "..hpeeeemh..zzzzzzzzzzzzzzzzzzzzzzzz..hmeeeemh..",
-    "..hpeeeemehABzzzzzzzzzzAAzzzzzzzzzzCAhemeeeemh..",
+    "..hpeeeemehABzzzzzzzzzzzzzzzzzzzzzzCAhemeeeemh..",
     "..hpeeeemh.ABzzzzzzzzzzAAzzzzzzzzzzCA.hmeeeemh..",
-    "..hmememh.ABzzzzzzzzzCA..ABzzzzzzzzzCA.hmememh..",
+    "..hmememh..ABzzzzzzzzzzAAzzzzzzzzzzCA..hmememh..",
     "...hhhhh..ABzzzzzzzzzCA..ABzzzzzzzzzCA..hhhhh...",
+    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
     "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
     "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
     "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
@@ -331,8 +400,9 @@ const daltonStanding = sprite(
     "................................................",
   ],
   [
-    ".................aaaaaaaaaaaaaaa................",
-    "................abbbbbbbbbbbbbbda...............",
+    "................aaa.aaaaaaaaaa..................",
+    ".................ababbbbbbbbbbaa................",
+    "................abcbccccccccccbda...............",
     "...............abccccccccccccccda...............",
     ".............aabcccccccccccccccccaa.............",
     ".............abccccccccccccccccccda.............",
@@ -397,77 +467,12 @@ const daltonStanding = sprite(
     "................................................",
   ],
   [
-    ".................aaaaaaaaaaaaaa.a...............",
-    "................abbbbbbbbbbbbbda.a..............",
-    "...............abccccccccccccccda...............",
-    ".............aabccccccccccccccccbaa.............",
-    ".............abccccccccccccccccccda.............",
-    "..............abccccccccccccccccda..............",
-    "..............abcccccccaacccccccda..............",
-    "..............abcccaadaeeaaaccccda..............",
-    "..............abceffffeeeeffffecda..............",
-    "..............aaegggggeeeegggggeaa..............",
-    "..............hggienneggggienneggh..............",
-    "..............hmgeennegeegeennegmh..............",
-    "..............hhegggggeemegggggehh..............",
-    "................hpeeeeemmeeeeemh................",
-    "................hpeeecccccceeemh................",
-    ".................heeceooooecemh.................",
-    "..................hpeeeeeeeemh..................",
-    "...................hmeeeeeemh...................",
-    "...................hmhhhhhhmh...................",
-    "...................hpeeeeeemh...................",
-    ".........qqqqqqqqqqqmeeeeeemqqqqqqqqqqq.........",
-    "......qqqtttrrqttttqsmeeeemsqttttqrrvvvqqq......",
-    "....qqttrururrrqttttqspeemsqttttqrrrururvvqq....",
-    "...qttururuvrrrrqtttqussssuqtttqrrrrvururuvvq...",
-    "..qtururuurvrrrruqtttqhxshqtttqruurrvruururuvq..",
-    "..qturuurrrvrruuruqtttqhhqtttqurururvrrruuruvq..",
-    "..qtuurrrrrvrurururrqqrrvrqqrrrrruruvrrrrruuvq..",
-    "..qyvvvvvvvvururrrrrrrrrvrrrrrrrrrrrvvvvvvvvyq..",
-    "..qqqqqqqqqmrrrrrrrrrrrivrrrrrrrrrrrmqqqqqqqqq..",
-    "..hmmmmmmmmhqtrrrrrrrrrrvrrrrrrrrryqhmmmmmmmmh..",
-    "..hppeeeeemhqtrrrrrrrrrrvrrrrrrruuyqhmeeeeemmh..",
-    "..hpeeeeeemhqtururrrrrrrvrrrrruuruyqhmeeeeeemh..",
-    "..hpeeeeeemhqtrurururrrivrrruururuvqhmeeeeeemh..",
-    "..hpeeeeemmhqtrruurururrvrrurururrvqhmmeeeeemh..",
-    "..hpeeeeemh.qtrrrruururuvrururrrrrvq.hmeeeeemh..",
-    "..hpeeeeemh.qtrrruuruuruvurrrrrrrrvq.hmeeeeemh..",
-    "..hpeeeemmh.qtrrruruuruivrrrrrrrrrvq.hmmeeeemh..",
-    "..hpeeeemh..qtrrrururuurvrrrrrrrruvq..hmeeeemh..",
-    "..hpeeeemh..qtrrrrrururuvrrrrrruruvq..hmeeeemh..",
-    "..hpeeeemh..qtrrrrrrruruvurrrururuyq..hmeeeemh..",
-    "..hppeeemh..qqvvvvvvvvvvqvyvvyvyyvqq..hmeeemmh..",
-    "...hpeemh...qqqqqqqqqqqqqqqqqqqqqqqq...hmeemh...",
-    "..hpeeeemh..zzzzzzzzzzzzzzzzzzzzzzzz..hmeeeemh..",
-    "..hpeeeemehABzzzzzzzzzzzzzzzzzzzzzzCAhemeeeemh..",
-    "..hpeeeemh.ABzzzzzzzzzzAAzzzzzzzzzzCA.hmeeeemh..",
-    "..hmememh..ABzzzzzzzzzzAAzzzzzzzzzzCA..hmememh..",
-    "...hhhhh..ABzzzzzzzzzCA..ABzzzzzzzzzCA..hhhhh...",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ACCCCCCCCCCCCA..ACCCCCCCCCCCCA.........",
-    ".........AAAAAAAAAAAAAA..AAAAAAAAAAAAAA.........",
-    "...........hpeeeeeemh......hpeeeeeemh...........",
-    "...........hmmmmsmsmh......hmsmsmmmmh...........",
-    "...........hhhhshshsh......hshshshhhh...........",
-    "..........DEEExEEEEExD....DxEEEEExEEFD..........",
-    "..........DFFFFFFFFFFD....DFFFFFFFFFFD..........",
-    "...........DDDDDDDDDD......DDDDDDDDDD...........",
     "................................................",
-  ],
-  [
     "................aaa.aaaaaaaaaa..................",
-    ".................ababbbbbbbbbda.a...............",
-    "................abcbccccccccccda.a..............",
+    ".................ababbbbbbbbbbaa................",
+    "................abcbccccccccccbda...............",
     "...............abccccccccccccccda...............",
-    ".............aabccccccccccccccccbaa.............",
+    ".............aabcccccccccccccccccaa.............",
     ".............abccccccccccccccccccda.............",
     "..............abccccccccccccccccda..............",
     "..............abcccccccaacccccccda..............",
@@ -529,6 +534,7 @@ const daltonStanding = sprite(
     "................................................",
   ],
   [
+    "................................................",
     "................aaa.aaaaaaaaaa..................",
     ".................ababbbbbbbbbbaa................",
     "................abcbccccccccccbda...............",
@@ -637,18 +643,19 @@ const ARM_UP = [
   ".hmmmmmmmh..",
   "..hhhhhhh...",
 ];
-const ARM_UP_TOP = 4;
+const ARM_UP_TOP = 5;
 const PAD = (dalton.w - daltonStanding.w) / 2;
 export const daltonHi: Sprite = {
   ...dalton,
   frames: [
     dalton.frames[0].map((row, y) => {
       const cells = [...row];
-      // the hanging arm goes (skin and its outline only; the jeans it overlapped stay)
-      if (y >= 29)
+      // the hanging arm goes (skin and its outline only; the trousers it overlapped stay).
+      // Rows 30–48 only (shoulder to hand): below that the same columns hold the left foot's outline.
+      if (y >= 30 && y < 49)
         for (let x = 0; x < 12; x++) {
           const c = cells[PAD + x];
-          if ("hpem".includes(c)) cells[PAD + x] = y === 29 && x === 11 ? "q" : ".";
+          if ("hpem".includes(c)) cells[PAD + x] = y === 30 && x === 11 ? "q" : ".";
         }
       const arm = ARM_UP[y - ARM_UP_TOP];
       if (arm) for (let x = 0; x < arm.length; x++) if (arm[x] !== ".") cells[PAD + x] = arm[x];
@@ -657,15 +664,28 @@ export const daltonHi: Sprite = {
   ],
 };
 
-export const daltonHead = crop(dalton, 24, 0, 24, 26);
+export const daltonHead = crop(dalton, 24, 0, 24, 27);
 
-/** A soft oval shadow to stand characters on the grass. */
-export const groundShadow = sprite({ k: "#18481870" }, [
-  "......kkkkkkkkkkkk......",
-  "...kkkkkkkkkkkkkkkkkk...",
-  ".kkkkkkkkkkkkkkkkkkkkkk.",
-  "...kkkkkkkkkkkkkkkkkk...",
-  "......kkkkkkkkkkkk......",
+/**
+  A soft oval shadow to stand characters on the grass, drawn at the size it is shown,
+  so it can use the same 3px art pixel as the field instead of being blown up.
+*/
+export function shadowOval(w: number, h: number, color = "#18481870"): Sprite {
+  const rows = Array.from({ length: h }, (_, y) =>
+    Array.from({ length: w }, (_, x) =>
+      ((x + 0.5 - w / 2) / (w / 2)) ** 2 + ((y + 0.5 - h / 2) / (h / 2)) ** 2 <= 1 ? "k" : ".",
+    ).join(""),
+  );
+  return sprite({ k: color }, rows);
+}
+
+export const groundShadow = shadowOval(24, 5);
+
+/** A small soft oval for the soldadinho's feet; recolour `k` to match whatever he stands on. */
+export const birdShadow = sprite({ k: "#18481898" }, [
+  "...kkkkkkkkk...",
+  ".kkkkkkkkkkkkk.",
+  "...kkkkkkkkk...",
 ]);
 
 // ---------------------------------------------------------------- props

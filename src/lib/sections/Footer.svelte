@@ -38,7 +38,7 @@
       ></span>
     {/each}
     <div class="relative mx-auto flex max-w-6xl flex-col items-center gap-8 px-5 py-16 text-center sm:px-8">
-      <span class="hop"><Soldadinho scale={4} /></span>
+      <Soldadinho scale={3} shade="#00000090" />
       <p class="font-title text-[16px] leading-relaxed text-balance text-gold-hi sm:text-[22px]">{thanks.value}</p>
 
       <div class="flex gap-1.5" aria-hidden="true">
