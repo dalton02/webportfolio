@@ -134,7 +134,13 @@
         >
           <span class="hud-key">B</span>
           <span class="flex items-center gap-1.5">
-            <svg viewBox="0 0 8 8" class="h-4 w-4" shape-rendering="crispEdges" aria-hidden="true">
+            <!-- blinks while the browser still holds the audio back; any click or key starts it -->
+            <svg
+              viewBox="0 0 8 8"
+              class="h-4 w-4 {sfx.locked && !sfx.muted ? 'blink' : ''}"
+              shape-rendering="crispEdges"
+              aria-hidden="true"
+            >
               <path fill="currentColor" d="M0 3h2v2H0zM2 2h1v4H2zM3 1h1v6H3z" />
               {#if sfx.muted}
                 <path fill="var(--color-gem-red)" d="M5 2h1v1H5zM7 2h1v1H7zM6 3h1v2H6zM5 5h1v1H5zM7 5h1v1H7z" />

@@ -68,6 +68,8 @@ const SONG: Voice[] = (() => {
 
 class Sfx {
   muted = $state(true);
+  /** sound is on, but the browser hasn't let audio start yet (no click or key since the page opened) */
+  locked = $state(false);
   private ctx: AudioContext | undefined;
   private lastBlip = 0;
   private music: { bus: GainNode; timer: ReturnType<typeof setInterval> } | undefined;
@@ -79,12 +81,23 @@ class Sfx {
     } catch {
       this.muted = true;
     }
-    // browsers only let audio start after a gesture, so a saved "on" waits for the first one
-    const first = () => {
-      if (!this.muted) this.startMusic();
+    // Browsers only let audio start after a real gesture, so a saved "on" waits for one.
+    // Phones count the end of a tap, not its start, so listen to all of them and only stop
+    // once the audio clock is actually running.
+    this.locked = !this.muted;
+    const gestures = ["pointerdown", "pointerup", "touchend", "click", "keydown"] as const;
+    const done = () => {
+      this.locked = false;
+      for (const g of gestures) window.removeEventListener(g, unlock, true);
     };
-    window.addEventListener("pointerdown", first, { once: true });
-    window.addEventListener("keydown", first, { once: true });
+    const unlock = () => {
+      if (this.muted) return;
+      this.startMusic();
+      const ctx = this.ctx;
+      if (ctx?.state === "running") done();
+      else void ctx?.resume().then(() => ctx.state === "running" && done());
+    };
+    for (const g of gestures) window.addEventListener(g, unlock, { capture: true, passive: true });
     // no tune playing to an empty room
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) void this.ctx?.suspend();
@@ -101,6 +114,8 @@ class Sfx {
     }
     if (this.muted) this.stopMusic();
     else {
+      // turning it on is itself a click or key press, so audio is allowed from here
+      this.locked = false;
       this.select();
       this.startMusic();
     }
