@@ -2,6 +2,8 @@
   /*
     The edge of the field: a row of trees at the back, bushes in front, and the ground
     fading into the footer's night colour, so the page ends in a wood instead of a hard line.
+    The sun is setting behind the viewer's left shoulder: crowns catch a gold rim on that side,
+    the same golden hour the field (Background.svelte, DUSK) fades into just above.
     Drawn once per width at the background's pixel size (Background.svelte PX).
   */
   import { hash } from "./world.js";
@@ -13,11 +15,13 @@
   const FADE = 6; // rows the bushes take to dissolve into the night
   const C = {
     ink: "#181018",
-    backLit: "#58a840",
+    sun: "#f8d070",
+    backLit: "#c89838",
+    backLeaf: "#58a840",
     back: "#307830",
     backDark: "#286830",
     front: "#184818",
-    frontLit: "#307830",
+    frontLit: "#587830",
     night: "#101828",
   };
 
@@ -79,11 +83,12 @@
           continue;
         }
         if (y === tb - 1) dot(x, y, C.ink);
-        else if (y === tb && back.left[x]) dot(x, y, C.backLit);
+        else if (y === tb && back.left[x]) dot(x, y, C.sun);
+        else if (y === tb + 1 && back.left[x]) dot(x, y, C.backLit);
         else {
           // leafy speckles, same idea as the foliage props: a dark pixel with a lit one above it
           const r = hash(x + 7, y + 13);
-          dot(x, y, r < 0.08 ? C.backDark : hash(x + 7, y + 14) < 0.08 ? C.backLit : C.back);
+          dot(x, y, r < 0.08 ? C.backDark : hash(x + 7, y + 14) < 0.08 ? C.backLeaf : C.back);
         }
       }
     }

@@ -229,7 +229,7 @@
   .cover:hover,
   .cover:focus-visible {
     transform: translateY(-6px);
-    --drop: rgb(24 16 24 / 0.5);
+    --drop: rgb(24 72 24 / 0.75);
   }
   .cover:hover .art,
   .cover:focus-visible .art {

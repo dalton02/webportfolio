@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { hash, WPAL, ZONES, type Art, type Zone } from "$lib/pixel/world.js";
+  import { BIRD, butterfly, CATTAILS, fence, hash, POND_ART, TREE_ART, WPAL, ZONES, type Art, type Zone } from "$lib/pixel/world.js";
 
   /*
     The overworld floor, drawn on a low-res canvas and scaled up with crisp pixels.
@@ -10,7 +10,8 @@
     too, through anchors the section leaves in the DOM ([data-trail]).
 
     The static ground is rendered once per 256px chunk and cached; only flowers,
-    tufts, water and cloud shadows are redrawn each frame.
+    tufts, water, butterflies, birds and cloud shadows are redrawn each frame.
+    Toward the footer the light turns gold, so the day sets before the night wood.
   */
 
   const PX = 3; // screen pixels per art pixel
@@ -23,9 +24,13 @@
   const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
   const ROAD = 6; // road radius
   const COLUMN = 1152; // max-w-6xl, the content column
+  const TREELINE = 54; // Treeline.svelte H: art rows the footer's wood rises above it
+  const DUSK = 150; // art rows of golden light before the treeline
+  const FENCE_ROW = CELL * 3;
 
   type Item = { frames: HTMLCanvasElement[]; x: number; y: number; phase: number };
-  type Chunk = { canvas: HTMLCanvasElement; anim: Item[] };
+  type Chunk = { canvas: HTMLCanvasElement; anim: Item[]; bugs: Item[] };
+  type Prop = { a: Art; x: number; y: number; phase: number; rank: number };
   type Sample = { x: number; y: number; r: number };
 
   function render(rows: string[]) {
@@ -44,6 +49,8 @@
   }
 
   const rendered = new Map<Art, HTMLCanvasElement[]>();
+  const butterflies = new Map<string, Art>();
+  const butterflyArt = (c: string) => butterflies.get(c) ?? (butterflies.set(c, butterfly(c)), butterflies.get(c)!);
   const framesOf = (a: Art) => rendered.get(a) ?? (rendered.set(a, a.frames.map(render)), rendered.get(a)!);
 
   function pick<T>(list: [T, number][], r: number) {
@@ -97,6 +104,8 @@
     let colL = 0;
     let colR = 0;
     let road: Sample[] = [];
+    let stopY = Infinity; // where the footer's treeline starts, in world art pixels
+    let dusk: HTMLCanvasElement | undefined;
     let signature = "";
     const chunks = new Map<number, Chunk>();
 
@@ -123,7 +132,10 @@
       const fromEdge = anchors[0]?.dataset.trailEdge !== undefined;
       if (fromEdge && pts.length) pts.unshift({ x: -ROAD * 4, y: pts[0].y });
 
-      const sig = JSON.stringify([w, found, nextL, nextR, pts]);
+      const foot = document.querySelector("footer");
+      const nextStop = foot ? Math.round((foot.getBoundingClientRect().top + sy) / PX) - TREELINE : Infinity;
+
+      const sig = JSON.stringify([w, found, nextL, nextR, pts, nextStop]);
       if (sig === signature) return;
       signature = sig;
       rooms = found.map((f) => {
@@ -132,7 +144,9 @@
       });
       colL = nextL;
       colR = nextR;
+      stopY = nextStop;
       road = buildRoad(pts, !fromEdge);
+      dusk = buildDusk();
       chunks.clear();
       draw();
     }
@@ -279,6 +293,7 @@
       g.putImageData(img, 0, 0);
 
       const anim: Item[] = [];
+      const bugs: Item[] = [];
       const place = (a: Art, x: number, y: number, phase: number) => {
         const frames = framesOf(a);
         if (frames.length > 1) {
@@ -286,42 +301,148 @@
           if (y >= top && y < top + CH) anim.push({ frames, x, y, phase });
         } else g.drawImage(frames[0], x, y - top);
       };
+      const inMargin = (x: number, wd: number) => x + wd <= colL || x >= colR;
+      const overlaps = (p: Prop, q: Prop) => p.x < q.x + q.a.w && p.x + p.a.w > q.x && p.y < q.y + q.a.h && p.y + p.a.h > q.y;
 
-      const taken: [number, number, number, number][] = [];
-      // big props, margins only; cells from one row above so tall ones aren't cut at the seam
-      for (let cy = Math.floor(top / CELL) - 1; cy * CELL < top + CH; cy++) {
-        for (let cx = -1; cx * CELL < w; cx++) {
-          const room = rooms[roomAt(cx * CELL + 24, cy * CELL + 24)].zone;
-          if (hash(cx + 500, cy + 77) >= room.bigRate) continue;
-          const a = pick(room.big, hash(cx + 13, cy + 501));
-          const x = cx * CELL + Math.floor(hash(cx, cy + 3) * (CELL - a.w));
-          const y = cy * CELL + Math.floor(hash(cx + 5, cy) * (CELL - a.h));
-          if (x + a.w > colL && x < colR) continue;
-          // a prop sits wholly inside one room, never straddling a seam (a pond half in the wood)
-          if (roomAt(x, y) !== roomAt(x + a.w, y + a.h)) continue;
-          if (nearRoad(x + a.w / 2, y + a.h / 2, Math.max(a.w, a.h) / 2 + 4)) continue;
-          place(a, x, y, cx + cy);
-          taken.push([x, y, x + a.w, y + a.h]);
+      // fences first: long runs hugging the content column, one chance per side every few rows
+      const fenced: Prop[] = [];
+      for (let fy = Math.floor(top / FENCE_ROW) - 1; fy * FENCE_ROW < top + CH; fy++) {
+        for (const side of [0, 1]) {
+          if (hash(fy + 300, side + 71) > 0.6) continue;
+          const y = fy * FENCE_ROW + Math.floor(hash(fy, side + 73) * (FENCE_ROW - 20));
+          const room = roomAt(side ? colR : colL, y);
+          if (!rooms[room].zone.fences || y + 17 > stopY) continue;
+          const gap = 6 + Math.floor(hash(fy + 9, side + 83) * 14);
+          const space = side ? w - colR - gap - 2 : colL - gap - 2;
+          const n = Math.min(3 + Math.floor(hash(fy + 5, side + 79) * 3), Math.floor((space - 4) / 20));
+          if (n < 2) continue;
+          const a = fence(n);
+          const x = side ? colR + gap : colL - gap - a.w;
+          if (roomAt(x, y) !== room || roomAt(x + a.w, y + a.h) !== room) continue;
+          let clear = true;
+          for (let px = x; px <= x + a.w && clear; px += 8) clear = !nearRoad(px, y + 8, 12);
+          if (clear) fenced.push({ a, x, y, phase: 0, rank: 2 });
         }
       }
 
-      // small details on most of the field, sparser inside the content column
+      /*
+        Big props, margins only. Odd rows shift half a cell and each prop wanders a bit past its
+        cell, so the wood doesn't line up in columns; a slow noise thins the rate into groves and
+        clearings. Whether a prop stands depends only on its neighbours' candidates, never on what
+        was drawn before it, so two chunks always agree on a prop that crosses their seam.
+      */
+      const cands = new Map<string, Prop | null>();
+      function candidate(cx: number, cy: number) {
+        const key = cx + "," + cy;
+        if (cands.has(key)) return cands.get(key)!;
+        let p: Prop | null = null;
+        const shift = cy & 1 ? CELL / 2 : 0;
+        const room = rooms[roomAt(cx * CELL + shift + 24, cy * CELL + 24)].zone;
+        const rate = room.bigRate * (0.35 + 1.3 * noise(cx, cy, 4, 211));
+        if (hash(cx + 500, cy + 77) < rate) {
+          const a = pick(room.big, hash(cx + 13, cy + 501));
+          const x = cx * CELL + shift - 6 + Math.floor(hash(cx, cy + 3) * Math.max(1, CELL - a.w + 12));
+          const y = cy * CELL + Math.floor(hash(cx + 5, cy) * Math.max(1, CELL - a.h));
+          const q = { a, x, y, phase: cx + cy, rank: hash(cx + 31, cy + 907) };
+          if (
+            inMargin(x, a.w) &&
+            y + a.h <= stopY &&
+            // a prop sits wholly inside one room, never straddling a seam (a pond half in the wood)
+            roomAt(x, y) === roomAt(x + a.w, y + a.h) &&
+            !nearRoad(x + a.w / 2, y + a.h / 2, Math.max(a.w, a.h) / 2 + 4) &&
+            !fenced.some((f) => overlaps(q, f))
+          )
+            p = q;
+        }
+        cands.set(key, p);
+        return p;
+      }
+      const props: Prop[] = [...fenced];
+      // cells from two rows above, so tall ones aren't cut at the seam
+      for (let cy = Math.floor(top / CELL) - 2; cy * CELL < top + CH; cy++) {
+        for (let cx = -1; cx * CELL < w; cx++) {
+          const p = candidate(cx, cy);
+          if (!p) continue;
+          let stands = true;
+          // trees may crowd into each other; anything else keeps its own patch of grass
+          for (let dy = -1; dy <= 1 && stands; dy++)
+            for (let dx = -1; dx <= 1 && stands; dx++) {
+              const q = (dx || dy) && candidate(cx + dx, cy + dy);
+              if (q && q.rank > p.rank && overlaps(p, q) && !(p.a === TREE_ART && q.a === TREE_ART)) stands = false;
+            }
+          if (stands) props.push(p);
+        }
+      }
+      // back to front, so a tree lower on the screen covers the one behind it
+      props.sort((p, q) => p.y + p.a.h - (q.y + q.a.h));
+      for (const p of props) {
+        place(p.a, p.x, p.y, p.phase);
+        // reeds on the near bank of each pond, swaying in front of the water
+        if (p.a === POND_ART && inMargin(p.x + 30, CATTAILS.w)) place(CATTAILS, p.x + 30, p.y + 8, p.phase);
+      }
+      const taken = props.map((p) => [p.x, p.y, p.x + p.a.w, p.y + p.a.h]);
+
+      // small details on most of the field, sparser inside the content column; clumped where a slow noise runs high
       for (let ty = Math.floor(top / TILE); ty * TILE < top + CH; ty++) {
         for (let tx = 0; tx * TILE < w; tx++) {
           const cxp = tx * TILE + 8;
           const cyp = ty * TILE + 8;
           const room = rooms[roomAt(cxp, cyp)].zone;
           const inside = cxp > colL && cxp < colR;
-          if (hash(tx, ty) >= room.smallRate * (inside ? 0.6 : 1)) continue;
+          const clump = noise(cxp, cyp, 40, 131) > 0.62;
+          if (hash(tx, ty) >= room.smallRate * (inside ? 0.6 : 1) * (clump ? 1.8 : 1)) continue;
           if (nearRoad(cxp, cyp, 10)) continue;
           const [x0, y0] = [tx * TILE, ty * TILE];
           if (taken.some(([l, t, r, b]) => x0 < r && x0 + TILE > l && y0 < b && y0 + TILE > t)) continue;
-          const a = pick(room.small, hash(ty + 7, tx + 3));
+          const a = pick(clump ? room.cluster : room.small, hash(ty + 7, tx + 3));
           place(a, tx * TILE, ty * TILE + TILE - a.h, tx + ty);
         }
       }
 
-      return { canvas: c, anim };
+      // butterflies hover over the margins of the sunny rooms; they belong to the chunk their cell starts in
+      for (let cy = Math.ceil(top / CELL); cy * CELL < top + CH; cy++) {
+        for (let cx = 0; cx * CELL < w; cx++) {
+          const zone = rooms[roomAt(cx * CELL + 24, cy * CELL + 24)].zone;
+          if (!zone.butterflies || hash(cx + 700, cy + 33) >= zone.butterflies[0]) continue;
+          const x = cx * CELL + 20;
+          const y = cy * CELL + 20;
+          // room to flutter 12px either way without crossing into the column
+          if (!(x + 20 <= colL || x - 12 >= colR) || y > stopY - 20) continue;
+          const colors = zone.butterflies[1];
+          bugs.push({ frames: framesOf(butterflyArt(colors[Math.floor(hash(cx, cy + 9) * colors.length)])), x, y, phase: cx * 7 + cy });
+        }
+      }
+
+      return { canvas: c, anim, bugs };
+    }
+
+    /**
+      Golden hour: a warm amber light over the last rows before the footer, in four flat levels with an
+      ordered dither between them, so it reads as light and not a gradient. It ends at full
+      strength under the treeline, where the footer's wood takes over.
+    */
+    function buildDusk() {
+      if (!Number.isFinite(stopY) || !w) return undefined;
+      const H = DUSK + TREELINE;
+      const c = document.createElement("canvas");
+      c.width = w;
+      c.height = H;
+      const g = c.getContext("2d")!;
+      const img = g.createImageData(w, H);
+      const alpha = [0, 0.3, 0.55, 0.8];
+      for (let y = 0; y < H; y++) {
+        const v = Math.min(1, y / DUSK) * 3;
+        for (let x = 0; x < w; x++) {
+          const level = Math.min(3, Math.floor(v) + ((v % 1) > (BAYER[(y & 3) * 4 + (x & 3)] + 0.5) / 16 ? 1 : 0));
+          const i = (y * w + x) * 4;
+          img.data[i] = 248;
+          img.data[i + 1] = 168;
+          img.data[i + 2] = 120;
+          img.data[i + 3] = Math.round(alpha[level] * 255);
+        }
+      }
+      g.putImageData(img, 0, 0);
+      return c;
     }
 
     function chunk(ci: number) {
@@ -395,6 +516,38 @@
         }
       }
 
+      for (let ci = first - 1; ci <= last; ci++) {
+        for (const b of chunk(ci).bugs) {
+          // a slow figure-of-eight around its flower patch, flapping every frame
+          const bx = b.x + Math.round(Math.sin(t * 0.9 + b.phase) * 12);
+          const by = b.y - cam + Math.round(Math.sin(t * 1.8 + b.phase * 2) * 6);
+          if (by < -8 || by > h) continue;
+          ctx.drawImage(b.frames[(frame + b.phase) & 1], bx, by);
+        }
+      }
+
+      if (dusk) {
+        const dy = stopY - DUSK - cam;
+        // multiply: the greens turn warm and a little darker, easing the way into the night below
+        if (dy < h && dy + dusk.height > 0) {
+          ctx.globalCompositeOperation = "multiply";
+          ctx.drawImage(dusk, 0, dy);
+          ctx.globalCompositeOperation = "source-over";
+        }
+      }
+
+      // a small flock crossing the sky now and then; its shadow slides over the field below
+      if (flock) {
+        const bird = framesOf(BIRD);
+        for (const [i, [ox, oy]] of [[0, 0], [-10, -6], [-10, 6]].entries()) {
+          const x = Math.round(flock.x + ox * flock.dir);
+          const y = flock.y + oy;
+          ctx.fillStyle = "rgba(24, 72, 24, 0.28)";
+          ctx.fillRect(x + 14, y + 44, 5, 2);
+          ctx.drawImage(bird[(frame + i) & 1], x, y);
+        }
+      }
+
       prefetch(first - 1);
       prefetch(last + 1);
     }
@@ -411,6 +564,21 @@
       });
     }
 
+    let flock: { x: number; y: number; dir: number } | undefined;
+    let nextFlock = 6;
+    function fly() {
+      if (!flock && t >= nextFlock) {
+        const dir = Math.random() < 0.5 ? 1 : -1;
+        flock = { x: dir > 0 ? -24 : w + 24, y: Math.round(h * (0.08 + Math.random() * 0.25)), dir };
+      }
+      if (!flock) return;
+      flock.x += 3 * flock.dir;
+      if (flock.x < -40 || flock.x > w + 40) {
+        flock = undefined;
+        nextFlock = t + 25 + Math.random() * 15;
+      }
+    }
+
     let timer: ReturnType<typeof setInterval> | undefined;
     function start() {
       stop();
@@ -418,6 +586,7 @@
       timer = setInterval(() => {
         frame++;
         t += 1 / FPS;
+        fly();
         draw();
       }, 1000 / FPS);
     }

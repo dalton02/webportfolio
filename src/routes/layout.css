@@ -95,7 +95,8 @@
     --c1: var(--color-snow);
     --c2: var(--color-ink);
     --fill: var(--color-night);
-    --drop: rgb(24 16 24 / 0.35);
+    /* the same deep green as the props' ground shadows; it falls down and right, away from the light */
+    --drop: rgb(24 72 24 / 0.55);
     position: relative;
     background: var(--fill);
     box-shadow:
@@ -111,7 +112,7 @@
       0 calc(2 * var(--px)) 0 0 var(--c2),
       calc(-2 * var(--px)) 0 0 0 var(--c2),
       calc(2 * var(--px)) 0 0 0 var(--c2),
-      0 calc(4 * var(--px)) 0 0 var(--drop);
+      calc(3 * var(--px)) calc(4 * var(--px)) 0 0 var(--drop);
   }
 
   .px-dialog {
