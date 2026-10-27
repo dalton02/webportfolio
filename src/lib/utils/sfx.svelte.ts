@@ -15,56 +15,88 @@ function hz(note: string) {
   return 440 * 2 ** (semis / 12);
 }
 
+type Voice = { at: number; len: number; freq: number; type: OscillatorType; vol: number };
+type Song = { voices: Voice[]; eighth: number; loop: number };
+
+/**
+  A loop as a flat list of notes, positioned in eighths: a triangle melody, a triangle bass on
+  beats one and three, and a quiet square arpeggio walking each chord in eighths.
+*/
+function compose(bpm: number, melody: [string, number][], chords: [string, string, string, string][], lead: OscillatorType = "triangle"): Song {
+  const voices: Voice[] = [];
+  let at = 0;
+  for (const [n, len] of melody) {
+    if (n !== "-") voices.push({ at, len, freq: hz(n), type: lead, vol: lead === "square" ? 0.022 : 0.05 });
+    at += len;
+  }
+  chords.forEach(([bass, a, b, c], bar) => {
+    const start = bar * 8;
+    voices.push({ at: start, len: 3, freq: hz(bass), type: "triangle", vol: 0.07 });
+    voices.push({ at: start + 4, len: 3, freq: hz(bass), type: "triangle", vol: 0.06 });
+    [a, b, c, b, a, b, c, b].forEach((n, i) => voices.push({ at: start + i, len: 1, freq: hz(n), type: "square", vol: 0.008 }));
+  });
+  return { voices, eighth: 60 / bpm / 2, loop: chords.length * 8 };
+}
+
 /*
   The background tune: an original, easy-going 8-bar loop in C (C Am F G C Am Dm G),
   written in eighth notes. A soft triangle melody, a quiet pulse arpeggio and a round
   triangle bass, all kept well under the sound effects.
 */
-const BPM = 92;
-const EIGHTH = 60 / BPM / 2;
-const BARS = 8;
-
 // [note or "-" for a rest, length in eighths]; every bar adds up to 8
-const MELODY: [string, number][] = [
-  ["E5", 2], ["G5", 2], ["A5", 2], ["G5", 2],
-  ["E5", 4], ["C5", 2], ["D5", 2],
-  ["C5", 2], ["D5", 2], ["F5", 2], ["A5", 2],
-  ["G5", 6], ["-", 2],
-  ["E5", 2], ["G5", 2], ["C6", 2], ["B5", 2],
-  ["A5", 4], ["G5", 2], ["E5", 2],
-  ["F5", 2], ["E5", 2], ["D5", 2], ["F5", 2],
-  ["D5", 4], ["B4", 2], ["-", 2],
-];
-// one chord per bar: bass root, then the three notes the arpeggio walks through
-const CHORDS: [string, string, string, string][] = [
-  ["C3", "C4", "E4", "G4"],
-  ["A2", "A3", "C4", "E4"],
-  ["F2", "F3", "A3", "C4"],
-  ["G2", "G3", "B3", "D4"],
-  ["C3", "C4", "E4", "G4"],
-  ["A2", "A3", "C4", "E4"],
-  ["D3", "D4", "F4", "A4"],
-  ["G2", "G3", "B3", "D4"],
-];
+const SITE_SONG = compose(
+  92,
+  [
+    ["E5", 2], ["G5", 2], ["A5", 2], ["G5", 2],
+    ["E5", 4], ["C5", 2], ["D5", 2],
+    ["C5", 2], ["D5", 2], ["F5", 2], ["A5", 2],
+    ["G5", 6], ["-", 2],
+    ["E5", 2], ["G5", 2], ["C6", 2], ["B5", 2],
+    ["A5", 4], ["G5", 2], ["E5", 2],
+    ["F5", 2], ["E5", 2], ["D5", 2], ["F5", 2],
+    ["D5", 4], ["B4", 2], ["-", 2],
+  ],
+  // one chord per bar: bass root, then the three notes the arpeggio walks through
+  [
+    ["C3", "C4", "E4", "G4"],
+    ["A2", "A3", "C4", "E4"],
+    ["F2", "F3", "A3", "C4"],
+    ["G2", "G3", "B3", "D4"],
+    ["C3", "C4", "E4", "G4"],
+    ["A2", "A3", "C4", "E4"],
+    ["D3", "D4", "F4", "A4"],
+    ["G2", "G3", "B3", "D4"],
+  ],
+);
 
-type Voice = { at: number; len: number; freq: number; type: OscillatorType; vol: number };
-
-/** The whole loop as a flat list of notes, positioned in eighths. */
-const SONG: Voice[] = (() => {
-  const out: Voice[] = [];
-  let at = 0;
-  for (const [n, len] of MELODY) {
-    if (n !== "-") out.push({ at, len, freq: hz(n), type: "triangle", vol: 0.05 });
-    at += len;
-  }
-  CHORDS.forEach(([bass, a, b, c], bar) => {
-    const start = bar * 8;
-    out.push({ at: start, len: 3, freq: hz(bass), type: "triangle", vol: 0.07 });
-    out.push({ at: start + 4, len: 3, freq: hz(bass), type: "triangle", vol: 0.06 });
-    [a, b, c, b, a, b, c, b].forEach((n, i) => out.push({ at: start + i, len: 1, freq: hz(n), type: "square", vol: 0.008 }));
-  });
-  return out;
-})();
+/*
+  The handheld's level tune: an original, bouncy 8-bar loop in G (G Em C D G Em Am D) with a
+  square lead, quicker and busier than the site tune, like a pocket console on its one speaker.
+*/
+const GAME_SONG = compose(
+  150,
+  [
+    ["G5", 1], ["-", 1], ["B5", 1], ["D6", 1], ["-", 1], ["B5", 1], ["D6", 2],
+    ["E6", 2], ["D6", 1], ["B5", 1], ["G5", 2], ["-", 2],
+    ["E5", 1], ["G5", 1], ["C6", 2], ["B5", 1], ["A5", 1], ["G5", 2],
+    ["F#5", 2], ["A5", 2], ["D6", 2], ["-", 2],
+    ["G5", 1], ["-", 1], ["B5", 1], ["D6", 1], ["-", 1], ["G6", 1], ["F#6", 2],
+    ["E6", 2], ["D6", 1], ["B5", 1], ["E5", 2], ["G5", 2],
+    ["A5", 1], ["B5", 1], ["C6", 2], ["E6", 2], ["C6", 2],
+    ["D6", 3], ["C6", 1], ["B5", 2], ["A5", 2],
+  ],
+  [
+    ["G2", "G3", "B3", "D4"],
+    ["E2", "E3", "G3", "B3"],
+    ["C3", "C4", "E4", "G4"],
+    ["D3", "D4", "F#4", "A4"],
+    ["G2", "G3", "B3", "D4"],
+    ["E2", "E3", "G3", "B3"],
+    ["A2", "A3", "C4", "E4"],
+    ["D3", "D4", "F#4", "A4"],
+  ],
+  "square",
+);
 
 class Sfx {
   muted = $state(true);
@@ -73,6 +105,7 @@ class Sfx {
   private ctx: AudioContext | undefined;
   private lastBlip = 0;
   private music: { bus: GainNode; timer: ReturnType<typeof setInterval> } | undefined;
+  private song = SITE_SONG;
 
   /** Reads the saved choice. Audio itself only starts after a click (browser autoplay rules). */
   init() {
@@ -130,15 +163,15 @@ class Sfx {
     bus.gain.linearRampToValueAtTime(1, ctx.currentTime + 2);
     bus.connect(ctx.destination);
 
-    const loop = BARS * 8;
+    const { voices, eighth, loop } = this.song;
     let step = 0;
     let next = ctx.currentTime + 0.1;
     const schedule = () => {
       while (next < ctx.currentTime + 0.4) {
         const pos = step % loop;
-        for (const v of SONG) {
+        for (const v of voices) {
           if (v.at !== pos) continue;
-          const dur = v.len * EIGHTH;
+          const dur = v.len * eighth;
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
           osc.type = v.type;
@@ -153,11 +186,31 @@ class Sfx {
           osc.stop(next + dur);
         }
         step++;
-        next += EIGHTH;
+        next += eighth;
       }
     };
     schedule();
     this.music = { bus, timer: setInterval(schedule, 100) };
+  }
+
+  /** Swaps the site tune for the handheld's level tune (and back), if sound is on. */
+  gameMusic(on: boolean) {
+    const song = on ? GAME_SONG : SITE_SONG;
+    if (song === this.song) return;
+    this.song = song;
+    if (!this.music) return;
+    this.stopMusic();
+    this.startMusic();
+  }
+
+  /** Hushes the tune for a beat (pause, a fall, the end fanfare) without stopping its clock. */
+  duck(on: boolean) {
+    const m = this.music;
+    const ctx = this.ctx;
+    if (!m || !ctx) return;
+    m.bus.gain.cancelScheduledValues(ctx.currentTime);
+    m.bus.gain.setValueAtTime(m.bus.gain.value, ctx.currentTime);
+    m.bus.gain.linearRampToValueAtTime(on ? 0 : 1, ctx.currentTime + 0.15);
   }
 
   private stopMusic() {
@@ -338,6 +391,93 @@ class Sfx {
     voice.connect(mouth).connect(vGain).connect(ctx.destination);
     voice.start(v);
     voice.stop(v + 0.42);
+  }
+
+  // ---- the handheld game
+
+  /** A hop: a quick square sweep up. The second hop, in the air, starts and ends higher. */
+  jump(again = false) {
+    const ctx = this.audio();
+    if (!ctx) return;
+    const t = ctx.currentTime + 0.01;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "square";
+    osc.frequency.setValueAtTime(again ? 520 : 330, t);
+    osc.frequency.exponentialRampToValueAtTime(again ? 1320 : 880, t + 0.14);
+    gain.gain.setValueAtTime(0.045, t);
+    gain.gain.linearRampToValueAtTime(0, t + 0.16);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.16);
+  }
+
+  /** A soft wingbeat while gliding. */
+  flap() {
+    this.play([[hz("D4"), 0.03, "triangle"]], 0.06);
+  }
+
+  coin() {
+    this.play([
+      [hz("B5"), 0.06],
+      [hz("E6"), 0.22],
+    ], 0.045);
+  }
+
+  stomp() {
+    this.play([
+      [hz("C5"), 0.03],
+      [hz("G5"), 0.05],
+    ], 0.06);
+  }
+
+  bump() {
+    this.play([[hz("C3"), 0.06, "triangle"], [hz("G2"), 0.06, "triangle"]], 0.14);
+  }
+
+  die() {
+    this.play([
+      [hz("B4"), 0.1],
+      [hz("F5"), 0.2],
+      [0, 0.05],
+      [hz("F5"), 0.12],
+      [hz("E5"), 0.12],
+      [hz("D5"), 0.12],
+      [hz("C5"), 0.3],
+    ], 0.05);
+  }
+
+  clear() {
+    this.play([
+      [hz("G4"), 0.1],
+      [hz("C5"), 0.1],
+      [hz("E5"), 0.1],
+      [hz("G5"), 0.1],
+      [hz("C6"), 0.1],
+      [hz("E6"), 0.1],
+      [hz("G6"), 0.3],
+      [hz("E6"), 0.3],
+      [0, 0.06],
+      [hz("G#5"), 0.1],
+      [hz("C6"), 0.1],
+      [hz("D#6"), 0.1],
+      [hz("G#6"), 0.3],
+      [hz("D#6"), 0.3],
+      [0, 0.06],
+      [hz("A#5"), 0.1],
+      [hz("D6"), 0.1],
+      [hz("F6"), 0.1],
+      [hz("A#6"), 0.3],
+      [hz("C7"), 0.6],
+    ], 0.04);
+  }
+
+  /** The two-note "ding" when the logo lands, on a power-on. */
+  boot() {
+    this.play([
+      [hz("C6"), 0.08],
+      [hz("C7"), 0.5],
+    ], 0.04);
   }
 
   /** An original rising fanfare for opening a chest or sending the form. */

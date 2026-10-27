@@ -28,6 +28,8 @@ export const allSections: { label: Text; id: SectionsType }[] = [
 class Global {
   activeSection = $state<SectionsType>("home");
   menuOpen = $state(false);
+  /** the hidden handheld is on; the HUD keys stand down so A / B reach the game */
+  gameOpen = $state(false);
   basePath = dev ? "" : "/webportfolio";
 }
 

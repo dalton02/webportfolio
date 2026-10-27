@@ -3,6 +3,7 @@
   import "./layout.css";
   import Background from "$lib/comps/Background.svelte";
   import Header from "$lib/comps/Header.svelte";
+  import globalState from "$lib/utils/global.svelte";
   import language, { Text } from "$lib/utils/lang.svelte";
   import ui from "$lib/json/ui.json" with { type: "json" };
 
@@ -52,4 +53,10 @@
   <main class="relative z-10">
     {@render children()}
   </main>
+  <!-- the hidden handheld, fetched only once someone finds the cartridge -->
+  {#if globalState.gameOpen}
+    {#await import("$lib/gameboy/GameBoy.svelte") then { default: GameBoy }}
+      <GameBoy />
+    {/await}
+  {/if}
 {/if}

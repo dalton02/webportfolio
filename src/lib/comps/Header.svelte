@@ -75,7 +75,7 @@
   /** The HUD keys do what their badges say: B sound, A language, R (or M) menu. */
   function onKey(e: KeyboardEvent) {
     const typing = (e.target as HTMLElement | null)?.closest("input, textarea, select, [contenteditable]");
-    if (typing || e.defaultPrevented || e.repeat || e.ctrlKey || e.metaKey || e.altKey || globalState.menuOpen) return;
+    if (typing || e.defaultPrevented || e.repeat || e.ctrlKey || e.metaKey || e.altKey || globalState.menuOpen || globalState.gameOpen) return;
     const key = e.key.toLowerCase();
     if (key === "b") sfx.toggle();
     else if (key === "a") {

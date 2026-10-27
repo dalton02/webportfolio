@@ -1183,3 +1183,60 @@ export const medallionRight = sprite(
   MEDALLION_PAL,
   MEDALLION.map((row, y) => ".".repeat(CUT[y]) + row.slice(CUT[y])),
 );
+
+// ---------------------------------------------------------------- secrets
+
+/** An old grey handheld cartridge, lost in the grass at the top of the page. */
+export const cartridge = sprite(
+  { g: "#b8b8c0", G: "#8888a0", l: "#9bbc0f", L: "#306230" },
+  [
+    "kkkkkkkkkkkkk...",
+    "kwgggggggggggk..",
+    "kgGgGgGgGgGggGk.",
+    "kggggggggggggggk",
+    "kgkkkkkkkkkkkkgk",
+    "kgkLLLLLLLLLLkgk",
+    "kgkllllllllllkgk",
+    "kgklllllllLllkgk",
+    "kgkllLLLlLLLlkgk",
+    "kgklLLLLLLLLLkgk",
+    "kgkLLLLLLLLLLkgk",
+    "kgkkkkkkkkkkkkgk",
+    "kgggggggggggggGk",
+    "kggggGGGGgggggGk",
+    "kgggggggggggggGk",
+    "kGGGGGGGGGGGGGGk",
+    "kkGkGkGkGkGkGkkk",
+    ".kkkkkkkkkkkkkk.",
+  ],
+);
+
+/** A clump of grass to hide things behind. */
+export const tuft = sprite(
+  { h: "#88d058", m: "#58a840", d: "#307830" },
+  [
+    "...h.......h....h...",
+    "..hm..h...hm...hm...",
+    "..mm.hm..mmh..mmh.h.",
+    ".hmm.mm.hmmm.hmmm.m.",
+    ".mmdhmmhmmdmhmmdmhm.",
+    "hmdmmmdmmdmmmmdmmmdh",
+    "mdmdmdmdmdmdmmdmdmdm",
+    "dmddmdddmddmddmddmdd",
+  ],
+);
+
+/** A gold coin that pops out of Dalton's head when you poke him enough. */
+export const coin = sprite(
+  { y: "#f8d040", h: "#f8f8b0", o: "#c08018" },
+  [
+    "..kkkk..",
+    ".kyyyyk.",
+    "kyhyyyok",
+    "kyhyoyok",
+    "kyhyoyok",
+    "kyhyyyok",
+    ".kyyyok.",
+    "..kkkk..",
+  ],
+);

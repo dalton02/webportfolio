@@ -79,6 +79,10 @@
     "hi": {
       "enUs": "Hi!",
       "ptBr": "Olá!"
+    },
+    "secret": {
+      "ptBr": "Tá bom, tá bom! Já que insiste... perdi um cartucho velho aqui por cima. Se achar, é seu.",
+      "enUs": "Okay, okay! Since you insist... I dropped an old cartridge somewhere up here. Finders keepers."
     }
   },
   "about": {
@@ -372,6 +376,52 @@
     "speaker": {
       "enUs": "Soldadinho",
       "ptBr": "Soldadinho"
+    }
+  },
+  "game": {
+    "cart": {
+      "ptBr": "Um cartucho perdido na grama",
+      "enUs": "A cartridge lost in the grass"
+    },
+    "title": {
+      "ptBr": "Dalton Boy",
+      "enUs": "Dalton Boy"
+    },
+    "close": {
+      "ptBr": "Desligar",
+      "enUs": "Power off"
+    },
+    "hint": {
+      "ptBr": "Setas andam · Z pula (de novo no ar) · segure Z para planar · X corre · Enter pausa · Q som · Esc desliga",
+      "enUs": "Arrows move · Z hops (again in the air) · hold Z to glide · X runs · Enter pauses · Q sound · Esc powers off"
+    },
+    "start": {
+      "ptBr": "APERTE START",
+      "enUs": "PUSH START"
+    },
+    "over": {
+      "ptBr": "FIM DE JOGO",
+      "enUs": "GAME OVER"
+    },
+    "clear": {
+      "ptBr": "FASE COMPLETA!",
+      "enUs": "COURSE CLEAR!"
+    },
+    "thanks": {
+      "ptBr": "VALEU POR JOGAR",
+      "enUs": "THANKS FOR PLAYING"
+    },
+    "pause": {
+      "ptBr": "PAUSA",
+      "enUs": "PAUSE"
+    },
+    "timeUp": {
+      "ptBr": "ACABOU O TEMPO",
+      "enUs": "TIME UP"
+    },
+    "top": {
+      "ptBr": "RECORDE",
+      "enUs": "TOP"
     }
   }
 }
