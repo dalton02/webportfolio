@@ -36,3 +36,9 @@ resume/*.fdb_latexmk
 
 # Currículos adaptados por vaga (skill resume-to): ficam só na máquina
 resume/vagas/
+
+# Claude Code e notas locais do currículo
+.claude/
+resume/CLAUDE.md
+resume/estudo-entrevista-llia.md
+resume/linkedin.md
