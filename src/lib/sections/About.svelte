@@ -81,7 +81,14 @@
 
         <div class="px-box px-parch flex flex-col gap-1.5 p-5">
           <span class="font-title text-[11px] uppercase">{t.languages.value}</span>
-          <span class="text-[17px]">{languages.value}</span>
+          <!-- one language per line, so "(proficiência profissional)" never splits mid-phrase -->
+          <ul class="flex flex-col gap-1 text-[17px]">
+            {#each languages.value.split(" · ") as lang (lang)}
+              <li class="flex items-baseline gap-2">
+                <span class="inline-block h-1.5 w-1.5 shrink-0 translate-y-[-3px] bg-bark" aria-hidden="true"></span>{lang}
+              </li>
+            {/each}
+          </ul>
         </div>
       </div>
 
