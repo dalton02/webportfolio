@@ -392,8 +392,8 @@
       "enUs": "Power off"
     },
     "hint": {
-      "ptBr": "Setas andam · Z pula (de novo no ar) · segure Z para planar · X corre · Enter pausa · Q som · Esc desliga",
-      "enUs": "Arrows move · Z hops (again in the air) · hold Z to glide · X runs · Enter pauses · Q sound · Esc powers off"
+      "ptBr": "Setas andam · Z pula (de novo no ar) · segure Z para planar · X corre, e no ar dá um dash que quebra pedra rachada · ↓ desce do galho · Enter pausa · Q som · Esc desliga",
+      "enUs": "Arrows move · Z hops (again in the air) · hold Z to glide · X runs, and in the air dashes through cracked rock · ↓ drops off a branch · Enter pauses · Q sound · Esc powers off"
     },
     "start": {
       "ptBr": "APERTE START",

@@ -412,6 +412,49 @@ class Sfx {
     osc.stop(t + 0.16);
   }
 
+  /** The dash: a short square whoosh that drops fast, like air rushing past. */
+  dash() {
+    const ctx = this.audio();
+    if (!ctx) return;
+    const t = ctx.currentTime + 0.01;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "square";
+    osc.frequency.setValueAtTime(1100, t);
+    osc.frequency.exponentialRampToValueAtTime(180, t + 0.12);
+    gain.gain.setValueAtTime(0.04, t);
+    gain.gain.linearRampToValueAtTime(0, t + 0.14);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.14);
+  }
+
+  /** A spring: a quick triangle boing climbing an octave. */
+  spring() {
+    this.play([
+      [hz("C4"), 0.04, "triangle"],
+      [hz("G4"), 0.04, "triangle"],
+      [hz("C5"), 0.09, "triangle"],
+    ], 0.12);
+  }
+
+  /** Cracked rock giving way to the dash: a low crunch. */
+  smash() {
+    this.play([
+      [hz("A2"), 0.04],
+      [hz("D2"), 0.09],
+    ], 0.05);
+  }
+
+  /** The checkpoint ribbon going up. */
+  check() {
+    this.play([
+      [hz("E5"), 0.07],
+      [hz("G5"), 0.07],
+      [hz("C6"), 0.16],
+    ], 0.045);
+  }
+
   /** A soft wingbeat while gliding. */
   flap() {
     this.play([[hz("D4"), 0.03, "triangle"]], 0.06);

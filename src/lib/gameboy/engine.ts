@@ -1,17 +1,22 @@
 /*
   Chapada Adventures, the tiny platformer inside the hidden handheld. Fixed 60 Hz steps on
-  requestAnimationFrame, drawn onto a 160×144 canvas in four shades. The soldadinho hops
-  twice and glides while you hold the button, a little like a certain green dinosaur's
-  flutter. The camera only moves right, and follows up and down. Units are pixels per frame.
+  requestAnimationFrame, in four shades. The screen is laid out on a 160×144 grid (HUD, menus,
+  words) but the canvas has ZOOM pixels for each of those, and the world is drawn one to one
+  on them, so the camera sees that much farther than the old handheld did. The soldadinho
+  hops twice, glides while you hold the button, a little like a certain green dinosaur's
+  flutter, and dashes once per flight, which is also the only thing that breaks cracked rock.
+  The camera follows both ways, so you can always go back for a spring or a coin.
+  Units are pixels per frame.
 */
 import {
-  BIRD, BRICK, CACTUS, CALANGO, CALANGO_FLAT, CARCARA, CLOUD, COIN, COIN_MINI, DIRT, FLAG, FONT, GROUND, HARD,
-  HEART, MESA, NEST, PIPE, POLE, POLE_TOP, QUESTION_FRAMES, SHADES, USED, XIQUE, type Art,
+  BIRD, BRANCH, BRICK, CACTUS, CALANGO, CALANGO_FLAT, CARCARA, CLOUD, COIN, COIN_MINI, CRACKED, DIRT, FLAG, FONT,
+  GROUND, HARD, HEART, MESA, NEST, PIPE, POLE, POLE_TOP, POST, QUESTION_FRAMES, SAND, SAPO, SHADES, SPIKES, SPRING,
+  USED, type Art,
 } from "./art.js";
 import { LEVEL, ROWS } from "./level.js";
 
 export type Button = "left" | "right" | "up" | "down" | "a" | "b" | "start";
-export type Sound = "jump" | "jump2" | "flap" | "coin" | "stomp" | "bump" | "die" | "clear" | "boot" | "oneUp" | "tick" | "pause";
+export type Sound = "jump" | "jump2" | "flap" | "coin" | "stomp" | "bump" | "die" | "clear" | "boot" | "oneUp" | "tick" | "pause" | "dash" | "spring" | "smash" | "check";
 export type Words = Record<"start" | "over" | "clear" | "thanks" | "pause" | "timeUp" | "top", string>;
 
 export type Hooks = {
@@ -32,10 +37,17 @@ const W = 160;
 const H = 144;
 const T = 16;
 const HUD = 16;
-const VIEW = H - HUD; // 8 rows of level on screen
+const VIEW = H - HUD;
+/** world pixels per screen-grid pixel: the camera sits this many times farther back */
+export const ZOOM = 1.8;
+/** the canvas, in whole pixels; the HUD band and the view below it share its height */
+export const CANVAS = { w: Math.round(W * ZOOM), h: Math.round(H * ZOOM) };
+const TOP = Math.round(HUD * ZOOM);
+const VW = CANVAS.w; // 18 columns of level on screen
+const VH = CANVAS.h - TOP; // about 14 rows, a little more than the level is tall
 const DEPTH = ROWS * T;
 const STEP = 1000 / 60;
-const TIME = 300;
+const TIME = 400;
 const TIME_TICK = 24; // frames per clock tick, ~0.4s like the old handhelds
 
 // the soldadinho's moves
@@ -46,17 +58,36 @@ const HOP_AGAIN = 3.4; // the second hop, in the air
 const GLIDE = 110; // frames of gliding before the wings tire
 const GLIDE_FALL = 0.55;
 const LIFT = 1.8; // how fast an updraft carries you up
+const DASH = 4.2; // B in the air: a quick straight burst
+const DASH_TIME = 12;
+const SPRING_UP = 5.6; // about seven blocks, as if you held the button all the way up
+const CRUMBLE = 36; // frames a sandstone block holds you before it gives way
+const REGROW = 300; // and how long until it is back
+/*
+  Spike traps run on one clock: the tips peek out as a warning, the spikes shoot up, hold,
+  and sink back. Each column runs a little behind the one on its left, so across a field they
+  roll forward like a wave, and running right behind one takes you through the gap it leaves.
+*/
+const SPIKE_CYCLE = 120;
+const SPIKE_WAVE = 10; // frames between one column and the next
 
-const SOLID = new Set(["#", "B", "?", "!", "U", "H", "[", "]", "{", "}"]);
+const SOLID = new Set(["#", "B", "?", "!", "U", "H", "[", "]", "{", "}", "^", "~", "D"]);
+/** the row the soldadinho starts on and the flag counts from, the top of the valley floor */
+const FLOOR = ROWS - 2;
 
 type Body = { x: number; y: number; vx: number; vy: number; ox: number; oy: number; w: number; h: number; ground: boolean };
-type Player = Body & { face: 1 | -1; walk: number; hops: number; wings: number; gliding: boolean; nested: boolean };
-type Enemy = Body & { kind: "calango" | "carcara"; baseY: number; t: number; dead: number; awake: boolean };
+type Player = Body & {
+  face: 1 | -1; walk: number; hops: number; wings: number; gliding: boolean; nested: boolean; dash: number; dashed: boolean;
+  /** thrown by a spring: the climb goes as high as a held hop would, button or not */
+  sprung: boolean;
+};
+type Enemy = Body & { kind: "calango" | "carcara" | "sapo"; baseY: number; t: number; dead: number; awake: boolean };
 type Heart = Body & { rise: number };
 type Pop = { x: number; y: number; t: number };
 type Label = { x: number; y: number; t: number; text: string };
 type Bump = { c: number; r: number; t: number };
 type Puff = { x: number; y: number; t: number };
+type Chip = { x: number; y: number; vx: number; vy: number; t: number };
 
 export type State = "boot" | "title" | "intro" | "play" | "dying" | "clear" | "gameover";
 
@@ -95,7 +126,7 @@ export class Game {
   private map: string[][] = [];
   private cols = LEVEL[0].length;
   private cam = 0;
-  private camY = DEPTH - VIEW;
+  private camY = DEPTH - VH;
   private p: Player = this.freshPlayer();
   private enemies: Enemy[] = [];
   private hearts: Heart[] = [];
@@ -103,6 +134,15 @@ export class Game {
   private labels: Label[] = [];
   private bumps: Bump[] = [];
   private puffs: Puff[] = [];
+  /** springs that just threw something, drawn squashed for a beat */
+  private springs: Bump[] = [];
+  /** sandstone blocks stepped on: t counts up, they give way at CRUMBLE and grow back at REGROW */
+  private crumbles: Bump[] = [];
+  /** bits of broken rock and sandstone tumbling away */
+  private chips: Chip[] = [];
+  /** the checkpoint post, and whether the soldadinho has passed it this game */
+  private post = { c: -1, r: 0 };
+  private saved = false;
 
   private lives = 3;
   private score = 0;
@@ -133,7 +173,7 @@ export class Game {
     flag: bake(FLAG),
     nest: bake(NEST),
     cactus: bake(CACTUS),
-    xique: bake(XIQUE),
+    spikes: SPIKES.map((f) => bake(f)),
     cloud: bake(CLOUD),
     mesa: bake(MESA),
     coin: COIN.map((f) => bake(f)),
@@ -144,6 +184,13 @@ export class Game {
     calangoFlat: bake(CALANGO_FLAT),
     carcara: CARCARA.map((f) => bake(f)),
     carcaraDown: bake([...CARCARA[0]].reverse()),
+    sapo: SAPO.map((f) => [bake(f), bake(f, true)]),
+    sapoDown: bake([...SAPO[0]].reverse()),
+    spring: SPRING.map((f) => bake(f)),
+    branch: bake(BRANCH),
+    sand: bake(SAND),
+    cracked: bake(CRACKED),
+    post: POST.map((f) => bake(f)),
   };
   private glyphs = new Map<string, HTMLCanvasElement>();
 
@@ -151,8 +198,8 @@ export class Game {
     canvas: HTMLCanvasElement,
     private hooks: Hooks,
   ) {
-    this.buffer.width = W;
-    this.buffer.height = H;
+    this.buffer.width = CANVAS.w;
+    this.buffer.height = CANVAS.h;
     this.g = this.buffer.getContext("2d")!;
     this.screen = canvas.getContext("2d")!;
     this.g.imageSmoothingEnabled = false;
@@ -194,12 +241,12 @@ export class Game {
   /** The bird is 20×18 on screen; its body is the middle 14×14, feet on the bottom row. */
   private freshPlayer(): Player {
     return {
-      x: 2 * T, y: 10 * T - 18, vx: 0, vy: 0, ox: 3, oy: 4, w: 14, h: 14, ground: false,
-      face: 1, walk: 0, hops: 0, wings: GLIDE, gliding: false, nested: false,
+      x: 2 * T, y: FLOOR * T - 18, vx: 0, vy: 0, ox: 3, oy: 4, w: 14, h: 14, ground: false,
+      face: 1, walk: 0, hops: 0, wings: GLIDE, gliding: false, nested: false, dash: 0, dashed: false, sprung: false,
     };
   }
 
-  /** Rebuilds the level from the map: blocks come back, critters respawn. */
+  /** Rebuilds the level from the map: blocks come back, critters respawn, and once the checkpoint is passed you start from it. */
   private load() {
     this.map = LEVEL.map((row) => [...row]);
     this.enemies = [];
@@ -208,6 +255,9 @@ export class Game {
     this.labels = [];
     this.bumps = [];
     this.puffs = [];
+    this.springs = [];
+    this.crumbles = [];
+    this.chips = [];
     this.map.forEach((row, r) =>
       row.forEach((ch, c) => {
         if (ch === "c") {
@@ -216,7 +266,11 @@ export class Game {
         } else if (ch === "k") {
           this.enemies.push({ kind: "carcara", x: c * T, y: r * T, vx: -0.45, vy: 0, ox: 2, oy: 4, w: 12, h: 6, ground: false, baseY: r * T, t: 0, dead: 0, awake: false });
           row[c] = ".";
+        } else if (ch === "s") {
+          this.enemies.push({ kind: "sapo", x: c * T, y: r * T + 6, vx: 0, vy: 0, ox: 1, oy: 3, w: 14, h: 7, ground: false, baseY: 0, t: 0, dead: 0, awake: false });
+          row[c] = ".";
         } else if (ch === "F") this.pole = { c, top: r };
+        else if (ch === "P") this.post = { c, r };
         else if (ch === "n") {
           this.nest = { x: c * T, y: (r + 1) * T - NEST.length };
           row[c] = ".";
@@ -225,7 +279,13 @@ export class Game {
     );
     this.p = this.freshPlayer();
     this.cam = 0;
-    this.camY = DEPTH - VIEW;
+    this.camY = DEPTH - VH;
+    if (this.saved) {
+      this.p.x = this.post.c * T - 2;
+      this.p.y = (this.post.r + 1) * T - 18;
+      this.cam = Math.max(0, Math.min(this.cols * T - VW, this.p.x - VW * 0.4));
+      this.camY = Math.max(-VH, Math.min(DEPTH - VH, this.p.y - VH / 2));
+    }
     this.time = TIME;
     this.flagY = this.pole.top * T + 8;
   }
@@ -241,6 +301,7 @@ export class Game {
     this.score = 0;
     this.coins = 0;
     this.entry = { score: 0, coins: 0 };
+    this.saved = false;
     this.load();
     this.go("intro");
   }
@@ -295,15 +356,19 @@ export class Game {
     return false;
   }
 
-  /** Moves along y. Returns the block bonked from below, if any. */
-  private moveY(b: Body): { c: number; r: number } | undefined {
+  /**
+    Moves along y. Returns the block bonked from below, if any. A branch only holds what
+    comes down onto it from above, and lets go when `drop` (holding down).
+  */
+  private moveY(b: Body, drop = false): { c: number; r: number } | undefined {
     b.y += b.vy;
     b.ground = false;
     const l = b.x + b.ox;
     const r = l + b.w - 0.01;
     if (b.vy > 0) {
       const edge = b.y + b.oy + b.h;
-      if (this.solidAt(l, edge) || this.solidAt(r, edge)) {
+      const branch = (x: number) => !drop && this.tileAt(x, edge) === "-" && edge - b.vy <= Math.floor(edge / T) * T + 0.01;
+      if (this.solidAt(l, edge) || this.solidAt(r, edge) || branch(l) || branch(r)) {
         b.y = Math.floor(edge / T) * T - b.oy - b.h;
         b.vy = 0;
         b.ground = true;
@@ -328,18 +393,23 @@ export class Game {
 
   private follow() {
     const p = this.p;
-    this.cam = Math.max(this.cam, Math.min(this.cols * T - W, p.x - 64));
+    // a dead zone in the middle of the screen, so a step back and forth doesn't sway the view
+    let cam = this.cam;
+    if (p.x - cam > VW * 0.55) cam = p.x - VW * 0.55;
+    else if (p.x - cam < VW * 0.3) cam = p.x - VW * 0.3;
+    this.cam = Math.max(0, Math.min(this.cols * T - VW, cam));
     // vertical: a hop doesn't move the screen; it follows once you near the top or bottom
     // edge, and settles so the ground you stand on sits low in the view
     const at = p.y - this.camY;
     let target = this.camY;
-    if (p.ground) target = p.y - 64;
-    else if (at < 28) target = p.y - 28;
-    else if (at > 92) target = p.y - 92;
+    const near = VH * 0.22;
+    if (p.ground) target = p.y - VH / 2;
+    else if (at < near) target = p.y - near;
+    else if (at > VH * 0.72) target = p.y - VH * 0.72;
     // it may rise into the open sky above the map, so the HUD never sits on top of the bird
-    target = Math.max(-VIEW, Math.min(DEPTH - VIEW, target));
+    target = Math.max(-VH, Math.min(DEPTH - VH, target));
     // catch up fast when the bird climbs toward the HUD, gently otherwise
-    this.camY += (target - this.camY) * (at < 28 ? 0.5 : p.ground ? 0.08 : 0.2);
+    this.camY += (target - this.camY) * (at < near ? 0.5 : p.ground ? 0.08 : 0.2);
   }
 
   // ---------------------------------------------------------------- update
@@ -404,6 +474,12 @@ export class Game {
 
     this.labels = this.labels.filter((l) => ++l.t < 40);
     this.puffs = this.puffs.filter((f) => ++f.t < 16);
+    for (const k of this.chips) {
+      k.vy += 0.25;
+      k.x += k.vx;
+      k.y += k.vy;
+    }
+    this.chips = this.chips.filter((k) => ++k.t < 50);
     this.pressed.clear();
   }
 
@@ -412,7 +488,18 @@ export class Game {
     const dir = (this.held.has("right") ? 1 : 0) - (this.held.has("left") ? 1 : 0);
     const max = this.held.has("b") ? RUN : WALK;
 
-    if (dir) {
+    // B in the air: one straight burst per flight, wings swept back, no falling while it lasts
+    if (this.pressed.has("b") && !p.ground && !p.dashed) {
+      if (dir) p.face = dir as 1 | -1;
+      p.dash = DASH_TIME;
+      p.dashed = true;
+      this.puffs.push({ x: p.x + 4, y: p.y + 8, t: 0 });
+      this.hooks.sound("dash");
+    }
+
+    if (p.dash) {
+      p.vx = p.face * DASH;
+    } else if (dir) {
       const skid = Math.sign(p.vx) === -dir;
       // speed up only up to the cap, never past it
       if (skid) p.vx += dir * 0.15;
@@ -422,12 +509,13 @@ export class Game {
       const drag = p.ground ? 0.07 : 0.02;
       p.vx = Math.abs(p.vx) <= drag ? 0 : p.vx - Math.sign(p.vx) * drag;
     }
-    // over the cap (let go of B mid-run): ease back down to walking speed
-    if (Math.abs(p.vx) > max) p.vx = Math.sign(p.vx) * Math.max(max, Math.abs(p.vx) - 0.05);
+    // over the cap (let go of B mid-run, or the end of a dash): ease back down to walking speed
+    if (!p.dash && Math.abs(p.vx) > max) p.vx = Math.sign(p.vx) * Math.max(max, Math.abs(p.vx) - 0.05);
 
     // A: hop from the ground, hop once more in the air
     const jumped = this.pressed.has("a") && p.hops < 2;
     if (jumped) {
+      p.dash = 0;
       if (p.ground || p.hops === 0) {
         p.vy = -HOP - Math.abs(p.vx) * 0.15;
         p.hops = p.ground ? 1 : 2;
@@ -442,8 +530,11 @@ export class Game {
 
     // holding A on the way down spreads the wings: a slow glide until they tire
     const wind = this.tileAt(p.x + 10, p.y + 10) === "w";
-    p.gliding = !p.ground && !jumped && this.held.has("a") && p.vy >= 0 && p.wings > 0;
-    if (wind && this.held.has("a") && !p.ground) {
+    p.gliding = !p.dash && !p.ground && !jumped && this.held.has("a") && p.vy >= 0 && p.wings > 0;
+    if (p.dash) {
+      p.dash--;
+      p.vy = 0;
+    } else if (wind && this.held.has("a") && !p.ground) {
       // an updraft catches open wings, carries you up and lets them rest
       p.vy = Math.max(-LIFT, p.vy - 0.3);
       p.wings = GLIDE;
@@ -452,22 +543,25 @@ export class Game {
       p.wings--;
       p.vy = Math.min(GLIDE_FALL, p.vy + 0.12);
     } else {
-      p.vy = Math.min(4, p.vy + (p.vy < 0 && this.held.has("a") ? 0.14 : 0.45));
+      if (p.vy >= 0) p.sprung = false;
+      p.vy = Math.min(4, p.vy + (p.vy < 0 && (p.sprung || this.held.has("a")) ? 0.14 : 0.45));
     }
     if (p.gliding && this.frame % 8 === 0) this.hooks.sound("flap");
 
-    if (this.moveX(p)) p.vx = 0;
-    // the screen never scrolls back, so its left edge is a wall
-    if (p.x + p.ox < this.cam) {
-      p.x = this.cam - p.ox;
-      p.vx = Math.max(0, p.vx);
+    // a dash into cracked rock breaks through and keeps going; anything else stops it
+    if (this.moveX(p) && !(p.dash && this.smash(p))) {
+      p.vx = 0;
+      p.dash = 0;
     }
-    const bonk = this.moveY(p);
+    const bonk = this.moveY(p, this.held.has("down"));
     if (bonk) this.bonk(bonk.c, bonk.r);
     if (p.ground) {
       p.hops = 0;
       p.wings = GLIDE;
+      p.dashed = false;
+      this.underfoot();
     }
+    this.updateCrumbles();
     p.walk = p.ground && p.vx ? p.walk + Math.abs(p.vx) : 0;
 
     this.follow();
@@ -480,10 +574,17 @@ export class Game {
     this.bumps = this.bumps.filter((b) => ++b.t < BOUNCE.length);
 
     if (this.frame % TIME_TICK === 0 && --this.time <= 0) {
-      this.labels.push({ x: this.cam + 50, y: this.camY + 40, t: -60, text: this.hooks.words().timeUp });
+      this.labels.push({ x: this.cam + VW / 2 - 40, y: this.camY + VH / 3, t: -60, text: this.hooks.words().timeUp });
       return this.die();
     }
     if (p.y > DEPTH) return this.die();
+
+    // passing the checkpoint: a lost life starts again from here, with what you carry now
+    if (!this.saved && this.post.c >= 0 && p.x + p.ox + p.w >= this.post.c * T + 4) {
+      this.saved = true;
+      this.entry = { score: this.score, coins: this.coins };
+      this.hooks.sound("check");
+    }
 
     // reaching the flagpole
     if (p.x + p.ox + p.w >= this.pole.c * T + 7) {
@@ -491,14 +592,25 @@ export class Game {
       this.clearPhase = "slide";
       p.x = this.pole.c * T + 7 - p.ox - p.w;
       p.vx = 0;
+      p.dash = 0;
       p.face = 1;
-      this.add(Math.max(100, (10 - Math.floor((p.y + 10) / T)) * 400));
+      this.add(Math.max(100, (FLOOR - Math.floor((p.y + 10) / T)) * 400));
       this.hooks.music(false);
       this.hooks.sound("clear");
     }
   }
 
-  /** The xique-xique's spines reach up about ten pixels from the ground. */
+  /** How far the spikes in column `c` stand out of their plate right now, 0 to 12 pixels. */
+  private spikeHeight(c: number) {
+    const t = (((this.frame - c * SPIKE_WAVE) % SPIKE_CYCLE) + SPIKE_CYCLE) % SPIKE_CYCLE;
+    if (t < 24) return t % 8 < 4 ? 2 : 0; // the warning: the tips twitch in the plate
+    if (t < 30) return (t - 24) * 2;
+    if (t < 70) return 12;
+    if (t < 76) return 12 - (t - 70) * 2;
+    return 0;
+  }
+
+  /** Spikes only hurt while they are out; flush with the plate you can walk over them. */
   private touchesThorns() {
     const p = this.p;
     const l = p.x + p.ox + 2;
@@ -507,9 +619,75 @@ export class Game {
     for (const x of [l, r]) {
       const c = Math.floor(x / T);
       const row = Math.floor((feet - 1) / T);
-      if (this.tile(c, row) === "x" && feet > row * T + 6) return true;
+      const h = this.tile(c, row) === "x" ? this.spikeHeight(c) : 0;
+      if (h >= 4 && feet > row * T + 14 - h + 2) return true;
     }
     return false;
+  }
+
+  /** What the feet just landed on: a spring throws you up, sandstone starts to give. */
+  private underfoot() {
+    const p = this.p;
+    const row = Math.floor((p.y + p.oy + p.h) / T);
+    const cols = new Set([Math.floor((p.x + p.ox) / T), Math.floor((p.x + p.ox + p.w - 0.01) / T)]);
+    for (const c of cols) {
+      const ch = this.tile(c, row);
+      if (ch === "^") {
+        p.vy = -SPRING_UP;
+        p.sprung = true;
+        p.ground = false;
+        // the spring counts as the first hop, so the second one is still there at the top
+        p.hops = 1;
+        this.springs = this.springs.filter((s) => s.c !== c || s.r !== row);
+        this.springs.push({ c, r: row, t: 0 });
+        this.hooks.sound("spring");
+        return;
+      }
+      if (ch === "~" && !this.crumbles.some((k) => k.c === c && k.r === row)) this.crumbles.push({ c, r: row, t: 0 });
+    }
+  }
+
+  private updateCrumbles() {
+    this.springs = this.springs.filter((s) => ++s.t < 8);
+    for (const k of this.crumbles) {
+      k.t++;
+      if (k.t === CRUMBLE) {
+        this.map[k.r][k.c] = ".";
+        this.shatter(k.c, k.r);
+        this.hooks.sound("bump");
+      }
+    }
+    // it grows back once nobody is standing where it was
+    const p = this.p;
+    this.crumbles = this.crumbles.filter((k) => {
+      if (k.t < REGROW) return true;
+      const inside = p.x + p.ox < (k.c + 1) * T && p.x + p.ox + p.w > k.c * T && p.y + p.oy < (k.r + 1) * T && p.y + p.oy + p.h > k.r * T;
+      if (inside) return true;
+      this.map[k.r][k.c] = "~";
+      return false;
+    });
+  }
+
+  /** Breaks the cracked rock the dash ran into. Returns true when there was any. */
+  private smash(p: Player) {
+    const x = p.face === 1 ? p.x + p.ox + p.w : p.x + p.ox - 1;
+    const c = Math.floor(x / T);
+    let broke = false;
+    for (let r = Math.floor((p.y + p.oy) / T); r <= Math.floor((p.y + p.oy + p.h - 0.01) / T); r++) {
+      if (this.tile(c, r) !== "D") continue;
+      this.map[r][c] = ".";
+      this.shatter(c, r);
+      this.add(50);
+      broke = true;
+    }
+    if (broke) this.hooks.sound("smash");
+    return broke;
+  }
+
+  /** Four bits of the block fly off its corners. */
+  private shatter(c: number, r: number) {
+    for (const [dx, dy] of [[-1, -1], [1, -1], [-1, 0], [1, 0]])
+      this.chips.push({ x: c * T + 6 + dx * 4, y: r * T + 6 + dy * 4, vx: dx * (0.8 + Math.random() * 0.6), vy: -2.5 + dy - Math.random(), t: 0 });
   }
 
   private bonk(c: number, r: number) {
@@ -578,7 +756,7 @@ export class Game {
     const p = this.p;
     for (const e of this.enemies) {
       if (!e.awake) {
-        if (e.x < this.cam + W + 8) e.awake = true;
+        if (e.x < this.cam + VW + 8) e.awake = true;
         else continue;
       }
       e.t++;
@@ -595,6 +773,16 @@ export class Game {
         e.vy = Math.min(4, e.vy + 0.3);
         if (this.moveX(e)) e.vx = -e.vx;
         this.moveY(e);
+      } else if (e.kind === "sapo") {
+        // sits a while, then leaps toward the bird
+        e.vy = Math.min(4, e.vy + 0.25);
+        if (e.ground) e.vx = 0;
+        if (e.ground && e.t % 100 === 60) {
+          e.vx = p.x < e.x ? -1.1 : 1.1;
+          e.vy = -4;
+        }
+        if (this.moveX(e)) e.vx = 0;
+        this.moveY(e);
       } else {
         e.x += e.vx;
         e.y = e.baseY + Math.sin(e.t * 0.06) * 10;
@@ -607,6 +795,9 @@ export class Game {
         p.vy = this.held.has("a") ? -4 : -2.6;
         p.hops = 1;
         p.wings = GLIDE;
+        p.dash = 0;
+        p.dashed = false;
+        p.sprung = false;
         if (e.kind === "calango") {
           e.dead = 1;
           e.vy = 0;
@@ -616,7 +807,8 @@ export class Game {
         } else this.kill(e, 200);
       } else return this.die();
     }
-    this.enemies = this.enemies.filter((e) => e.y < DEPTH + 16 && e.x > this.cam - 48 && !(e.kind === "calango" && e.vy === 0 && e.dead > 30));
+    // critters you leave behind stay where they are, for when you come back
+    this.enemies = this.enemies.filter((e) => e.y < DEPTH + 16 && e.x > -32 && !(e.kind === "calango" && e.vy === 0 && e.dead > 30));
   }
 
   private updateHearts() {
@@ -642,6 +834,7 @@ export class Game {
     this.p.vx = 0;
     this.p.vy = 0;
     this.p.gliding = false;
+    this.p.dash = 0;
     this.hooks.music(false);
     this.hooks.sound("die");
   }
@@ -727,6 +920,8 @@ export class Game {
 
   private draw() {
     const g = this.g;
+    // menus, HUD and words are laid out on the 160×144 grid; drawWorld steps out of it
+    g.setTransform(ZOOM, 0, 0, ZOOM, 0, 0);
     g.fillStyle = SHADES[0];
     g.fillRect(0, 0, W, H);
     const w = this.hooks.words();
@@ -816,34 +1011,38 @@ export class Game {
     const g = this.g;
     const cam = Math.floor(this.cam);
     const camY = Math.round(this.camY);
+    // the world is drawn one to one on the canvas, below the HUD
+    const top = TOP;
+    g.setTransform(1, 0, 0, 1, 0, 0);
     const sx = (x: number) => Math.round(x) - cam;
-    const sy = (y: number) => HUD + Math.round(y) - camY;
+    const sy = (y: number) => top + Math.round(y) - camY;
     // how far the view sits above the valley floor, for the background to drift with it
-    const rise = DEPTH - VIEW - camY;
+    const rise = DEPTH - VH - camY;
 
-    // far away: clouds, then the chapada on the horizon
+    // far away: clouds across the upper sky, then the chapada on the horizon
     for (let i = 0; i < 14; i++) {
       const x = ((((i * 113 - this.cam * 0.2) % (14 * 56)) + 14 * 56) % (14 * 56)) - 28;
-      if (x < W) g.drawImage(this.img.cloud, Math.round(x), HUD + 6 + ((i * 37) % 26) + Math.round(rise * 0.2));
+      if (x < VW) g.drawImage(this.img.cloud, Math.round(x), top + 6 + ((i * 37) % Math.round(VH * 0.45)) + Math.round(rise * 0.2));
     }
     const mx = -Math.round((this.cam * 0.4) % 256);
-    const my = HUD + VIEW - 32 - 48 + Math.round(rise * 0.4);
-    g.drawImage(this.img.mesa, mx, my);
-    g.drawImage(this.img.mesa, mx + 256, my);
+    const my = top + VH - 32 - 48 + Math.round(rise * 0.4);
+    for (let x = mx; x < VW; x += 256) g.drawImage(this.img.mesa, x, my);
 
     // blocks
     const first = Math.floor(cam / T);
     const firstRow = Math.max(0, Math.floor(camY / T));
-    for (let c = first; c <= first + W / T; c++)
-      for (let r = firstRow; r <= Math.min(ROWS - 1, firstRow + VIEW / T); r++) {
+    for (let c = first; c <= first + VW / T; c++)
+      for (let r = firstRow; r <= Math.min(ROWS - 1, firstRow + VH / T); r++) {
         const ch = this.tile(c, r);
         if (ch === ".") continue;
         if (ch === "w") {
-          this.drawWind(c, r, cam, camY);
+          this.drawWind(c, r, cam, camY - top);
           continue;
         }
         const bump = this.bumps.find((b) => b.c === c && b.r === r);
-        const x = c * T - cam;
+        // sandstone shakes in its last moments before it goes
+        const k = ch === "~" ? this.crumbles.find((b) => b.c === c && b.r === r) : undefined;
+        const x = c * T - cam + (k && k.t > CRUMBLE / 2 ? (this.frame % 4 < 2 ? 1 : -1) : 0);
         const y = sy(r * T) - (bump ? BOUNCE[bump.t] : 0);
         const img = this.tileImage(ch, c, r);
         if (img) g.drawImage(img, ch === "o" ? x + 4 : x, ch === "o" ? y + 4 : y);
@@ -863,10 +1062,17 @@ export class Game {
         if (e.dead && e.vy === 0) g.drawImage(this.img.calangoFlat, x, y);
         else if (e.dead) g.drawImage(this.img.calango[0][0], x, y);
         else g.drawImage(this.img.calango[Math.floor(e.t / 8) % 2][e.vx > 0 ? 1 : 0], x, y);
+      } else if (e.kind === "sapo") {
+        const face = e.vx > 0 || (!e.vx && this.p.x > e.x) ? 1 : 0;
+        g.drawImage(e.dead ? this.img.sapoDown : this.img.sapo[e.ground ? 0 : 1][face], x, y);
       } else {
         g.drawImage(e.dead ? this.img.carcaraDown : this.img.carcara[Math.floor(e.t / 10) % 2], x, y);
       }
     }
+
+    // bits of broken rock
+    g.fillStyle = SHADES[3];
+    for (const k of this.chips) g.fillRect(sx(k.x), sy(k.y), 3, 3);
 
     // the little cloud of dust the second hop kicks off
     g.fillStyle = SHADES[2];
@@ -880,7 +1086,9 @@ export class Game {
     this.drawPlayer(sx, sy);
     if (this.p.nested) g.drawImage(this.img.nest, sx(this.nest.x), sy(this.nest.y));
 
-    for (const l of this.labels) this.text(l.text, sx(l.x), sy(l.y - Math.max(0, l.t) * 0.5), 3);
+    // points are written twice as big as the world, so they still read from this far back
+    for (const l of this.labels) this.text(l.text, sx(l.x), sy(l.y - Math.max(0, l.t) * 0.5), 3, 2);
+    g.setTransform(ZOOM, 0, 0, ZOOM, 0, 0);
   }
 
   /** Updrafts: short streaks rising through the column. */
@@ -890,7 +1098,7 @@ export class Game {
       g.fillStyle = SHADES[i === 0 ? 2 : 1];
       const x = c * T + ((c * 7 + i * 5 + r * 3) % 14) + 1 - cam;
       const y = r * T + 15 - ((this.frame * 2 + i * 6 + c * 5 + r * 3) % 16);
-      g.fillRect(x, HUD + y - camY, 1, 6);
+      g.fillRect(x, y - camY, 1, 6);
     }
   }
 
@@ -921,11 +1129,21 @@ export class Game {
       case "m":
         return i.cactus;
       case "x":
-        return i.xique;
+        return i.spikes[this.spikeHeight(c) / 2];
       case "|":
         return i.pole;
       case "F":
         return i.poleTop;
+      case "^":
+        return i.spring[this.springs.some((s) => s.c === c && s.r === r) ? 1 : 0];
+      case "-":
+        return i.branch;
+      case "~":
+        return i.sand;
+      case "D":
+        return i.cracked;
+      case "P":
+        return i.post[this.saved ? 1 : 0];
     }
   }
 
@@ -935,6 +1153,7 @@ export class Game {
     let frame: HTMLCanvasElement[];
     if (this.state === "dying") frame = b.dead;
     else if (p.nested) frame = b.stand;
+    else if (p.dash) frame = b.dash;
     else if (p.gliding) frame = Math.floor(this.frame / 5) % 2 ? b.glideUp : b.glideDown;
     else if (!p.ground) frame = b.jump;
     else if (p.vx) frame = Math.floor(p.walk / 6) % 2 ? b.walk : b.stand;

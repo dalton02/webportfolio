@@ -1,13 +1,13 @@
 <script lang="ts">
   /*
     The hidden handheld: a grey brick of a console drawn in CSS, with the game running on a
-    160×144 canvas behind the glass. Keys and the shell's own buttons both drive it, so it
+    160×144 screen behind the glass (ZOOM canvas pixels to each). Keys and the shell's own buttons both drive it, so it
     plays on a phone too. Only loaded once someone finds the cartridge.
   */
   import { onMount } from "svelte";
   import { fade, fly } from "svelte/transition";
   import { ASCII_BIRD, ASCII_BIRD_SHADE, SHADES } from "./art.js";
-  import { Game, type Button, type Sound, type State } from "./engine.js";
+  import { CANVAS, Game, ZOOM, type Button, type Sound, type State } from "./engine.js";
   import { cap, capsule, circle, edge, minus, path, pick, shape, shift, union } from "./pixels.js";
   import globalState from "$lib/utils/global.svelte";
   import { Text } from "$lib/utils/lang.svelte";
@@ -54,6 +54,10 @@
     oneUp: () => sfx.itemGet(),
     tick: () => sfx.cursor(),
     pause: () => sfx.select(),
+    dash: () => sfx.dash(),
+    spring: () => sfx.spring(),
+    smash: () => sfx.smash(),
+    check: () => sfx.check(),
   };
 
   // the title's ASCII soldadinho, split into runs of one shade so each run is a single span
@@ -325,8 +329,8 @@
           <p class="bezel-text"><span class="line"></span>DOT MATRIX · 4 SHADES<span class="line"></span></p>
           <span class="led" aria-hidden="true"></span>
           <span class="led-label" aria-hidden="true">BATTERY</span>
-          <div class="lcd" style="--s: {scale};">
-            <canvas bind:this={canvas} width="160" height="144" style="width: {160 * scale}px; height: {144 * scale}px;"
+          <div class="lcd" class:dots={scale / ZOOM >= 1.5} style="--s: {scale}; --dot: {scale / ZOOM};">
+            <canvas bind:this={canvas} width={CANVAS.w} height={CANVAS.h} style="width: {160 * scale}px; height: {144 * scale}px;"
               >Chapada Adventures</canvas
             >
             {#if scene === "title"}
@@ -574,20 +578,24 @@
   }
   /*
     The dot matrix: a visible gap between every LCD pixel, like the old reflective screens,
-    and a little shade at the edges where the glass sits deeper than the frame.
+    and a little shade at the edges where the glass sits deeper than the frame. The canvas has
+    ZOOM pixels to each screen pixel, so the grid only shows when those are big enough to keep
+    a gap; below that it would just veil the picture.
   */
   .lcd::after {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-image:
-      linear-gradient(to right, rgb(155 188 15 / 0.35) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(155 188 15 / 0.35) 1px, transparent 1px);
-    background-size: calc(var(--s) * 1px) calc(var(--s) * 1px);
     box-shadow:
       inset 0 6px 0 0 rgb(15 56 15 / 0.18),
       inset 6px 0 0 0 rgb(15 56 15 / 0.1);
+  }
+  .lcd.dots::after {
+    background-image:
+      linear-gradient(to right, rgb(155 188 15 / 0.35) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(155 188 15 / 0.35) 1px, transparent 1px);
+    background-size: calc(var(--dot) * 1px) calc(var(--dot) * 1px);
   }
 
   /*

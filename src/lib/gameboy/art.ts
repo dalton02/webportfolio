@@ -81,6 +81,83 @@ export const HARD = grid(16, 16, (x, y) => {
   return "1";
 });
 
+/** Cracked rock: the hard block split by a zigzag. Only the dash breaks it. */
+export const CRACKED = grid(16, 16, (x, y) => {
+  if (x === 0 || y === 0 || x === 15 || y === 15) return "3";
+  const crack = [6, 6, 7, 7, 8, 9, 9, 8, 7, 7, 8, 9, 10, 10, 9, 9][y];
+  if (x === crack || (y === 5 && x > 9 && x < 13) || (y === 11 && x > 3 && x < 7)) return "3";
+  if (x === 1 || y === 1) return "0";
+  if (x === 14 || y === 14) return "2";
+  return "1";
+});
+
+/** Sandstone off the chapada's edge, four loose stones that give way a moment after you land. */
+export const SAND = grid(16, 16, (x, y) => {
+  if (x === 0 || y === 0 || x === 15 || y === 15) return "3";
+  if (y === 7 || (y < 7 && x === 9) || (y > 7 && x === 5)) return "2";
+  return (x * 3 + y * 7) % 11 === 0 ? "2" : (x + y * 5) % 9 === 0 ? "0" : "1";
+});
+
+/** A dry branch sticking out of the rock: land on it from above, hop up through it from below. */
+export const BRANCH = [
+  "3333333333333333",
+  "2121221212212122",
+  "2222222222222222",
+  "3333333333333333",
+  "....33.......33.",
+  ".....3........3.",
+  ...Array(10).fill("................"),
+];
+
+/** A spring, sprung and then squashed for a beat after it throws you. */
+export const SPRING = [
+  [
+    ".33333333333333.",
+    "3001111111111223",
+    ".33333333333333.",
+    "......3..3......",
+    "...3333333333...",
+    "...3........3...",
+    "...3333333333...",
+    "......3..3......",
+    "...3333333333...",
+    "...3........3...",
+    "...3333333333...",
+    "......3..3......",
+    "..333333333333..",
+    ".32222222222223.",
+    ".32111111111123.",
+    "3333333333333333",
+  ],
+  [
+    ...Array(6).fill("................"),
+    ".33333333333333.",
+    "3001111111111223",
+    ".33333333333333.",
+    "...3333333333...",
+    "...3333333333...",
+    "...3333333333...",
+    "..333333333333..",
+    ".32222222222223.",
+    ".32111111111123.",
+    "3333333333333333",
+  ],
+];
+
+/** The checkpoint: a ribbon on a post, hanging low until you pass, then up at the top. */
+function post(up: boolean): Art {
+  const top = up ? 1 : 8;
+  return outline(
+    grid(16, 16, (x, y) => {
+      if (x >= 3 && x <= 4) return "2";
+      const d = y - top;
+      if (d >= 0 && d <= 6 && x > 4 && x <= 6 + 2 * (3 - Math.abs(d - 3))) return up ? "0" : "1";
+      return ".";
+    }),
+  );
+}
+export const POST = [post(false), post(true)];
+
 /** A pipe is two blocks wide: a cap with a lip, then a narrower body. */
 function pipe(cap: boolean): Art {
   return grid(32, 16, (x, y) => {
@@ -125,16 +202,23 @@ export const NEST = outline(
   }),
 );
 
-/** Xique-xique, the low spiny cactus of the Caatinga. Touch it and you're done. */
-export const XIQUE = outline(
-  grid(16, 16, (x, y) => {
-    for (const [c, top] of [[3, 8], [8, 4], [12, 9]]) {
-      if (y >= top && Math.abs(x - c) <= 1) return "2";
-      if (y > top && (y - top) % 3 === 1 && Math.abs(x - c) === 2) return "2";
-    }
-    return ".";
-  }),
-);
+/**
+  A spike trap: a dark plate on the ground with two iron spikes that shoot up out of it and
+  sink back. One frame per two pixels of height, from flush (0) to twelve pixels out (6).
+*/
+export const SPIKES = Array.from({ length: 7 }, (_, i) => {
+  const h = i * 2;
+  return grid(16, 16, (x, y) => {
+    if (y >= 14) return y === 14 && x % 8 > 1 && x % 8 < 6 ? "2" : "3";
+    const k = 13 - y; // 0 just above the plate
+    if (k >= h) return ".";
+    const c = (x % 8) - 3.5; // each spike is eight pixels wide at the base, a point at the top
+    const half = 4 * (1 - k / h) + 0.5;
+    if (Math.abs(c) >= half) return ".";
+    // dark sides, a lit left face and a shaded right one, so they read as metal on the pale screen
+    return Math.abs(c) >= half - 1 ? "3" : c < 0 ? "0" : "2";
+  });
+});
 
 /** Mandacaru, the tall cactus of the sertão, as scenery you walk past. */
 export const CACTUS = [
@@ -227,12 +311,23 @@ const FEET_TUCKED = ["......kkkkkkkkkk....", "...................."];
 const WING_UP = ["", "", ".k..", "knk.", "knnk", "knNk", "knNk", "knnk", ".kn", "..kn"];
 const HEAD_WING_UP = HEAD.map((row, y) => (WING_UP[y] ? WING_UP[y] + row.slice(WING_UP[y].length) : row));
 
+/** Lays each overlay row over the start of the matching base row; "" leaves a row alone. */
+const over = (base: string[], top: string[]) => base.map((row, y) => (top[y] ? top[y] + row.slice(top[y].length) : row));
+
+/*
+  The dash: the head dips a pixel as the bird leans into it, the wing sweeps flat back along
+  the body and a few streaks trail off behind.
+*/
+const DASH_HEAD = over([".".repeat(20), ...HEAD], ["", "", "", "", "hh..", "", "", "hhh", "", "", ""]);
+const WING_BACK = ["kkkkkkkk", "knnnnnnNk", ".kknnnNNk", "...kkkkk", "", "h.."];
+
 export const BIRD = {
   stand: shade([...HEAD, ...FOLDED, ...FEET]),
   walk: shade([...HEAD, ...FOLDED, ...FEET_WIDE]),
   jump: shade([...HEAD, ...FOLDED, ...FEET_TUCKED]),
   glideUp: shade([...HEAD_WING_UP, ...OPEN, ...FEET_TUCKED]),
   glideDown: shade([...HEAD, ...FOLDED, ...FEET_TUCKED]),
+  dash: shade([...DASH_HEAD, ...over(OPEN, WING_BACK), FEET_TUCKED[0]]),
   /** upside down with feet in the air: the classic "oh no" */
   dead: shade([...HEAD, ...FOLDED, ...FEET]).reverse(),
 };
@@ -302,6 +397,38 @@ export const CARCARA = [
     "......32223.....",
     "......3223......",
     ".......33.......",
+  ],
+];
+
+/** Sapo-cururu, the fat toad of the sertão, facing left: sitting, then mid-leap. */
+export const SAPO = [
+  [
+    "................",
+    "................",
+    "................",
+    "..333...........",
+    ".30013.3333.....",
+    "3111113211233...",
+    "31111112121123..",
+    "311111112121223.",
+    ".32222222222223.",
+    "33.3........3.33",
+    "................",
+    "................",
+  ],
+  [
+    "................",
+    "................",
+    "..333...........",
+    ".30013.3333.....",
+    "3111113211233...",
+    "31111112121123..",
+    ".311111212122333",
+    "..3222222222223.",
+    "...3..........33",
+    "..............33",
+    "................",
+    "................",
   ],
 ];
 
