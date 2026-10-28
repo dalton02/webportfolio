@@ -1,0 +1,1 @@
+import"./DsnmJJEf.js";import{o as t}from"./DK6Uk8f2.js";import{p as a,a as r}from"./DfBE3-p1.js";import{g as e}from"./C7-23Srn.js";import{g as m}from"./odFGoJv2.js";function c(p,o){a(o,!0),t(()=>{e(`${m.basePath}/#${o.to}`,{replaceState:!0})}),r()}export{c as R};
