@@ -1,5 +1,3 @@
-import { enUS, ptBR } from "date-fns/locale";
-
 export type TextType = {
   ptBr: string;
   enUs: string;
@@ -8,14 +6,8 @@ export type TextType = {
 class Language {
   value = $state<keyof TextType>("ptBr");
 
-  locale = $derived.by(() => {
-    switch (this.value) {
-      case "ptBr":
-        return ptBR;
-      case "enUs":
-        return enUS;
-    }
-  });
+  /** BCP 47 tag for Intl formatting */
+  locale = $derived(this.value === "ptBr" ? "pt-BR" : "en-US");
 
   /** Picks the initial language: the visitor's saved choice, else Portuguese only for pt browsers. */
   set() {

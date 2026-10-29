@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build && npm run prepack",
+		"build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"prepack": "svelte-kit sync && svelte-package && publint",
@@ -51,8 +51,6 @@
 	],
 	"dependencies": {
 		"@sveltejs/adapter-static": "^3.0.10",
-		"date-fns": "^4.1.0",
-		"gh-pages": "^6.3.0",
-		"zod": "^4.3.6"
+		"gh-pages": "^6.3.0"
 	}
 }

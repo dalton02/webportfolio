@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
   import PixelSprite from "./PixelSprite.svelte";
-  import { nextArrow, soldadinho, type Sprite } from "./sprites.js";
+  import { nextArrow, soldadinho, type Sheet, type Sprite } from "./sprites.js";
   import sfx from "$lib/utils/sfx.svelte";
   import { reducedMotion } from "$lib/utils/motion.svelte";
 
@@ -16,7 +16,7 @@
     /** `<br>` becomes a line break; `{g:word}`, `{r:word}`, `{b:word}`, `{y:word}` colour a word like in-game hints */
     text: string;
     speaker?: string;
-    portrait?: Sprite | null;
+    portrait?: Sprite | Sheet | null;
     /** typing speed, characters per second */
     cps?: number;
     class?: string;

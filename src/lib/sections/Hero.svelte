@@ -3,7 +3,7 @@
   import Icon from "$lib/comps/Icon.svelte";
   import DialogBox from "$lib/pixel/DialogBox.svelte";
   import PixelSprite from "$lib/pixel/PixelSprite.svelte";
-  import { cartridge, coin, dalton, daltonHi, nextArrow, shadowOval, sparkle, tuft } from "$lib/pixel/sprites.js";
+  import { bigUmbrella, cartridge, coin, dalton, daltonHi, daltonUmbrella, daltonWind, nextArrow, shadowOval, sparkle, tuft } from "$lib/pixel/sprites.js";
   import Soldadinho from "$lib/pixel/Soldadinho.svelte";
   import globalState from "$lib/utils/global.svelte";
   import language, { Text } from "$lib/utils/lang.svelte";
@@ -59,6 +59,13 @@
     sfx.coin();
     secretTimer = setTimeout(() => (secret = false), 5200);
   }
+
+  // he puts his umbrella up when it rains, and leans into the wind when it blows
+  let rain = $derived(globalState.weather === "rain");
+  let wind = $derived(globalState.weather === "wind");
+  // in the rain he keeps hold of the umbrella, even while letting the secret slip
+  let pose = $derived(rain ? daltonUmbrella : secret ? daltonHi : wind ? daltonWind : hi ? daltonHi : dalton);
+  let poseFps = $derived(pose === daltonWind ? 5 : pose === daltonHi ? 0 : 3);
 
   function openCartridge() {
     sfx.select();
@@ -144,7 +151,12 @@
         >
           <span class="pointer-events-auto absolute inset-y-0 right-12 left-12 cursor-pointer" aria-hidden="true"></span>
           {#if secret}
-            <span class="hi-bubble absolute -top-32 right-0 z-20 w-56 text-left text-[15px] leading-snug text-ink" role="status">{t.secret.value}</span>
+            <!-- anchored by its bottom just over his head (over the umbrella when it rains), so a longer line grows upward -->
+            <span
+              class="hi-bubble secret-bubble absolute right-0 z-20 w-56 text-left text-[15px] leading-snug text-ink
+              {rain ? 'bottom-[calc(100%+72px)]' : 'bottom-[calc(100%+14px)]'}"
+              role="status">{t.secret.value}</span
+            >
             <span class="coin-pop absolute top-2 left-1/2 z-10 -translate-x-1/2" aria-hidden="true"><PixelSprite sprite={coin} scale={4} /></span>
           {:else if hi}
             <span class="hi-bubble absolute -top-8 right-2 z-10 font-title text-[14px] whitespace-nowrap text-ink uppercase" aria-hidden="true"
@@ -152,8 +164,15 @@
             >
           {/if}
           <!-- one step above the field's 3px pixel, so the hero still stands out -->
-          <span class="block {secret ? 'hop-once' : ''}">
-            <PixelSprite sprite={hi || secret ? daltonHi : dalton} scale={4} fps={hi || secret ? 0 : 3} />
+          <span class="relative block {secret ? 'hop-once' : ''}">
+            {#if rain}
+              <!-- the shaft runs down behind his raised hand (column 17 of the sprite, 4px each) -->
+              <span class="umbrella-up absolute top-[-60px] left-[-28px] z-0" aria-hidden="true"><PixelSprite sprite={bigUmbrella} scale={4} /></span>
+            {/if}
+            <!-- the gale frames are drawn with the wind from the right; mirrored when it blows the other way -->
+            <span class="relative z-[1] block" style:transform={wind && globalState.windDir > 0 ? "scaleX(-1)" : undefined}
+              ><PixelSprite sprite={pose} scale={4} fps={poseFps} /></span
+            >
           </span>
         </button>
         <span class="-mt-5" aria-hidden="true"><PixelSprite sprite={shadowOval(64, 12)} scale={3} /></span>
@@ -187,6 +206,10 @@
       3px 0 0 0 var(--color-ink);
     animation: hi-pop 0.18s steps(3) both;
   }
+  /* the long line sits above him, so its tail hangs down over his head instead of off the corner */
+  .secret-bubble::after {
+    left: 56px !important;
+  }
   .hi-bubble::after {
     content: "";
     position: absolute;
@@ -204,6 +227,16 @@
     from {
       transform: translateY(6px) scale(0.6);
       opacity: 0;
+    }
+  }
+
+  /* the umbrella pops open over his head in three frames */
+  .umbrella-up {
+    animation: umbrella-up 0.24s steps(3) both;
+  }
+  @keyframes umbrella-up {
+    from {
+      transform: translateY(24px) scaleX(0.3);
     }
   }
 
@@ -277,7 +310,8 @@
     .hi-bubble,
     .hop-once,
     .coin-pop,
-    .cart-body {
+    .cart-body,
+    .umbrella-up {
       animation: none !important;
     }
   }

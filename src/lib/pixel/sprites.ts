@@ -4,6 +4,17 @@
   Nothing here is traced from a game, only the palette mood is borrowed.
 */
 
+import daltonPng from "./png/dalton.png";
+import daltonHeadPng from "./png/dalton-head.png";
+import daltonHiPng from "./png/dalton-hi.png";
+import daltonTalkPng from "./png/dalton-talk.png";
+import daltonUmbrellaPng from "./png/dalton-umbrella.png";
+import daltonWindPng from "./png/dalton-wind.png";
+import soldadinhoPng from "./png/soldadinho.png";
+import soldadinhoChirpPng from "./png/soldadinho-chirp.png";
+import soldadinhoColdPng from "./png/soldadinho-cold.png";
+import soldadinhoWindPng from "./png/soldadinho-wind.png";
+
 export type Sprite = {
   w: number;
   h: number;
@@ -28,11 +39,6 @@ function sprite(palette: Record<string, string>, ...frames: string[][]): Sprite 
 /** Swaps palette entries, e.g. a green gem into a blue one. */
 export function recolor(s: Sprite, palette: Record<string, string>): Sprite {
   return { ...s, palette: { ...s.palette, ...palette } };
-}
-
-/** A window into every frame of a sprite, e.g. a portrait out of a full-body sprite. */
-export function crop(s: Sprite, x: number, y: number, w: number, h: number): Sprite {
-  return { ...s, w, h, frames: s.frames.map((f) => f.slice(y, y + h).map((row) => row.slice(x, x + w))) };
 }
 
 // ---------------------------------------------------------------- HUD
@@ -116,555 +122,70 @@ export const nextArrow = sprite(
 
 // ---------------------------------------------------------------- characters
 
+/*
+  Dalton and the soldadinho are PNG sprite sheets in ./png, so they can be opened and touched
+  up in a pixel editor: one strip per animation, frames side by side, one art pixel per image
+  pixel. PixelSprite plays them like the char-map sprites.
+*/
+export type Sheet = { src: string; w: number; h: number; frames: number };
+
+const sheets: Sheet[] = [];
+function sheet(src: string, w: number, h: number, frames = 1): Sheet {
+  const s = { src, w, h, frames };
+  sheets.push(s);
+  return s;
+}
+
+// held on to, so the browser keeps them decoded
+const loaded: HTMLImageElement[] = [];
+
+/**
+  Fetches and decodes every sheet up front. A pose seen for the first time (the wave on hover,
+  the umbrella when it rains) would otherwise blink out for a frame while its image loads.
+*/
+export function preloadSheets() {
+  if (loaded.length) return;
+  for (const s of sheets) {
+    const img = new Image();
+    img.src = s.src;
+    img.decode().catch(() => {});
+    loaded.push(img);
+  }
+}
+
 /**
   Soldadinho, a soldadinho-do-araripe: the tiny white bird with a red crest and black
   wings that only lives on the Chapada do Araripe, next to Crato. He narrates the site,
   drawn side-on as a round little ball with a big shiny eye, rosy cheek and the crest
   curling forward over the beak. Two frames: eyes open, blink.
 */
-export const soldadinho = sprite(
-  { r: "#f83838", R: "#c01820", l: "#ff8070", n: "#302840", N: "#585078", e: "#181018", s: "#d0c8dc", p: "#f8a0b0", b: "#4a4250", h: "#e09078" },
-  [
-    "........kkkk........",
-    "......kkrrllkk......",
-    ".....krrrrrrllkk....",
-    "....krrrlrrrrrrrrk..",
-    "....kRrrrrrrrrrrrrrk",
-    "...kRRrrrrrrrrrkkkk.",
-    "...kRRrrrrrrrrrrk...",
-    "...kRrwwwwwwwwewwk..",
-    "..kRwwwwwwwwweewwbk.",
-    "..kwwwwwwwwwweewwbbk",
-    "..kwkkkkkwwwwwppwkk.",
-    ".kknNNNNnkwwwwwwwk..",
-    "knnnnnnnnkwwwwwwsk..",
-    "knnnnnnnkwwwwwwssk..",
-    ".kknnnnkwwwwwwsssk..",
-    "...kkkksssssssssk...",
-    "......kkhkkkhkkk....",
-    ".......hhh.hhh......",
-  ],
-  [
-    "........kkkk........",
-    "......kkrrllkk......",
-    ".....krrrrrrllkk....",
-    "....krrrlrrrrrrrrk..",
-    "....kRrrrrrrrrrrrrrk",
-    "...kRRrrrrrrrrrkkkk.",
-    "...kRRrrrrrrrrrrk...",
-    "...kRrwwwwwwewwewk..",
-    "..kRwwwwwwwwweewwbk.",
-    "..kwwwwwwwwwwwwwwbbk",
-    "..kwkkkkkwwwwwppwkk.",
-    ".kknNNNNnkwwwwwwwk..",
-    "knnnnnnnnkwwwwwwsk..",
-    "knnnnnnnkwwwwwwssk..",
-    ".kknnnnkwwwwwwsssk..",
-    "...kkkksssssssssk...",
-    "......kkhkkkhkkk....",
-    ".......hhh.hhh......",
-  ],
-);
-
-/** The soldadinho mid-chirp, beak wide open; shown for a beat when you hover him. */
-export const soldadinhoChirp = { ...soldadinho, frames: [
-  [
-    "........kkkk........",
-    "......kkrrllkk......",
-    ".....krrrrrrllkk....",
-    "....krrrlrrrrrrrrk..",
-    "....kRrrrrrrrrrrrrrk",
-    "...kRRrrrrrrrrrkkkk.",
-    "...kRRrrrrrrrrrrkkk.",
-    "...kRrwwwwwwwwewwbbk",
-    "..kRwwwwwwwwweewwRk.",
-    "..kwwwwwwwwwweewwRk.",
-    "..kwkkkkkwwwwwppwbbk",
-    ".kknNNNNnkwwwwwwwkk.",
-    "knnnnnnnnkwwwwwwsk..",
-    "knnnnnnnkwwwwwwssk..",
-    ".kknnnnkwwwwwwsssk..",
-    "...kkkksssssssssk...",
-    "......kkhkkkhkkk....",
-    ".......hhh.hhh......",
-  ],
-] };
+export const soldadinho = sheet(soldadinhoPng, 20, 18, 2);
+/** Mid-chirp, beak wide open; shown for a beat when you hover him. */
+export const soldadinhoChirp = sheet(soldadinhoChirpPng, 20, 18);
+/** Shivering in the rain: fluffed up, heavy-lidded, the wet crest drooping and dripping. */
+export const soldadinhoCold = sheet(soldadinhoColdPng, 22, 18, 4);
+/** Crouched against a gale from the right, crest swept back, a feather blowing off. */
+export const soldadinhoWind = sheet(soldadinhoWindPng, 22, 18, 4);
 
 /**
   Dalton himself, facing the camera: strong build, wavy brown hair, navy glasses, a
   moustache, gold chain, a loose petrol-blue Hawaiian shirt in the Tommy Vercetti mood with
   tone-on-tone palm fronds, baggy brown trousers and green-and-yellow havaianas. Idle loop of six
-  frames: stand, stand, breathe in (upper body 1px up), hair strand sways, settle, blink.
+  frames: stand, stand, breathe in, hair strand sways, settle, blink. 12 clear columns on each
+  side leave room for the raised arm, so every pose shares one canvas and never jumps.
 */
-const daltonStanding = sprite(
-  { A: "#2e1a0c", B: "#a8784a", C: "#553620", D: "#10401a", E: "#2e9a40", F: "#1e7a30", a: "#1e1008", b: "#86582e", c: "#5c3a20", d: "#3a2010", e: "#e8a878", f: "#2a1608", g: "#202c68", h: "#6a3020", i: "#f8f0e0", j: "#b8d8f0", m: "#c07850", n: "#181018", o: "#8a3828", p: "#f8c8a0", q: "#0c2a36", r: "#1f6678", s: "#f8d040", t: "#3a8a9a", u: "#164f60", v: "#154a5a", x: "#b07818", y: "#0f3644", z: "#7a5232" },
-  [
-    "................................................",
-    "................aaa.aaaaaaaaaa..................",
-    ".................ababbbbbbbbbbaa................",
-    "................abcbccccccccccbda...............",
-    "...............abccccccccccccccda...............",
-    ".............aabcccccccccccccccccaa.............",
-    ".............abccccccccccccccccccda.............",
-    "..............abccccccccccccccccda..............",
-    "..............abcccccccaacccccccda..............",
-    "..............abcccaadaeeaaaccccda..............",
-    "..............abceffffeeeeffffecda..............",
-    "..............aaegggggeeeegggggeaa..............",
-    "..............hggienneggggienneggh..............",
-    "..............hmgeennegeegeennegmh..............",
-    "..............hhegggggeemegggggehh..............",
-    "................hpeeeeemmeeeeemh................",
-    "................hpeeecccccceeemh................",
-    ".................heeceooooecemh.................",
-    "..................hpeeeeeeeemh..................",
-    "...................hmeeeeeemh...................",
-    "...................hmhhhhhhmh...................",
-    "...................hpeeeeeemh...................",
-    ".........qqqqqqqqqqqmeeeeeemqqqqqqqqqqq.........",
-    "......qqqtttrrqttttqsmeeeemsqttttqrrvvvqqq......",
-    "....qqttrururrrqttttqspeemsqttttqrrrururvvqq....",
-    "...qttururuvrrrrqtttqussssuqtttqrrrrvururuvvq...",
-    "..qtururuurvrrrruqtttqhxshqtttqruurrvruururuvq..",
-    "..qturuurrrvrruuruqtttqhhqtttqurururvrrruuruvq..",
-    "..qtuurrrrrvrurururrqqrrvrqqrrrrruruvrrrrruuvq..",
-    "..qyvvvvvvvvururrrrrrrrrvrrrrrrrrrrrvvvvvvvvyq..",
-    "..qqqqqqqqqmrrrrrrrrrrrivrrrrrrrrrrrmqqqqqqqqq..",
-    "..hmmmmmmmmhqtrrrrrrrrrrvrrrrrrrrryqhmmmmmmmmh..",
-    "..hppeeeeemhqtrrrrrrrrrrvrrrrrrruuyqhmeeeeemmh..",
-    "..hpeeeeeemhqtururrrrrrrvrrrrruuruyqhmeeeeeemh..",
-    "..hpeeeeeemhqtrurururrrivrrruururuvqhmeeeeeemh..",
-    "..hpeeeeemmhqtrruurururrvrrurururrvqhmmeeeeemh..",
-    "..hpeeeeemh.qtrrrruururuvrururrrrrvq.hmeeeeemh..",
-    "..hpeeeeemh.qtrrruuruuruvurrrrrrrrvq.hmeeeeemh..",
-    "..hpeeeemmh.qtrrruruuruivrrrrrrrrrvq.hmmeeeemh..",
-    "..hpeeeemh..qtrrrururuurvrrrrrrrruvq..hmeeeemh..",
-    "..hpeeeemh..qtrrrrrururuvrrrrrruruvq..hmeeeemh..",
-    "..hpeeeemh..qqvvvvvvvyvyqyvvvyvyvyqq..hmeeeemh..",
-    "..hppeeemh..qqqqqqqqqqqqqqqqqqqqqqqq..hmeeemmh..",
-    "...hpeemh...hzzzzzzzzzzzzzzzzzzzzzzh...hmeemh...",
-    "..hpeeeemh..zzzzzzzzzzzzzzzzzzzzzzzz..hmeeeemh..",
-    "..hpeeeemehABzzzzzzzzzzAAzzzzzzzzzzCAhemeeeemh..",
-    "..hpeeeemh.ABzzzzzzzzzzAAzzzzzzzzzzCA.hmeeeemh..",
-    "..hmememh.ABzzzzzzzzzCA..ABzzzzzzzzzCA.hmememh..",
-    "...hhhhh..ABzzzzzzzzzCA..ABzzzzzzzzzCA..hhhhh...",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ACCCCCCCCCCCCA..ACCCCCCCCCCCCA.........",
-    ".........AAAAAAAAAAAAAA..AAAAAAAAAAAAAA.........",
-    "...........hpeeeeeemh......hpeeeeeemh...........",
-    "...........hmmmmsmsmh......hmsmsmmmmh...........",
-    "...........hhhhshshsh......hshshshhhh...........",
-    "..........DEEExEEEEExD....DxEEEEExEEFD..........",
-    "..........DFFFFFFFFFFD....DFFFFFFFFFFD..........",
-    "...........DDDDDDDDDD......DDDDDDDDDD...........",
-    "................................................",
-  ],
-  [
-    "................................................",
-    "................aaa.aaaaaaaaaa..................",
-    ".................ababbbbbbbbbbaa................",
-    "................abcbccccccccccbda...............",
-    "...............abccccccccccccccda...............",
-    ".............aabcccccccccccccccccaa.............",
-    ".............abccccccccccccccccccda.............",
-    "..............abccccccccccccccccda..............",
-    "..............abcccccccaacccccccda..............",
-    "..............abcccaadaeeaaaccccda..............",
-    "..............abceffffeeeeffffecda..............",
-    "..............aaegggggeeeegggggeaa..............",
-    "..............hggienneggggienneggh..............",
-    "..............hmgeennegeegeennegmh..............",
-    "..............hhegggggeemegggggehh..............",
-    "................hpeeeeemmeeeeemh................",
-    "................hpeeecccccceeemh................",
-    ".................heeceooooecemh.................",
-    "..................hpeeeeeeeemh..................",
-    "...................hmeeeeeemh...................",
-    "...................hmhhhhhhmh...................",
-    "...................hpeeeeeemh...................",
-    ".........qqqqqqqqqqqmeeeeeemqqqqqqqqqqq.........",
-    "......qqqtttrrqttttqsmeeeemsqttttqrrvvvqqq......",
-    "....qqttrururrrqttttqspeemsqttttqrrrururvvqq....",
-    "...qttururuvrrrrqtttqussssuqtttqrrrrvururuvvq...",
-    "..qtururuurvrrrruqtttqhxshqtttqruurrvruururuvq..",
-    "..qturuurrrvrruuruqtttqhhqtttqurururvrrruuruvq..",
-    "..qtuurrrrrvrurururrqqrrvrqqrrrrruruvrrrrruuvq..",
-    "..qyvvvvvvvvururrrrrrrrrvrrrrrrrrrrrvvvvvvvvyq..",
-    "..qqqqqqqqqmrrrrrrrrrrrivrrrrrrrrrrrmqqqqqqqqq..",
-    "..hmmmmmmmmhqtrrrrrrrrrrvrrrrrrrrryqhmmmmmmmmh..",
-    "..hppeeeeemhqtrrrrrrrrrrvrrrrrrruuyqhmeeeeemmh..",
-    "..hpeeeeeemhqtururrrrrrrvrrrrruuruyqhmeeeeeemh..",
-    "..hpeeeeeemhqtrurururrrivrrruururuvqhmeeeeeemh..",
-    "..hpeeeeemmhqtrruurururrvrrurururrvqhmmeeeeemh..",
-    "..hpeeeeemh.qtrrrruururuvrururrrrrvq.hmeeeeemh..",
-    "..hpeeeeemh.qtrrruuruuruvurrrrrrrrvq.hmeeeeemh..",
-    "..hpeeeemmh.qtrrruruuruivrrrrrrrrrvq.hmmeeeemh..",
-    "..hpeeeemh..qtrrrururuurvrrrrrrrruvq..hmeeeemh..",
-    "..hpeeeemh..qtrrrrrururuvrrrrrruruvq..hmeeeemh..",
-    "..hpeeeemh..qqvvvvvvvyvyqyvvvyvyvyqq..hmeeeemh..",
-    "..hppeeemh..qqqqqqqqqqqqqqqqqqqqqqqq..hmeeemmh..",
-    "...hpeemh...hzzzzzzzzzzzzzzzzzzzzzzh...hmeemh...",
-    "..hpeeeemh..zzzzzzzzzzzzzzzzzzzzzzzz..hmeeeemh..",
-    "..hpeeeemehABzzzzzzzzzzAAzzzzzzzzzzCAhemeeeemh..",
-    "..hpeeeemh.ABzzzzzzzzzzAAzzzzzzzzzzCA.hmeeeemh..",
-    "..hmememh.ABzzzzzzzzzCA..ABzzzzzzzzzCA.hmememh..",
-    "...hhhhh..ABzzzzzzzzzCA..ABzzzzzzzzzCA..hhhhh...",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ACCCCCCCCCCCCA..ACCCCCCCCCCCCA.........",
-    ".........AAAAAAAAAAAAAA..AAAAAAAAAAAAAA.........",
-    "...........hpeeeeeemh......hpeeeeeemh...........",
-    "...........hmmmmsmsmh......hmsmsmmmmh...........",
-    "...........hhhhshshsh......hshshshhhh...........",
-    "..........DEEExEEEEExD....DxEEEEExEEFD..........",
-    "..........DFFFFFFFFFFD....DFFFFFFFFFFD..........",
-    "...........DDDDDDDDDD......DDDDDDDDDD...........",
-    "................................................",
-  ],
-  [
-    "................aaa.aaaaaaaaaa..................",
-    ".................ababbbbbbbbbbaa................",
-    "................abcbccccccccccbda...............",
-    "...............abccccccccccccccda...............",
-    ".............aabcccccccccccccccccaa.............",
-    ".............abccccccccccccccccccda.............",
-    "..............abccccccccccccccccda..............",
-    "..............abcccccccaacccccccda..............",
-    "..............abcccaadaeeaaaccccda..............",
-    "..............abceffffeeeeffffecda..............",
-    "..............aaegggggeeeegggggeaa..............",
-    "..............hggienneggggienneggh..............",
-    "..............hmgeennegeegeennegmh..............",
-    "..............hhegggggeemegggggehh..............",
-    "................hpeeeeemmeeeeemh................",
-    "................hpeeecccccceeemh................",
-    ".................heeceooooecemh.................",
-    "..................hpeeeeeeeemh..................",
-    "...................hmeeeeeemh...................",
-    "...................hmhhhhhhmh...................",
-    "...................hpeeeeeemh...................",
-    ".........qqqqqqqqqqqmeeeeeemqqqqqqqqqqq.........",
-    "......qqqtttrrqttttqsmeeeemsqttttqrrvvvqqq......",
-    "....qqttrururrrqttttqspeemsqttttqrrrururvvqq....",
-    "...qttururuvrrrrqtttqussssuqtttqrrrrvururuvvq...",
-    "..qtururuurvrrrruqtttqhxshqtttqruurrvruururuvq..",
-    "..qturuurrrvrruuruqtttqhhqtttqurururvrrruuruvq..",
-    "..qtuurrrrrvrurururrqqrrvrqqrrrrruruvrrrrruuvq..",
-    "..qyvvvvvvvvururrrrrrrrrvrrrrrrrrrrrvvvvvvvvyq..",
-    "..qqqqqqqqqmrrrrrrrrrrrivrrrrrrrrrrrmqqqqqqqqq..",
-    "..hmmmmmmmmhqtrrrrrrrrrrvrrrrrrrrryqhmmmmmmmmh..",
-    "..hppeeeeemhqtrrrrrrrrrrvrrrrrrruuyqhmeeeeemmh..",
-    "..hpeeeeeemhqtururrrrrrrvrrrrruuruyqhmeeeeeemh..",
-    "..hpeeeeeemhqtrurururrrivrrruururuvqhmeeeeeemh..",
-    "..hpeeeeemmhqtrruurururrvrrurururrvqhmmeeeeemh..",
-    "..hpeeeeemh.qtrrrruururuvrururrrrrvq.hmeeeeemh..",
-    "..hpeeeeemh.qtrrruuruuruvurrrrrrrrvq.hmeeeeemh..",
-    "..hpeeeemmh.qtrrruruuruivrrrrrrrrrvq.hmmeeeemh..",
-    "..hpeeeemh..qtrrrururuurvrrrrrrrruvq..hmeeeemh..",
-    "..hpeeeemh..qtrrrrrururuvrrrrrruruvq..hmeeeemh..",
-    "..hpeeeemh..qtrrrrrrruruvurrrururuyq..hmeeeemh..",
-    "..hppeeemh..qqvvvvvvvvvvqvyvvyvyyvqq..hmeeemmh..",
-    "...hpeemh...qqqqqqqqqqqqqqqqqqqqqqqq...hmeemh...",
-    "..hpeeeemh..zzzzzzzzzzzzzzzzzzzzzzzz..hmeeeemh..",
-    "..hpeeeemehABzzzzzzzzzzzzzzzzzzzzzzCAhemeeeemh..",
-    "..hpeeeemh.ABzzzzzzzzzzAAzzzzzzzzzzCA.hmeeeemh..",
-    "..hmememh..ABzzzzzzzzzzAAzzzzzzzzzzCA..hmememh..",
-    "...hhhhh..ABzzzzzzzzzCA..ABzzzzzzzzzCA..hhhhh...",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ACCCCCCCCCCCCA..ACCCCCCCCCCCCA.........",
-    ".........AAAAAAAAAAAAAA..AAAAAAAAAAAAAA.........",
-    "...........hpeeeeeemh......hpeeeeeemh...........",
-    "...........hmmmmsmsmh......hmsmsmmmmh...........",
-    "...........hhhhshshsh......hshshshhhh...........",
-    "..........DEEExEEEEExD....DxEEEEExEEFD..........",
-    "..........DFFFFFFFFFFD....DFFFFFFFFFFD..........",
-    "...........DDDDDDDDDD......DDDDDDDDDD...........",
-    "................................................",
-  ],
-  [
-    "................aaa.aaaaaaaaaa..................",
-    ".................ababbbbbbbbbbaa................",
-    "................abcbccccccccccbda...............",
-    "...............abccccccccccccccda...............",
-    ".............aabcccccccccccccccccaa.............",
-    ".............abccccccccccccccccccda.............",
-    "..............abccccccccccccccccda..............",
-    "..............abcccccccaacccccccda..............",
-    "..............abcccaadaeeaaaccccda..............",
-    "..............abceffffeeeeffffecda..............",
-    "..............aaegggggeeeegggggeaa..............",
-    "..............hggienneggggienneggh..............",
-    "..............hmgeennegeegeennegmh..............",
-    "..............hhegggggeemegggggehh..............",
-    "................hpeeeeemmeeeeemh................",
-    "................hpeeecccccceeemh................",
-    ".................heeceooooecemh.................",
-    "..................hpeeeeeeeemh..................",
-    "...................hmeeeeeemh...................",
-    "...................hmhhhhhhmh...................",
-    "...................hpeeeeeemh...................",
-    ".........qqqqqqqqqqqmeeeeeemqqqqqqqqqqq.........",
-    "......qqqtttrrqttttqsmeeeemsqttttqrrvvvqqq......",
-    "....qqttrururrrqttttqspeemsqttttqrrrururvvqq....",
-    "...qttururuvrrrrqtttqussssuqtttqrrrrvururuvvq...",
-    "..qtururuurvrrrruqtttqhxshqtttqruurrvruururuvq..",
-    "..qturuurrrvrruuruqtttqhhqtttqurururvrrruuruvq..",
-    "..qtuurrrrrvrurururrqqrrvrqqrrrrruruvrrrrruuvq..",
-    "..qyvvvvvvvvururrrrrrrrrvrrrrrrrrrrrvvvvvvvvyq..",
-    "..qqqqqqqqqmrrrrrrrrrrrivrrrrrrrrrrrmqqqqqqqqq..",
-    "..hmmmmmmmmhqtrrrrrrrrrrvrrrrrrrrryqhmmmmmmmmh..",
-    "..hppeeeeemhqtrrrrrrrrrrvrrrrrrruuyqhmeeeeemmh..",
-    "..hpeeeeeemhqtururrrrrrrvrrrrruuruyqhmeeeeeemh..",
-    "..hpeeeeeemhqtrurururrrivrrruururuvqhmeeeeeemh..",
-    "..hpeeeeemmhqtrruurururrvrrurururrvqhmmeeeeemh..",
-    "..hpeeeeemh.qtrrrruururuvrururrrrrvq.hmeeeeemh..",
-    "..hpeeeeemh.qtrrruuruuruvurrrrrrrrvq.hmeeeeemh..",
-    "..hpeeeemmh.qtrrruruuruivrrrrrrrrrvq.hmmeeeemh..",
-    "..hpeeeemh..qtrrrururuurvrrrrrrrruvq..hmeeeemh..",
-    "..hpeeeemh..qtrrrrrururuvrrrrrruruvq..hmeeeemh..",
-    "..hpeeeemh..qtrrrrrrruruvurrrururuyq..hmeeeemh..",
-    "..hppeeemh..qqvvvvvvvvvvqvyvvyvyyvqq..hmeeemmh..",
-    "...hpeemh...qqqqqqqqqqqqqqqqqqqqqqqq...hmeemh...",
-    "..hpeeeemh..zzzzzzzzzzzzzzzzzzzzzzzz..hmeeeemh..",
-    "..hpeeeemehABzzzzzzzzzzzzzzzzzzzzzzCAhemeeeemh..",
-    "..hpeeeemh.ABzzzzzzzzzzAAzzzzzzzzzzCA.hmeeeemh..",
-    "..hmememh..ABzzzzzzzzzzAAzzzzzzzzzzCA..hmememh..",
-    "...hhhhh..ABzzzzzzzzzCA..ABzzzzzzzzzCA..hhhhh...",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ACCCCCCCCCCCCA..ACCCCCCCCCCCCA.........",
-    ".........AAAAAAAAAAAAAA..AAAAAAAAAAAAAA.........",
-    "...........hpeeeeeemh......hpeeeeeemh...........",
-    "...........hmmmmsmsmh......hmsmsmmmmh...........",
-    "...........hhhhshshsh......hshshshhhh...........",
-    "..........DEEExEEEEExD....DxEEEEExEEFD..........",
-    "..........DFFFFFFFFFFD....DFFFFFFFFFFD..........",
-    "...........DDDDDDDDDD......DDDDDDDDDD...........",
-    "................................................",
-  ],
-  [
-    "................................................",
-    "................aaa.aaaaaaaaaa..................",
-    ".................ababbbbbbbbbbaa................",
-    "................abcbccccccccccbda...............",
-    "...............abccccccccccccccda...............",
-    ".............aabcccccccccccccccccaa.............",
-    ".............abccccccccccccccccccda.............",
-    "..............abccccccccccccccccda..............",
-    "..............abcccccccaacccccccda..............",
-    "..............abcccaadaeeaaaccccda..............",
-    "..............abceffffeeeeffffecda..............",
-    "..............aaegggggeeeegggggeaa..............",
-    "..............hggienneggggienneggh..............",
-    "..............hmgeennegeegeennegmh..............",
-    "..............hhegggggeemegggggehh..............",
-    "................hpeeeeemmeeeeemh................",
-    "................hpeeecccccceeemh................",
-    ".................heeceooooecemh.................",
-    "..................hpeeeeeeeemh..................",
-    "...................hmeeeeeemh...................",
-    "...................hmhhhhhhmh...................",
-    "...................hpeeeeeemh...................",
-    ".........qqqqqqqqqqqmeeeeeemqqqqqqqqqqq.........",
-    "......qqqtttrrqttttqsmeeeemsqttttqrrvvvqqq......",
-    "....qqttrururrrqttttqspeemsqttttqrrrururvvqq....",
-    "...qttururuvrrrrqtttqussssuqtttqrrrrvururuvvq...",
-    "..qtururuurvrrrruqtttqhxshqtttqruurrvruururuvq..",
-    "..qturuurrrvrruuruqtttqhhqtttqurururvrrruuruvq..",
-    "..qtuurrrrrvrurururrqqrrvrqqrrrrruruvrrrrruuvq..",
-    "..qyvvvvvvvvururrrrrrrrrvrrrrrrrrrrrvvvvvvvvyq..",
-    "..qqqqqqqqqmrrrrrrrrrrrivrrrrrrrrrrrmqqqqqqqqq..",
-    "..hmmmmmmmmhqtrrrrrrrrrrvrrrrrrrrryqhmmmmmmmmh..",
-    "..hppeeeeemhqtrrrrrrrrrrvrrrrrrruuyqhmeeeeemmh..",
-    "..hpeeeeeemhqtururrrrrrrvrrrrruuruyqhmeeeeeemh..",
-    "..hpeeeeeemhqtrurururrrivrrruururuvqhmeeeeeemh..",
-    "..hpeeeeemmhqtrruurururrvrrurururrvqhmmeeeeemh..",
-    "..hpeeeeemh.qtrrrruururuvrururrrrrvq.hmeeeeemh..",
-    "..hpeeeeemh.qtrrruuruuruvurrrrrrrrvq.hmeeeeemh..",
-    "..hpeeeemmh.qtrrruruuruivrrrrrrrrrvq.hmmeeeemh..",
-    "..hpeeeemh..qtrrrururuurvrrrrrrrruvq..hmeeeemh..",
-    "..hpeeeemh..qtrrrrrururuvrrrrrruruvq..hmeeeemh..",
-    "..hpeeeemh..qqvvvvvvvyvyqyvvvyvyvyqq..hmeeeemh..",
-    "..hppeeemh..qqqqqqqqqqqqqqqqqqqqqqqq..hmeeemmh..",
-    "...hpeemh...hzzzzzzzzzzzzzzzzzzzzzzh...hmeemh...",
-    "..hpeeeemh..zzzzzzzzzzzzzzzzzzzzzzzz..hmeeeemh..",
-    "..hpeeeemehABzzzzzzzzzzAAzzzzzzzzzzCAhemeeeemh..",
-    "..hpeeeemh.ABzzzzzzzzzzAAzzzzzzzzzzCA.hmeeeemh..",
-    "..hmememh.ABzzzzzzzzzCA..ABzzzzzzzzzCA.hmememh..",
-    "...hhhhh..ABzzzzzzzzzCA..ABzzzzzzzzzCA..hhhhh...",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ACCCCCCCCCCCCA..ACCCCCCCCCCCCA.........",
-    ".........AAAAAAAAAAAAAA..AAAAAAAAAAAAAA.........",
-    "...........hpeeeeeemh......hpeeeeeemh...........",
-    "...........hmmmmsmsmh......hmsmsmmmmh...........",
-    "...........hhhhshshsh......hshshshhhh...........",
-    "..........DEEExEEEEExD....DxEEEEExEEFD..........",
-    "..........DFFFFFFFFFFD....DFFFFFFFFFFD..........",
-    "...........DDDDDDDDDD......DDDDDDDDDD...........",
-    "................................................",
-  ],
-  [
-    "................................................",
-    "................aaa.aaaaaaaaaa..................",
-    ".................ababbbbbbbbbbaa................",
-    "................abcbccccccccccbda...............",
-    "...............abccccccccccccccda...............",
-    ".............aabcccccccccccccccccaa.............",
-    ".............abccccccccccccccccccda.............",
-    "..............abccccccccccccccccda..............",
-    "..............abcccccccaacccccccda..............",
-    "..............abcccaadaeeaaaccccda..............",
-    "..............abceffffeeeeffffecda..............",
-    "..............aaegggggeeeegggggeaa..............",
-    "..............hggieeeeggggieeeeggh..............",
-    "..............hmgeeffegeegeeffegmh..............",
-    "..............hhegggggeemegggggehh..............",
-    "................hpeeeeemmeeeeemh................",
-    "................hpeeecccccceeemh................",
-    ".................heeceooooecemh.................",
-    "..................hpeeeeeeeemh..................",
-    "...................hmeeeeeemh...................",
-    "...................hmhhhhhhmh...................",
-    "...................hpeeeeeemh...................",
-    ".........qqqqqqqqqqqmeeeeeemqqqqqqqqqqq.........",
-    "......qqqtttrrqttttqsmeeeemsqttttqrrvvvqqq......",
-    "....qqttrururrrqttttqspeemsqttttqrrrururvvqq....",
-    "...qttururuvrrrrqtttqussssuqtttqrrrrvururuvvq...",
-    "..qtururuurvrrrruqtttqhxshqtttqruurrvruururuvq..",
-    "..qturuurrrvrruuruqtttqhhqtttqurururvrrruuruvq..",
-    "..qtuurrrrrvrurururrqqrrvrqqrrrrruruvrrrrruuvq..",
-    "..qyvvvvvvvvururrrrrrrrrvrrrrrrrrrrrvvvvvvvvyq..",
-    "..qqqqqqqqqmrrrrrrrrrrrivrrrrrrrrrrrmqqqqqqqqq..",
-    "..hmmmmmmmmhqtrrrrrrrrrrvrrrrrrrrryqhmmmmmmmmh..",
-    "..hppeeeeemhqtrrrrrrrrrrvrrrrrrruuyqhmeeeeemmh..",
-    "..hpeeeeeemhqtururrrrrrrvrrrrruuruyqhmeeeeeemh..",
-    "..hpeeeeeemhqtrurururrrivrrruururuvqhmeeeeeemh..",
-    "..hpeeeeemmhqtrruurururrvrrurururrvqhmmeeeeemh..",
-    "..hpeeeeemh.qtrrrruururuvrururrrrrvq.hmeeeeemh..",
-    "..hpeeeeemh.qtrrruuruuruvurrrrrrrrvq.hmeeeeemh..",
-    "..hpeeeemmh.qtrrruruuruivrrrrrrrrrvq.hmmeeeemh..",
-    "..hpeeeemh..qtrrrururuurvrrrrrrrruvq..hmeeeemh..",
-    "..hpeeeemh..qtrrrrrururuvrrrrrruruvq..hmeeeemh..",
-    "..hpeeeemh..qqvvvvvvvyvyqyvvvyvyvyqq..hmeeeemh..",
-    "..hppeeemh..qqqqqqqqqqqqqqqqqqqqqqqq..hmeeemmh..",
-    "...hpeemh...hzzzzzzzzzzzzzzzzzzzzzzh...hmeemh...",
-    "..hpeeeemh..zzzzzzzzzzzzzzzzzzzzzzzz..hmeeeemh..",
-    "..hpeeeemehABzzzzzzzzzzAAzzzzzzzzzzCAhemeeeemh..",
-    "..hpeeeemh.ABzzzzzzzzzzAAzzzzzzzzzzCA.hmeeeemh..",
-    "..hmememh.ABzzzzzzzzzCA..ABzzzzzzzzzCA.hmememh..",
-    "...hhhhh..ABzzzzzzzzzCA..ABzzzzzzzzzCA..hhhhh...",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    "..........ABzzzzzzzzzCA..ABzzzzzzzzzCA..........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ABzzzzzzzzzzCA..ABzzzzzzzzzzCA.........",
-    ".........ACCCCCCCCCCCCA..ACCCCCCCCCCCCA.........",
-    ".........AAAAAAAAAAAAAA..AAAAAAAAAAAAAA.........",
-    "...........hpeeeeeemh......hpeeeeeemh...........",
-    "...........hmmmmsmsmh......hmsmsmmmmh...........",
-    "...........hhhhshshsh......hshshshhhh...........",
-    "..........DEEExEEEEExD....DxEEEEExEEFD..........",
-    "..........DFFFFFFFFFFD....DFFFFFFFFFFD..........",
-    "...........DDDDDDDDDD......DDDDDDDDDD...........",
-    "................................................",
-  ],
-);
+export const dalton = sheet(daltonPng, 72, 65, 6);
+/** Saying hi, forearm up and palm open. */
+export const daltonHi = sheet(daltonHiPng, 72, 65);
+/** The same raised arm with the fist closed round an umbrella's shaft; four still frames and a blink. */
+export const daltonUmbrella = sheet(daltonUmbrellaPng, 72, 65, 5);
+/** In a gale from the right: leaning into it, eyes shut, hair and shirt streaming left. */
+export const daltonWind = sheet(daltonWindPng, 72, 65, 4);
+/** His head and shoulders, the idle loop, for the pause menu. */
+export const daltonHead = sheet(daltonHeadPng, 24, 27, 6);
+/** The head with the jaw dropped a pixel on frame 1, for talking. */
+export const daltonTalk = sheet(daltonTalkPng, 24, 27, 2);
 
-/** Clear columns on both sides of every frame. */
-function padX(s: Sprite, n: number): Sprite {
-  const side = ".".repeat(n);
-  return { ...s, w: s.w + n * 2, frames: s.frames.map((f) => f.map((row) => side + row + side)) };
-}
-
-// room on both sides for the waving arm, so standing and waving share one canvas and never jump
-export const dalton = padX(daltonStanding, 12);
-
-/*
-  Dalton saying hi: the hanging arm goes, and a forearm stands straight up with the palm open,
-  drawn over the sleeve as if the elbow rested on it. Same widths as his other arm; fingers
-  split by shade, thumb toward the head. Columns are the 48-wide frame's, before padding.
-*/
-const ARM_UP = [
-  "..hhhhhhh...", // fingertips
-  ".hpemememh..",
-  ".hpemememh..",
-  ".hpemememh..",
-  ".hpeeeeemh..", // palm
-  ".hpeeeeemhh.",
-  ".hpeeeeeeeh.", // thumb
-  ".hpeeeeeeh..",
-  ".hpeeeeemh..",
-  "..hpeeemh...", // wrist
-  ".hpeeeeemh..", // forearm
-  ".hpeeeeemh..",
-  ".hpeeeeemh..",
-  ".hpeeeeemh..",
-  ".hpeeeeemh..",
-  ".hpeeeeemh..",
-  ".hpeeeeemh..",
-  ".hpeeeeemh..",
-  ".hpeeeeemh..",
-  ".hpeeeeemh..",
-  ".hpeeeeemh..",
-  ".hpeeeeemh..",
-  ".hmeeeeemh..", // elbow, resting on the sleeve
-  ".hmmmmmmmh..",
-  "..hhhhhhh...",
-];
-const ARM_UP_TOP = 5;
-const PAD = (dalton.w - daltonStanding.w) / 2;
-export const daltonHi: Sprite = {
-  ...dalton,
-  frames: [
-    dalton.frames[0].map((row, y) => {
-      const cells = [...row];
-      // the hanging arm goes (skin and its outline only; the trousers it overlapped stay).
-      // Rows 30–48 only (shoulder to hand): below that the same columns hold the left foot's outline.
-      if (y >= 30 && y < 49)
-        for (let x = 0; x < 12; x++) {
-          const c = cells[PAD + x];
-          if ("hpem".includes(c)) cells[PAD + x] = y === 30 && x === 11 ? "q" : ".";
-        }
-      const arm = ARM_UP[y - ARM_UP_TOP];
-      if (arm) for (let x = 0; x < arm.length; x++) if (arm[x] !== ".") cells[PAD + x] = arm[x];
-      return cells.join("");
-    }),
-  ],
-};
-
-export const daltonHead = crop(dalton, 24, 0, 24, 27);
 
 /**
   A soft oval shadow to stand characters on the grass, drawn at the size it is shown,
@@ -1240,3 +761,146 @@ export const coin = sprite(
     "..kkkk..",
   ],
 );
+
+// ---------------------------------------------------------------- weather
+
+/** A frog on a tuft; frame 1 is the croak, eyes shut and throat puffed. Sing to him and it rains. */
+export const frog = sprite(
+  { g: "#a8e048", G: "#58a840", y: "#f8f0d0" },
+  [
+    ".kkk......kkk.",
+    "kwkgk....kgkwk",
+    "kggggkkkkggggk",
+    "kggggggggggggk",
+    "kgggkkkkkkgggk",
+    ".kggyyyyyyggk.",
+    "kGkgyyyyyygkGk",
+    "kGGkyyyyyykGGk",
+    "kGGGkkkkkkGGGk",
+    ".kkk......kkk.",
+  ],
+  [
+    ".kkk......kkk.",
+    "kkkgk....kgkkk",
+    "kggggkkkkggggk",
+    "kggggggggggggk",
+    "kgggkkkkkkgggk",
+    ".kgywwwwwwygk.",
+    "kGkywwwwwwykGk",
+    "kGGkyyyyyykGGk",
+    "kGGGkkkkkkGGGk",
+    ".kkk......kkk.",
+  ],
+);
+
+/** A furled red umbrella stuck in the grass, there for whoever wants the rain gone. */
+export const umbrellaShut = sprite(
+  { r: "#f85858", R: "#c81818", b: "#704828" },
+  [
+    "..kkk..",
+    "..kbk..",
+    "..kbk..",
+    "..kbk..",
+    "..krk..",
+    ".krRrk.",
+    ".krRrk.",
+    ".krRrk.",
+    ".krRrk.",
+    ".krRrk.",
+    "..krk..",
+    "..krk..",
+    "...k...",
+    "...k...",
+  ],
+);
+
+export const umbrellaOpen = sprite(
+  { r: "#f85858", R: "#c81818", b: "#704828" },
+  [
+    ".......kk.......",
+    ".....kkrrkk.....",
+    "...kkrrRRrrkk...",
+    "..krrrRRRRrrrk..",
+    ".krrrrRRRRrrrrk.",
+    "krrrrRRRRRRrrrrk",
+    "k.kkk.kbk.kkk.k.",
+    "......kbk.......",
+    "......kbk.......",
+    "......kbk.......",
+    "......kbk.......",
+    "......kbk.......",
+    "....kbkbk.......",
+    "....kbbbk.......",
+    ".....kkk........",
+  ],
+);
+
+/** A paper pinwheel on a stick; its four colours chase each other round, which reads as a spin. */
+const PINWHEEL = [
+  "kkkkkkkkk",
+  "kLTTTTTRk",
+  "kLLTTTRRk",
+  "kLLLTRRRk",
+  "kLLLkRRRk",
+  "kLLLBRRRk",
+  "kLLBBBRRk",
+  "kLBBBBBRk",
+  "kkkkkkkkk",
+  "...kbk...",
+  "...kbk...",
+  "...kbk...",
+  "...kbk...",
+  "...kbk...",
+  "...kbk...",
+];
+const BLADES = ["r", "y", "u", "w"];
+export const pinwheel = sprite(
+  { r: "#f85858", y: "#f8d040", u: "#58a8f8", b: "#b07848" },
+  ...[0, 1, 2, 3].map((i) => PINWHEEL.map((row) => row.replace(/[TRBL]/g, (q) => BLADES[("TRBL".indexOf(q) + 4 - i) % 4]))),
+);
+
+/** A leather cowboy hat from the sertão, studded on the crown, that the wind carries off. */
+export const hat = sprite(
+  { b: "#b07848", B: "#704828", h: "#e0b070", y: "#f8d040" },
+  [
+    ".....kkkkkk.....",
+    "....kbbbbbbk....",
+    "...kbhbbbbhbk...",
+    "..kbbyhbbhybbk..",
+    ".kBbbbbbbbbbbBk.",
+    "kBBkkkkkkkkkkBBk",
+    "kbhhhhhhhhhhhhbk",
+    ".kkbbbbbbbbbbkk.",
+    "...kkkkkkkkkk...",
+  ],
+);
+
+/**
+  The big umbrella Dalton holds up in the rain: a red dome in alternating panels, a scalloped
+  hem and a long shaft down the middle to his raised hand. Built from an ellipse rather than
+  drawn by hand, so the dome stays round at this width.
+*/
+export const bigUmbrella = (() => {
+  const R = 24; // half width of the dome
+  const DOME = 11;
+  const SHAFT = 13;
+  const W = R * 2 + 1;
+  const inside = (x: number, y: number) =>
+    y >= 0 && y < DOME && Math.abs(x) <= Math.round(R * Math.sqrt(1 - ((DOME - 1 - y) / DOME) ** 2));
+  const row = (cell: (i: number) => string) => Array.from({ length: W }, (_, i) => cell(i)).join("");
+  const rows = [row((i) => (i === R ? "k" : "."))];
+  for (let y = 0; y < DOME; y++)
+    rows.push(
+      row((i) => {
+        const x = i - R;
+        if (!inside(x, y)) return ".";
+        if (!inside(x, y - 1) || !inside(x - 1, y) || !inside(x + 1, y)) return "k";
+        return Math.floor(i / 10) % 2 ? "R" : "r";
+      }),
+    );
+  // the hem, a tip under each panel, and the shaft from there down
+  rows.push("k".repeat(W));
+  rows.push(row((i) => (Math.abs(i - R) === 1 ? "k" : i === R ? "b" : i % 10 === 4 && Math.abs(i - R) > 2 ? "k" : ".")));
+  for (let i = 0; i < SHAFT; i++) rows.push(row((i) => (Math.abs(i - R) === 1 ? "k" : i === R ? "b" : ".")));
+  return sprite({ r: "#f85858", R: "#c81818", b: "#704828" }, rows);
+})();

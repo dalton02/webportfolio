@@ -391,9 +391,33 @@
       "ptBr": "Desligar",
       "enUs": "Power off"
     },
-    "hint": {
-      "ptBr": "Setas andam · Z pula (de novo no ar) · segure Z para planar · X corre, e no ar dá um dash que quebra pedra rachada · ↓ desce do galho · Enter pausa · Q som · Esc desliga",
-      "enUs": "Arrows move · Z hops (again in the air) · hold Z to glide · X runs, and in the air dashes through cracked rock · ↓ drops off a branch · Enter pauses · Q sound · Esc powers off"
+    "tipMove": {
+      "ptBr": "WASD pra andar, espaço pra pular!",
+      "enUs": "WASD to walk, space to jump!"
+    },
+    "tipMoveTouch": {
+      "ptBr": "Direcional pra andar, A pra pular!",
+      "enUs": "D-pad to walk, A to jump!"
+    },
+    "tipGlide": {
+      "ptBr": "Pula de novo no ar, e segura pra planar.",
+      "enUs": "Jump again in the air, and hold it to glide."
+    },
+    "tipDash": {
+      "ptBr": "X no ar dá um dash que quebra pedra rachada.",
+      "enUs": "X in the air dashes through cracked rock."
+    },
+    "tipDashTouch": {
+      "ptBr": "B no ar dá um dash que quebra pedra rachada.",
+      "enUs": "B in the air dashes through cracked rock."
+    },
+    "tipColor": {
+      "ptBr": "Aperta Q pra ver algo interessante...",
+      "enUs": "Press Q to see something cool..."
+    },
+    "tipColorTouch": {
+      "ptBr": "Aperta SELECT pra ver algo interessante...",
+      "enUs": "Press SELECT to see something cool..."
     },
     "start": {
       "ptBr": "APERTE START",
@@ -422,6 +446,24 @@
     "top": {
       "ptBr": "RECORDE",
       "enUs": "TOP"
+    }
+  },
+  "weather": {
+    "frog": {
+      "ptBr": "Um sapo cantando na grama",
+      "enUs": "A frog singing in the grass"
+    },
+    "umbrella": {
+      "ptBr": "Abrir o guarda-chuva",
+      "enUs": "Open the umbrella"
+    },
+    "pinwheel": {
+      "ptBr": "Um cata-vento de papel",
+      "enUs": "A paper pinwheel"
+    },
+    "hat": {
+      "ptBr": "Pegar o chapéu",
+      "enUs": "Catch the hat"
     }
   }
 }

@@ -2,6 +2,7 @@
   import Icon from "$lib/comps/Icon.svelte";
   import PixelSprite from "$lib/pixel/PixelSprite.svelte";
   import NightForest from "$lib/pixel/NightForest.svelte";
+  import { onscreen } from "$lib/utils/visible.svelte";
   import Treeline from "$lib/pixel/Treeline.svelte";
   import { heart } from "$lib/pixel/sprites.js";
   import Soldadinho from "$lib/pixel/Soldadinho.svelte";
@@ -28,7 +29,7 @@
   <div class="absolute inset-x-0 bottom-full"><Treeline /></div>
   <!-- a moonlit clearing in the wood, with the credits in the middle -->
   <!-- tall enough for the trees to stand; fireflies outside it are clipped instead of stretching the page -->
-  <div class="relative flex min-h-[440px] flex-col justify-center overflow-hidden sm:min-h-[540px]">
+  <div class="relative flex min-h-[440px] flex-col justify-center overflow-hidden sm:min-h-[540px]" use:onscreen>
     <NightForest />
     {#each fireflies as [left, top, delay], i (i)}
       <span

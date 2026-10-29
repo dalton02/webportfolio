@@ -9,14 +9,14 @@
   Units are pixels per frame.
 */
 import {
-  BIRD, BRANCH, BRICK, CACTUS, CALANGO, CALANGO_FLAT, CARCARA, CLOUD, COIN, COIN_MINI, CRACKED, DIRT, FLAG, FONT,
-  GROUND, HARD, HEART, MESA, NEST, PIPE, POLE, POLE_TOP, POST, QUESTION_FRAMES, SAND, SAPO, SHADES, SPIKES, SPRING,
-  USED, type Art,
+  BIRD, BIRD_COLOR, BIRD_LETTERS, BRANCH, BRICK, CACTUS, CALANGO, CALANGO_FLAT, CANOPY, CARCARA, CLOUD, COIN, COIN_MINI,
+  COLOR, CRACKED, DIRT, FERN, FLAG, FONT, GROUND, GROUND_GRASS, HARD, HEART, MESA, MONO, NEST, PIPE, POLE, POLE_TOP,
+  POST, QUESTION_FRAMES, SAND, SAPO, SHADES, SPIKES, SPRING, TREE, USED, type Art, type Palette,
 } from "./art.js";
-import { LEVEL, ROWS } from "./level.js";
+import { LEVELS, ROWS } from "./level.js";
 
 export type Button = "left" | "right" | "up" | "down" | "a" | "b" | "start";
-export type Sound = "jump" | "jump2" | "flap" | "coin" | "stomp" | "bump" | "die" | "clear" | "boot" | "oneUp" | "tick" | "pause" | "dash" | "spring" | "smash" | "check";
+export type Sound = "jump" | "jump2" | "flap" | "coin" | "stomp" | "bump" | "die" | "clear" | "boot" | "oneUp" | "tick" | "pause" | "dash" | "spring" | "smash" | "check" | "color";
 export type Words = Record<"start" | "over" | "clear" | "thanks" | "pause" | "timeUp" | "top", string>;
 
 export type Hooks = {
@@ -31,6 +31,8 @@ export type Hooks = {
   quick?: boolean;
   /** told whenever the screen changes, so the console can lay the ASCII art over the title */
   scene?(state: State): void;
+  /** told when the world turns to colour and back, so the glass can drop its green tint */
+  color?(on: boolean): void;
 };
 
 const W = 160;
@@ -91,7 +93,7 @@ type Chip = { x: number; y: number; vx: number; vy: number; t: number };
 
 export type State = "boot" | "title" | "intro" | "play" | "dying" | "clear" | "gameover";
 
-function bake(rows: Art, flip = false) {
+function bake(rows: Art, flip = false, pal: Palette = MONO) {
   const c = document.createElement("canvas");
   c.width = rows[0].length;
   c.height = rows.length;
@@ -99,12 +101,67 @@ function bake(rows: Art, flip = false) {
   rows.forEach((row, y) =>
     [...row].forEach((ch, x) => {
       if (ch === ".") return;
-      g.fillStyle = SHADES[Number(ch)];
+      g.fillStyle = pal[ch];
       g.fillRect(flip ? c.width - 1 - x : x, y, 1, 1);
     }),
   );
   return c;
 }
+
+/** The colours the world draws with outside its sprites: sky, HUD and words, and the loose bits. */
+type Look = { sky: string; ui: Palette; chip: string; puff: string; wind: readonly [string, string] };
+const MONO_LOOK: Look = { sky: SHADES[0], ui: MONO, chip: SHADES[3], puff: SHADES[2], wind: [SHADES[2], SHADES[1]] };
+const COLOR_LOOK: Look = { sky: COLOR.sky, ui: COLOR.ui, chip: COLOR.chip, puff: COLOR.puff, wind: [COLOR.wind[0], COLOR.wind[1]] };
+
+/**
+  Every picture the world needs, in the four greens or, with the colour on, each piece in
+  its own palette. Same art either way.
+*/
+function sprites(color: boolean) {
+  const p = (k: keyof typeof COLOR): Palette | undefined => (color ? (COLOR[k] as Palette) : undefined);
+  const both = (rows: Art, pal?: Palette) => [bake(rows, false, pal), bake(rows, true, pal)];
+  return {
+    ground: color ? bake(GROUND_GRASS, false, COLOR.ground) : bake(GROUND),
+    dirt: bake(DIRT, false, p("dirt")),
+    brick: bake(BRICK, false, p("brick")),
+    question: QUESTION_FRAMES.map((f) => bake(f, false, p("question"))),
+    used: bake(USED, false, p("used")),
+    hard: bake(HARD, false, p("hard")),
+    capL: bake(PIPE.capL, false, p("plant")),
+    capR: bake(PIPE.capR, false, p("plant")),
+    bodyL: bake(PIPE.bodyL, false, p("plant")),
+    bodyR: bake(PIPE.bodyR, false, p("plant")),
+    pole: bake(POLE, false, p("pole")),
+    poleTop: bake(POLE_TOP, false, p("pole")),
+    flag: bake(FLAG, false, p("flag")),
+    nest: bake(NEST, false, p("nest")),
+    cactus: bake(CACTUS, false, p("plant")),
+    fern: bake(FERN, false, p("plant")),
+    tree: bake(TREE, false, p("tree")),
+    spikes: SPIKES.map((f) => bake(f, false, p("spikes"))),
+    cloud: bake(CLOUD, false, p("cloud")),
+    mesa: bake(MESA, false, p("far")),
+    canopy: bake(CANOPY, false, p("far")),
+    coin: COIN.map((f) => bake(f, false, p("coin"))),
+    coinMini: bake(COIN_MINI, false, p("coin")),
+    heart: bake(HEART, false, p("heart")),
+    bird: Object.fromEntries(
+      Object.entries(color ? BIRD_LETTERS : BIRD).map(([k, v]) => [k, both(v, color ? BIRD_COLOR : undefined)]),
+    ) as Record<keyof typeof BIRD, HTMLCanvasElement[]>,
+    calango: CALANGO.map((f) => both(f, p("calango"))),
+    calangoFlat: bake(CALANGO_FLAT, false, p("calango")),
+    carcara: CARCARA.map((f) => bake(f, false, p("carcara"))),
+    carcaraDown: bake([...CARCARA[0]].reverse(), false, p("carcara")),
+    sapo: SAPO.map((f) => both(f, p("sapo"))),
+    sapoDown: bake([...SAPO[0]].reverse(), false, p("sapo")),
+    spring: SPRING.map((f) => bake(f, false, p("spring"))),
+    branch: bake(BRANCH, false, p("branch")),
+    sand: bake(SAND, false, p("sand")),
+    cracked: bake(CRACKED, false, p("hard")),
+    post: POST.map((f) => bake(f, false, p("post"))),
+  };
+}
+type Sprites = ReturnType<typeof sprites>;
 
 const BOUNCE = [0, 3, 5, 6, 6, 5, 3, 1, 0];
 
@@ -123,8 +180,10 @@ export class Game {
   private t = 0; // frames spent in the current state
   private paused = false;
 
+  /** which of LEVELS is being played */
+  private level = 0;
   private map: string[][] = [];
-  private cols = LEVEL[0].length;
+  private cols = LEVELS[0].map[0].length;
   private cam = 0;
   private camY = DEPTH - VH;
   private p: Player = this.freshPlayer();
@@ -157,41 +216,13 @@ export class Game {
   private pole = { c: 0, top: 0 };
   private nest = { x: 0, y: 0 };
 
-  private img = {
-    ground: bake(GROUND),
-    dirt: bake(DIRT),
-    brick: bake(BRICK),
-    question: QUESTION_FRAMES.map((f) => bake(f)),
-    used: bake(USED),
-    hard: bake(HARD),
-    capL: bake(PIPE.capL),
-    capR: bake(PIPE.capR),
-    bodyL: bake(PIPE.bodyL),
-    bodyR: bake(PIPE.bodyR),
-    pole: bake(POLE),
-    poleTop: bake(POLE_TOP),
-    flag: bake(FLAG),
-    nest: bake(NEST),
-    cactus: bake(CACTUS),
-    spikes: SPIKES.map((f) => bake(f)),
-    cloud: bake(CLOUD),
-    mesa: bake(MESA),
-    coin: COIN.map((f) => bake(f)),
-    coinMini: bake(COIN_MINI),
-    heart: bake(HEART),
-    bird: Object.fromEntries(Object.entries(BIRD).map(([k, v]) => [k, [bake(v), bake(v, true)]])) as Record<keyof typeof BIRD, HTMLCanvasElement[]>,
-    calango: CALANGO.map((f) => [bake(f), bake(f, true)]),
-    calangoFlat: bake(CALANGO_FLAT),
-    carcara: CARCARA.map((f) => bake(f)),
-    carcaraDown: bake([...CARCARA[0]].reverse()),
-    sapo: SAPO.map((f) => [bake(f), bake(f, true)]),
-    sapoDown: bake([...SAPO[0]].reverse()),
-    spring: SPRING.map((f) => bake(f)),
-    branch: bake(BRANCH),
-    sand: bake(SAND),
-    cracked: bake(CRACKED),
-    post: POST.map((f) => bake(f)),
-  };
+  private mono = sprites(false);
+  /** baked the first time SELECT turns the colour on */
+  private colored?: Sprites;
+  private img: Sprites = this.mono;
+  private look = MONO_LOOK;
+  /** the frame the colour last came on, for the flash */
+  private bloom = -1;
   private glyphs = new Map<string, HTMLCanvasElement>();
 
   constructor(
@@ -216,11 +247,14 @@ export class Game {
       // a background tab pauses rAF; don't fast-forward through the gap when it comes back
       acc += Math.min(100, now - last);
       last = now;
+      let stepped = false;
       while (acc >= STEP) {
         this.step();
         acc -= STEP;
+        stepped = true;
       }
-      this.draw();
+      // a 120 or 144 Hz display calls back more often than the game moves; redraw only when it did
+      if (stepped) this.draw();
       this.raf = requestAnimationFrame(loop);
     };
     this.raf = requestAnimationFrame(loop);
@@ -228,6 +262,21 @@ export class Game {
 
   stop() {
     cancelAnimationFrame(this.raf);
+  }
+
+  /**
+    SELECT: the whole screen between the four greens and colour, like slotting the cartridge
+    into the colour handheld. Works anywhere, the title included, and lasts until pressed again.
+  */
+  toggleColor() {
+    const on = this.img === this.mono;
+    if (on) this.colored ??= sprites(true);
+    this.img = on ? this.colored! : this.mono;
+    this.look = on ? COLOR_LOOK : MONO_LOOK;
+    this.glyphs.clear();
+    this.bloom = on && !this.hooks.quick ? this.frame : -1;
+    this.hooks.sound(on ? "color" : "pause");
+    this.hooks.color?.(on);
   }
 
   press(b: Button, down: boolean) {
@@ -248,7 +297,9 @@ export class Game {
 
   /** Rebuilds the level from the map: blocks come back, critters respawn, and once the checkpoint is passed you start from it. */
   private load() {
-    this.map = LEVEL.map((row) => [...row]);
+    const level = LEVELS[this.level];
+    this.map = level.map.map((row) => [...row]);
+    this.cols = this.map[0].length;
     this.enemies = [];
     this.hearts = [];
     this.pops = [];
@@ -302,6 +353,7 @@ export class Game {
     this.coins = 0;
     this.entry = { score: 0, coins: 0 };
     this.saved = false;
+    this.level = 0;
     this.load();
     this.go("intro");
   }
@@ -878,7 +930,16 @@ export class Game {
         }
         break;
       case "done":
-        if (this.t > 330 || (this.t > 60 && (this.pressed.has("start") || this.pressed.has("a")))) this.go("title");
+        if (this.t > 330 || (this.t > 60 && (this.pressed.has("start") || this.pressed.has("a")))) {
+          if (this.level + 1 < LEVELS.length) {
+            // on to the next level with everything you carry; a fall there starts it over
+            this.level++;
+            this.saved = false;
+            this.entry = { score: this.score, coins: this.coins };
+            this.load();
+            this.go("intro");
+          } else this.go("title");
+        }
         break;
     }
   }
@@ -890,7 +951,7 @@ export class Game {
     let c = this.glyphs.get(key);
     if (!c) {
       const rows = FONT[ch] ?? FONT["?"];
-      c = bake(rows.map((r) => r.replaceAll("#", String(shade))));
+      c = bake(rows.map((r) => r.replaceAll("#", String(shade))), false, this.look.ui);
       this.glyphs.set(key, c);
     }
     return c;
@@ -912,9 +973,9 @@ export class Game {
 
   private box(x: number, y: number, w: number, h: number) {
     const g = this.g;
-    g.fillStyle = SHADES[3];
+    g.fillStyle = this.look.ui[3];
     g.fillRect(x, y, w, h);
-    g.fillStyle = SHADES[0];
+    g.fillStyle = this.look.ui[0];
     g.fillRect(x + 2, y + 2, w - 4, h - 4);
   }
 
@@ -922,7 +983,7 @@ export class Game {
     const g = this.g;
     // menus, HUD and words are laid out on the 160×144 grid; drawWorld steps out of it
     g.setTransform(ZOOM, 0, 0, ZOOM, 0, 0);
-    g.fillStyle = SHADES[0];
+    g.fillStyle = this.state === "play" || this.state === "dying" || this.state === "clear" ? this.look.sky : this.look.ui[0];
     g.fillRect(0, 0, W, H);
     const w = this.hooks.words();
 
@@ -958,6 +1019,17 @@ export class Game {
         }
     }
 
+    // the colour coming in: a white flash that fades as the screen wakes up
+    if (this.bloom >= 0) {
+      const a = 1 - (this.frame - this.bloom) / 24;
+      if (a > 0) {
+        g.globalAlpha = a;
+        g.fillStyle = "#ffffff";
+        g.fillRect(0, 0, W, H);
+        g.globalAlpha = 1;
+      } else this.bloom = -1;
+    }
+
     this.present();
   }
 
@@ -967,7 +1039,8 @@ export class Game {
   */
   private present() {
     const s = this.screen;
-    s.globalAlpha = this.started ? 0.55 : 1;
+    // the colour screen smears less, or the trail muddies the colours
+    s.globalAlpha = this.started ? (this.img === this.mono ? 0.55 : 0.75) : 1;
     s.drawImage(this.buffer, 0, 0);
     s.globalAlpha = 1;
     this.started = true;
@@ -987,7 +1060,7 @@ export class Game {
 
   private drawIntro() {
     this.drawHud();
-    this.centered("WORLD 1-1", 52, 3, 2);
+    this.centered(`WORLD ${LEVELS[this.level].name}`, 52, 3, 2);
     this.g.drawImage(this.img.bird.stand[0], 58, 70);
     this.text(`*${this.lives}`, 84, 79);
   }
@@ -995,7 +1068,7 @@ export class Game {
   /** Two lines, like the old pocket platformers: who and how many, score and coins, world, time. */
   private drawHud() {
     const g = this.g;
-    g.fillStyle = SHADES[0];
+    g.fillStyle = this.look.ui[0];
     g.fillRect(0, 0, W, HUD);
     this.text(`SOLDADINHO*${String(Math.max(0, this.lives)).padStart(2, "0")}`, 4, 2);
     this.text("WORLD", 92, 2);
@@ -1003,7 +1076,7 @@ export class Game {
     this.text(String(this.score).padStart(6, "0"), 4, 9);
     g.drawImage(this.img.coinMini, 36, 9);
     this.text(`*${String(this.coins).padStart(2, "0")}`, 42, 9);
-    this.text("1-1", 96, 9);
+    this.text(LEVELS[this.level].name, 96, 9);
     this.text(String(Math.max(0, this.time)).padStart(3, "0"), 138, 9);
   }
 
@@ -1026,13 +1099,13 @@ export class Game {
     }
     const mx = -Math.round((this.cam * 0.4) % 256);
     const my = top + VH - 32 - 48 + Math.round(rise * 0.4);
-    for (let x = mx; x < VW; x += 256) g.drawImage(this.img.mesa, x, my);
+    for (let x = mx; x < VW; x += 256) g.drawImage(this.img[LEVELS[this.level].far], x, my);
 
-    // blocks
+    // blocks, and a little past the view so a palm standing just off screen still shows its crown
     const first = Math.floor(cam / T);
     const firstRow = Math.max(0, Math.floor(camY / T));
-    for (let c = first; c <= first + VW / T; c++)
-      for (let r = firstRow; r <= Math.min(ROWS - 1, firstRow + VH / T); r++) {
+    for (let c = first - 1; c <= first + VW / T + 1; c++)
+      for (let r = firstRow; r <= Math.min(ROWS - 1, firstRow + VH / T + 3); r++) {
         const ch = this.tile(c, r);
         if (ch === ".") continue;
         if (ch === "w") {
@@ -1045,7 +1118,9 @@ export class Game {
         const x = c * T - cam + (k && k.t > CRUMBLE / 2 ? (this.frame % 4 < 2 ? 1 : -1) : 0);
         const y = sy(r * T) - (bump ? BOUNCE[bump.t] : 0);
         const img = this.tileImage(ch, c, r);
-        if (img) g.drawImage(img, ch === "o" ? x + 4 : x, ch === "o" ? y + 4 : y);
+        // the palm is 32×48, its trunk on the cell it stands on
+        if (ch === "t") g.drawImage(img!, x - 8, y + T - img!.height);
+        else if (img) g.drawImage(img, ch === "o" ? x + 4 : x, ch === "o" ? y + 4 : y);
       }
 
     g.drawImage(this.img.flag, sx(this.pole.c * T - 6), sy(this.flagY));
@@ -1071,11 +1146,11 @@ export class Game {
     }
 
     // bits of broken rock
-    g.fillStyle = SHADES[3];
+    g.fillStyle = this.look.chip;
     for (const k of this.chips) g.fillRect(sx(k.x), sy(k.y), 3, 3);
 
     // the little cloud of dust the second hop kicks off
-    g.fillStyle = SHADES[2];
+    g.fillStyle = this.look.puff;
     for (const f of this.puffs) {
       const d = Math.floor(f.t / 3);
       for (const dx of [-d - 2, d + 8]) g.fillRect(sx(f.x + dx), sy(f.y + 2 - d / 2), 2, 2);
@@ -1095,7 +1170,7 @@ export class Game {
   private drawWind(c: number, r: number, cam: number, camY: number) {
     const g = this.g;
     for (let i = 0; i < 3; i++) {
-      g.fillStyle = SHADES[i === 0 ? 2 : 1];
+      g.fillStyle = this.look.wind[i === 0 ? 0 : 1];
       const x = c * T + ((c * 7 + i * 5 + r * 3) % 14) + 1 - cam;
       const y = r * T + 15 - ((this.frame * 2 + i * 6 + c * 5 + r * 3) % 16);
       g.fillRect(x, y - camY, 1, 6);
@@ -1128,6 +1203,10 @@ export class Game {
         return i.coin[[0, 1, 2, 1][Math.floor(this.frame / 8) % 4]];
       case "m":
         return i.cactus;
+      case "f":
+        return i.fern;
+      case "t":
+        return i.tree;
       case "x":
         return i.spikes[this.spikeHeight(c) / 2];
       case "|":

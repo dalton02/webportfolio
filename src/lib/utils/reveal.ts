@@ -7,7 +7,15 @@ function getObserver() {
     (entries) => {
       for (const entry of entries) {
         if (!entry.isIntersecting) continue;
-        (entry.target as HTMLElement).dataset.reveal = "in";
+        const el = entry.target as HTMLElement;
+        el.dataset.reveal = "in";
+        // drop the filled animation once it lands, so the mosaic filter never lingers
+        const land = (e: AnimationEvent) => {
+          if (e.target !== el) return; // a child's own loop bubbling up
+          el.dataset.reveal = "done";
+          el.removeEventListener("animationend", land);
+        };
+        el.addEventListener("animationend", land);
         observer!.unobserve(entry.target);
       }
     },

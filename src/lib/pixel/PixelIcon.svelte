@@ -1,10 +1,12 @@
 <script lang="ts">
+  import { watch } from "$lib/utils/visible.svelte";
+
   /*
     Light pixel pass over a vector logo so it sits with the rest of the art:
     1. rasterise the SVG small (one art pixel = `scale` screen pixels),
     2. hard alpha (no soft edges), a bit more saturation and contrast, colours snapped to 15-bit,
     3. a 1px dark outline around the outside of the shape, so pale logos still read on the parchment slot.
-    If the image can't be read back (CORS), the plain rasterised version is kept.
+    If the image can't be read back, the plain rasterised version is kept.
   */
   let {
     src,
@@ -97,11 +99,17 @@
     g.putImageData(data, 0, 0);
   }
 
+  // fetch the logo only once its slot comes near the screen
+  let near = $state(false);
   $effect(() => {
-    if (!canvas) return;
+    if (!canvas || near) return;
+    return watch(canvas, (on) => (near ||= on));
+  });
+
+  $effect(() => {
+    if (!canvas || !near) return;
     const el = canvas;
     const img = new Image();
-    img.crossOrigin = "anonymous";
     img.decoding = "async";
     img.src = src;
     let cancelled = false;

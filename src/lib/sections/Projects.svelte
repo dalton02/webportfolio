@@ -32,6 +32,8 @@
   const tagGems = [gem, gemBlue, gemRed];
 
   let opened = $state<boolean[]>(projects.map(() => false));
+  /** the cover under the pointer or focus; only its sparkles animate */
+  let hot = $state<number>();
 
   const gotLine = (title: string) => `${t.got.value} {g:${title}}!`;
 
@@ -67,7 +69,13 @@
               role={p.url ? undefined : "presentation"}
               class="cover group px-box px-gold block p-2"
               style="--fill: var(--color-night)"
-              onmouseenter={() => sfx.cursor()}
+              onmouseenter={() => {
+                hot = i;
+                sfx.cursor();
+              }}
+              onmouseleave={() => (hot = undefined)}
+              onfocus={() => (hot = i)}
+              onblur={() => (hot = undefined)}
             >
               <div class="relative aspect-[16/10] overflow-hidden">
                 <img
@@ -89,7 +97,7 @@
                   aria-hidden="true"
                 >
                   {#if p.url}
-                    <span class="nudge"><PixelSprite sprite={cursor} scale={2} /></span>
+                    <span class="nudge" class:run={hot === i}><PixelSprite sprite={cursor} scale={2} /></span>
                     {linkLabel}
                   {:else}
                     <Icon name="lock" class="h-4 w-4" />
@@ -98,10 +106,10 @@
                 </span>
               </div>
               <span class="spark pointer-events-none absolute -top-5 -right-5" aria-hidden="true"
-                ><PixelSprite sprite={sparkle} scale={3} fps={4} /></span
+                ><PixelSprite sprite={sparkle} scale={3} fps={hot === i ? 4 : 0} /></span
               >
               <span class="spark pointer-events-none absolute -bottom-4 -left-5 [animation-delay:.15s]" aria-hidden="true"
-                ><PixelSprite sprite={sparkle} scale={2} fps={4} /></span
+                ><PixelSprite sprite={sparkle} scale={2} fps={hot === i ? 4 : 0} /></span
               >
             </svelte:element>
           </div>
@@ -331,6 +339,9 @@
   }
   .nudge {
     display: inline-flex;
+  }
+  /* only while the banner is up; hidden below the cover it would loop for nothing */
+  .nudge.run {
     animation: nudge 0.6s steps(1, end) infinite;
   }
   @keyframes nudge {

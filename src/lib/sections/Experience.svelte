@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { differenceInMonths, format } from "date-fns";
   import SectionHeading from "$lib/comps/SectionHeading.svelte";
   import PixelSprite from "$lib/pixel/PixelSprite.svelte";
-  import { sign } from "$lib/pixel/sprites.js";
+  import { pinwheel, sign, tuft } from "$lib/pixel/sprites.js";
   import Soldadinho from "$lib/pixel/Soldadinho.svelte";
+  import globalState from "$lib/utils/global.svelte";
   import language, { Text } from "$lib/utils/lang.svelte";
+  import sfx from "$lib/utils/sfx.svelte";
   import { firstCap } from "$lib/utils/text.js";
   import { reveal } from "$lib/utils/reveal.js";
   import aboutJSON from "$lib/json/about.json" with { type: "json" };
@@ -14,6 +15,15 @@
     keyof typeof ui.experience,
     Text
   >;
+  const pinwheelLabel = new Text(ui.weather.pinwheel);
+
+  // a paper pinwheel turns lazily in the grass; give it a spin and a gale sweeps the field
+  const GALE = 25;
+  let windy = $derived(globalState.weather === "wind");
+  function callWind() {
+    sfx.select();
+    globalState.setWeather("wind", GALE);
+  }
 
   const jobs = aboutJSON.timeline
     .map((j) => ({
@@ -29,7 +39,10 @@
     .sort((a, b) => (b.to?.getTime() ?? Infinity) - (a.to?.getTime() ?? Infinity) || b.from.getTime() - a.from.getTime());
 
   function duration(from: Date, to: Date | null) {
-    const months = Math.max(1, differenceInMonths(to ?? new Date(), from));
+    const end = to ?? new Date();
+    // whole months between the two, like date-fns differenceInMonths: a month counts once its day comes round
+    const whole = (end.getFullYear() - from.getFullYear()) * 12 + end.getMonth() - from.getMonth() - (end.getDate() < from.getDate() ? 1 : 0);
+    const months = Math.max(1, whole);
     const y = Math.floor(months / 12);
     const m = months % 12;
     const parts: string[] = [];
@@ -39,11 +52,24 @@
   }
 
   function fmt(d: Date) {
-    return firstCap(format(d, "MMM yyyy", { locale: language.locale }));
+    // "jan. 2024" from Intl, without the abbreviation dot, as "Jan 2024"
+    const month = d.toLocaleString(language.locale, { month: "short" }).replace(".", "");
+    return firstCap(`${month} ${d.getFullYear()}`);
   }
 </script>
 
 <section id="experience" class="relative py-24 sm:py-32">
+  <!-- right margin on wide screens, opposite the road; above the heading on small ones -->
+  <button
+    type="button"
+    class="absolute top-6 right-[6%] z-20 flex flex-col items-center xl:top-[260px] xl:right-[max(8px,calc(50%-576px-80px))]"
+    aria-label={pinwheelLabel.value}
+    onclick={callWind}
+    onmouseenter={() => sfx.cursor()}
+  >
+    <span class="relative z-0 -mb-6"><PixelSprite sprite={pinwheel} scale={3} fps={windy ? 14 : 2} /></span>
+    <span class="relative z-[1]" aria-hidden="true"><PixelSprite sprite={tuft} scale={3} /></span>
+  </button>
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
     <!--
       The dirt road is painted by the Background canvas through these [data-trail] anchors.

@@ -264,6 +264,71 @@ export const MESA = (() => {
   return grid(256, h, (x, y) => (y >= h - height(x) ? "1" : "."));
 })();
 
+// ---------------------------------------------------------------- the forest on top (world 1-2)
+
+/*
+  Up on the chapada the sertão gives way to the wet forest around the springs. The same
+  blocks and critters, plus a few things that only grow up there.
+*/
+
+/** A frond as a row of points from (x, y), reaching `len` pixels along angle `a` and drooping as it goes. */
+function frond(x: number, y: number, a: number, len: number, droop: number) {
+  return Array.from({ length: len * 2 }, (_, i) => {
+    const t = i / (len * 2);
+    return [x + Math.cos(a) * t * len, y + Math.sin(a) * t * len + t * t * droop, t] as const;
+  });
+}
+
+function fronds(w: number, h: number, sets: (readonly (readonly [number, number, number])[])[], width = 1.1): Art {
+  const pts = sets.flat();
+  return grid(w, h, (x, y) => {
+    const hit = pts.find(([px, py]) => Math.hypot(x + 0.5 - px, y + 0.5 - py) < width);
+    if (!hit) return ".";
+    return hit[2] > 0.55 ? "1" : "2";
+  });
+}
+
+/** Samambaia, a fern by the trail, as scenery. */
+export const FERN = outline(
+  fronds(16, 16, [-2.7, -2.2, -1.75, -1.4, -0.95, -0.45].map((a) => frond(8, 15, a, 9, 5))),
+);
+
+/** Buriti, the tall palm of the veredas around the springs, 32×48 standing on its cell. */
+export const TREE = (() => {
+  const crown = fronds(32, 48, [-3.0, -2.6, -2.15, -1.75, -1.4, -1.0, -0.55, -0.15].map((a) => frond(16, 12, a, 14, 7)), 1.3);
+  return outline(
+    crown.map((row, y) =>
+      [...row].map((c, x) => {
+        if (y > 12 && x >= 15 && x <= 17) return y % 4 === 0 ? "3" : x === 15 ? "1" : "2";
+        if (y >= 11 && y <= 14 && x >= 14 && x <= 18 && (x + y) % 2 === 0) return "3"; // the fruit
+        return c;
+      }).join(""),
+    ),
+  );
+})();
+
+/** The forest canopy rolling away behind, one strip that tiles every 256px. */
+export const CANOPY = (() => {
+  const h = 48;
+  const wave = (x: number, k: number, p = 0) => Math.sin((2 * Math.PI * k * x) / 256 + p);
+  const height = (x: number) => 26 + 7 * wave(x, 3) + 4 * wave(x, 7, 1) + 2 * Math.abs(wave(x, 19, 2));
+  return grid(256, h, (x, y) => {
+    const top = h - height(x);
+    if (y < top) return ".";
+    return y < top + 2 ? "0" : (x * 5 + y * 3) % 23 === 0 ? "2" : "1";
+  });
+})();
+
+/** The grass on top of the ground, with the colour on: "g" lit, "G" shaded, the dirt below in tones. */
+export const GROUND_GRASS = grid(16, 16, (x, y) => {
+  if (y === 0) return "G";
+  if (y === 1) return "g";
+  if (y === 2) return x % 5 === 1 ? "G" : "g";
+  if (y === 3) return x % 4 === 1 ? "g" : "G";
+  if (y === 4) return x % 3 === 0 ? "G" : speck(x, y);
+  return speck(x, y);
+});
+
 // ---------------------------------------------------------------- the soldadinho, 20×18, facing right
 
 /*
@@ -321,16 +386,19 @@ const over = (base: string[], top: string[]) => base.map((row, y) => (top[y] ? t
 const DASH_HEAD = over([".".repeat(20), ...HEAD], ["", "", "", "", "hh..", "", "", "hhh", "", "", ""]);
 const WING_BACK = ["kkkkkkkk", "knnnnnnNk", ".kknnnNNk", "...kkkkk", "", "h.."];
 
-export const BIRD = {
-  stand: shade([...HEAD, ...FOLDED, ...FEET]),
-  walk: shade([...HEAD, ...FOLDED, ...FEET_WIDE]),
-  jump: shade([...HEAD, ...FOLDED, ...FEET_TUCKED]),
-  glideUp: shade([...HEAD_WING_UP, ...OPEN, ...FEET_TUCKED]),
-  glideDown: shade([...HEAD, ...FOLDED, ...FEET_TUCKED]),
-  dash: shade([...DASH_HEAD, ...over(OPEN, WING_BACK), FEET_TUCKED[0]]),
+/** The poses in the site sprite's letters, for the world in colour. */
+export const BIRD_LETTERS = {
+  stand: [...HEAD, ...FOLDED, ...FEET],
+  walk: [...HEAD, ...FOLDED, ...FEET_WIDE],
+  jump: [...HEAD, ...FOLDED, ...FEET_TUCKED],
+  glideUp: [...HEAD_WING_UP, ...OPEN, ...FEET_TUCKED],
+  glideDown: [...HEAD, ...FOLDED, ...FEET_TUCKED],
+  dash: [...DASH_HEAD, ...over(OPEN, WING_BACK), FEET_TUCKED[0]],
   /** upside down with feet in the air: the classic "oh no" */
-  dead: shade([...HEAD, ...FOLDED, ...FEET]).reverse(),
+  dead: [...HEAD, ...FOLDED, ...FEET].reverse(),
 };
+
+export const BIRD = Object.fromEntries(Object.entries(BIRD_LETTERS).map(([k, v]) => [k, shade(v)])) as typeof BIRD_LETTERS;
 
 // ---------------------------------------------------------------- critters
 
@@ -441,6 +509,95 @@ export const COIN = [
 ];
 
 export const HEART = [".33.33..", "3223223.", "3022223.", "3222223.", ".32223..", "..323...", "...3....", "........"];
+
+// ---------------------------------------------------------------- colour
+
+/*
+  SELECT turns the colour on, like slotting the cartridge into the colour handheld: every
+  piece keeps its four tones and gets its own little palette, the way the old 8-bit consoles
+  gave each sprite three colours and an outline. The colours come from one short list.
+*/
+
+export type Palette = Readonly<Record<string, string>>;
+
+const C = {
+  ink: "#181018",
+  white: "#f8f8f8",
+  sky: "#a8e4fc",
+  cloud: "#78a8d8",
+  leaf: "#58d854",
+  moss: "#00a844",
+  pine: "#005800",
+  canopy: "#48a858",
+  canopyLit: "#88d070",
+  canopyDark: "#2c7c40",
+  sand: "#fce0a8",
+  ochre: "#f0b060",
+  clay: "#c07838",
+  bark: "#884818",
+  soil: "#502808",
+  brick: "#c84c0c",
+  brickLit: "#fc9838",
+  mortar: "#58180c",
+  gold: "#f8b800",
+  amber: "#c87800",
+  stoneLit: "#e8e8e8",
+  stone: "#b0b0b8",
+  stoneDark: "#787880",
+  slate: "#303038",
+  red: "#f83838",
+  crimson: "#a81000",
+  lime: "#b8f818",
+  olive: "#a8b838",
+  swamp: "#5c6c18",
+  yellow: "#f8d800",
+  blue: "#6888fc",
+} as const;
+
+/** The original four greens as a palette. */
+export const MONO: Palette = Object.fromEntries(SHADES.map((c, i) => [i, c]));
+
+const tones = (a: string, b: string, c: string, d: string): Palette => ({ 0: a, 1: b, 2: c, 3: d });
+
+export const COLOR = {
+  sky: C.sky,
+  /** the HUD, the menus and the words: a white band with dark letters */
+  ui: tones(C.white, C.blue, C.blue, C.ink),
+  ground: { ...tones(C.sand, C.clay, C.bark, C.soil), g: C.leaf, G: C.moss },
+  dirt: tones(C.ochre, C.clay, C.bark, C.soil),
+  brick: tones(C.brickLit, C.brick, C.brick, C.mortar),
+  question: tones(C.white, C.gold, C.brick, C.mortar),
+  used: tones(C.ochre, C.clay, C.clay, C.soil),
+  hard: tones(C.stoneLit, C.stone, C.stoneDark, C.slate),
+  sand: tones(C.sand, C.ochre, C.clay, C.bark),
+  branch: tones(C.ochre, C.clay, C.bark, C.soil),
+  spring: tones(C.white, C.red, C.crimson, C.ink),
+  spikes: tones(C.white, C.stone, C.stoneDark, C.slate),
+  /** the ribbon hangs red and goes up green once you pass */
+  post: tones(C.leaf, C.red, C.bark, C.ink),
+  pole: tones(C.white, C.lime, C.moss, C.pine),
+  flag: tones(C.white, C.red, C.red, C.crimson),
+  nest: tones(C.ochre, C.ochre, C.clay, C.bark),
+  plant: tones(C.lime, C.leaf, C.moss, C.pine),
+  tree: tones(C.lime, C.leaf, C.bark, C.pine),
+  cloud: tones(C.white, C.white, C.white, C.cloud),
+  far: tones(C.canopyLit, C.canopy, C.canopyDark, C.canopyDark),
+  coin: tones(C.white, C.gold, C.amber, C.soil),
+  heart: tones(C.white, C.red, C.red, C.ink),
+  calango: tones(C.white, C.leaf, C.gold, C.pine),
+  carcara: tones(C.white, C.sand, C.bark, C.ink),
+  sapo: tones(C.yellow, C.olive, C.swamp, C.ink),
+  /** loose bits: broken rock, the dust of the second hop, the streaks of an updraft */
+  chip: C.stoneDark,
+  puff: C.white,
+  wind: [C.white, "#d0f0fc"],
+};
+
+/** The soldadinho's own colours, the same as the bird that narrates the site. */
+export const BIRD_COLOR: Palette = {
+  k: C.ink, w: C.white, r: "#f83838", R: "#c01820", l: "#ff8070", n: "#302840", N: "#585078",
+  e: C.ink, s: "#d0c8dc", p: "#f8a0b0", b: "#4a4250", h: "#e09078",
+};
 
 // ---------------------------------------------------------------- font
 

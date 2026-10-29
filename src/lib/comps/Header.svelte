@@ -30,7 +30,17 @@
     sfx.init();
 
     let lastY = window.scrollY;
+    // once per frame at most: a fast wheel fires several scroll events per frame
+    let queued = false;
     const onScroll = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        update();
+      });
+    };
+    const update = () => {
       const y = window.scrollY;
       // a few px of slack so tiny trackpad jitters don't flicker the HUD
       if (Math.abs(y - lastY) > 6) {
@@ -42,7 +52,7 @@
       quarters = 4 + Math.round(p * (HEARTS - 1) * 4);
       scrolled = window.scrollY > 24;
     };
-    onScroll();
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
 
     // the zone grows a bit once the HUD is out, so it doesn't drop the moment you reach a button
@@ -62,21 +72,32 @@
       },
       { rootMargin: "-45% 0px -50% 0px" },
     );
-    for (const el of document.querySelectorAll("section[id]")) io.observe(el);
+    const observeSections = () => {
+      for (const el of document.querySelectorAll("section[id]")) io.observe(el);
+    };
+    observeSections();
+    // the lower rooms mount a moment after the HUD; watch them as they arrive
+    const off = $effect.root(() => {
+      $effect(() => {
+        if (globalState.restLoaded) observeSections();
+      });
+    });
 
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onMove);
       document.documentElement.removeEventListener("pointerleave", onLeave);
       io.disconnect();
+      off();
     };
   });
 
   /** The HUD keys do what their badges say: B sound, A language, R (or M) menu. */
   function onKey(e: KeyboardEvent) {
     const typing = (e.target as HTMLElement | null)?.closest("input, textarea, select, [contenteditable]");
-    if (typing || e.defaultPrevented || e.repeat || e.ctrlKey || e.metaKey || e.altKey || globalState.menuOpen || globalState.gameOpen) return;
     const key = e.key.toLowerCase();
+    // with the handheld on, only B (sound) still works here; the other letters are the game's
+    if (typing || e.defaultPrevented || e.repeat || e.ctrlKey || e.metaKey || e.altKey || globalState.menuOpen || (globalState.gameOpen && key !== "b")) return;
     if (key === "b") sfx.toggle();
     else if (key === "a") {
       language.toggle();

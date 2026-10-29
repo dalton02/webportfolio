@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import globalState from "$lib/utils/global.svelte";
   import { BIRD, butterfly, CATTAILS, fence, hash, POND_ART, TREE_ART, WPAL, ZONES, type Art, type Zone } from "$lib/pixel/world.js";
 
   /*
@@ -12,6 +13,8 @@
     The static ground is rendered once per 256px chunk and cached; only flowers,
     tufts, water, butterflies, birds and cloud shadows are redrawn each frame.
     Toward the footer the light turns gold, so the day sets before the night wood.
+    When it rains (globalState.weather) the cloud shadows grow heavy and the butterflies and
+    birds take cover; in a gale the clouds race and the butterflies hide too.
   */
 
   const PX = 3; // screen pixels per art pixel
@@ -76,6 +79,13 @@
   }
 
   let canvas = $state<HTMLCanvasElement>();
+  let restart = () => {};
+
+  $effect(() => {
+    void globalState.gameOpen;
+    void globalState.menuOpen;
+    restart();
+  });
 
   onMount(() => {
     const el = canvas!;
@@ -93,6 +103,35 @@
         r: 16 + Math.random() * 16,
       })),
     }));
+
+    /**
+      A cloud's shadow never changes shape, so it is rasterised once per tint and per dither
+      parity (the rim's checkerboard follows the screen, not the cloud) and then just blitted.
+    */
+    const shadows = new Map<string, HTMLCanvasElement>();
+    function shadowOf(c: (typeof clouds)[number], rain: boolean, parity: number) {
+      const key = `${clouds.indexOf(c)}${+rain}${parity}`;
+      let s = shadows.get(key);
+      if (s) return s;
+      s = document.createElement("canvas");
+      s.width = 141;
+      s.height = 124;
+      const g = s.getContext("2d")!;
+      g.fillStyle = rain ? "rgba(16, 40, 56, 0.3)" : "rgba(24, 72, 24, 0.16)";
+      for (let y = 0; y < 124; y++) {
+        for (let x = 0; x < 141; x++) {
+          for (const b of c.blobs) {
+            const d = (x - 34 - b.dx) ** 2 + (y - 34 - b.dy) ** 2;
+            if (d <= b.r * b.r || (d <= (b.r + 1.5) ** 2 && ((x + y + parity) & 1) === 0)) {
+              g.fillRect(x, y, 1, 1);
+              break;
+            }
+          }
+        }
+      }
+      shadows.set(key, s);
+      return s;
+    }
 
     let w = 0;
     let h = 0;
@@ -457,22 +496,29 @@
     }
 
     function resize() {
-      w = Math.ceil(window.innerWidth / PX);
+      const nw = Math.ceil(window.innerWidth / PX);
       // one spare row: the canvas slides by the sub-art-pixel remainder of the scroll
-      h = Math.ceil(window.innerHeight / PX) + 1;
+      const nh = Math.ceil(window.innerHeight / PX) + 1;
+      if (nw === w && nh === h) return;
+      w = nw;
+      h = nh;
       el.width = w;
       el.height = h;
       // exact multiple of PX on screen, so every art pixel stays square
       el.style.width = `${w * PX}px`;
       el.style.height = `${h * PX}px`;
       ctx.imageSmoothingEnabled = false;
-      signature = "";
+      // chunks are as wide as the screen, so only a new width rebuilds the ground; a phone's
+      // URL bar sliding in and out changes the height alone and just needs a redraw
       measure();
+      draw();
     }
 
     function draw() {
       if (!rooms.length) return;
       const cam = Math.floor(window.scrollY / PX);
+      // the night wood's footer is opaque; once it fills the screen there is nothing to see here
+      if (cam >= stopY + TREELINE) return;
       // the ground follows the page pixel by pixel instead of jumping PX at a time
       el.style.transform = `translate3d(0, ${-(window.scrollY - cam * PX)}px, 0)`;
       const first = Math.floor(cam / CH);
@@ -486,37 +532,18 @@
         }
       }
 
+      const weather = globalState.weather;
       // cloud shadows, translucent dark green, crisp pixels with a dithered rim. They lie on
       // the ground, so they scroll with it, and drift sideways on their own.
-      ctx.fillStyle = "rgba(24, 72, 24, 0.16)";
       for (const c of clouds) {
         const spanX = w + 280;
         const spanY = h + 200;
-        const cx = Math.round(((((c.x + t * c.speed) % spanX) + spanX) % spanX) - 140);
+        const cx = Math.round((((c.x % spanX) + spanX) % spanX) - 140);
         const cy = Math.round(((((c.y - cam) % spanY) + spanY) % spanY) - 100);
-        for (let y = cy - 34; y < cy + 90; y++) {
-          if (y < 0 || y >= h) continue;
-          let run = -1;
-          for (let x = cx - 34; x <= cx + 106; x++) {
-            let on = false;
-            for (const b of c.blobs) {
-              const d = (x - cx - b.dx) ** 2 + (y - cy - b.dy) ** 2;
-              if (d <= b.r * b.r || (d <= (b.r + 1.5) ** 2 && (x + y) % 2 === 0)) {
-                on = true;
-                break;
-              }
-            }
-            if (on && run < 0) run = x;
-            if (!on && run >= 0) {
-              ctx.fillRect(run, y, x - run, 1);
-              run = -1;
-            }
-          }
-          if (run >= 0) ctx.fillRect(run, y, cx + 107 - run, 1);
-        }
+        ctx.drawImage(shadowOf(c, weather === "rain", (cx + cy) & 1), cx - 34, cy - 34);
       }
 
-      for (let ci = first - 1; ci <= last; ci++) {
+      for (let ci = first - 1; ci <= last && weather === "clear"; ci++) {
         for (const b of chunk(ci).bugs) {
           // a slow figure-of-eight around its flower patch, flapping every frame
           const bx = b.x + Math.round(Math.sin(t * 0.9 + b.phase) * 12);
@@ -567,12 +594,13 @@
     let flock: { x: number; y: number; dir: number } | undefined;
     let nextFlock = 6;
     function fly() {
-      if (!flock && t >= nextFlock) {
+      // no birds out in the rain; in a gale they're swept along twice as fast
+      if (!flock && t >= nextFlock && globalState.weather !== "rain") {
         const dir = Math.random() < 0.5 ? 1 : -1;
         flock = { x: dir > 0 ? -24 : w + 24, y: Math.round(h * (0.08 + Math.random() * 0.25)), dir };
       }
       if (!flock) return;
-      flock.x += 3 * flock.dir;
+      flock.x += (globalState.weather === "wind" ? 6 : 3) * flock.dir;
       if (flock.x < -40 || flock.x > w + 40) {
         flock = undefined;
         nextFlock = t + 25 + Math.random() * 15;
@@ -582,10 +610,12 @@
     let timer: ReturnType<typeof setInterval> | undefined;
     function start() {
       stop();
-      if (reduce.matches || document.hidden) return;
+      // the handheld and the pause menu cover the field, so it rests until they close
+      if (reduce.matches || document.hidden || globalState.gameOpen || globalState.menuOpen) return;
       timer = setInterval(() => {
         frame++;
         t += 1 / FPS;
+        for (const c of clouds) c.x += (c.speed * (globalState.weather === "wind" ? 10 : 1)) / FPS;
         fly();
         draw();
       }, 1000 / FPS);
@@ -615,6 +645,7 @@
     ro.observe(document.body);
 
     resize();
+    restart = start;
     start();
     window.addEventListener("resize", resize);
     window.addEventListener("scroll", onScroll, { passive: true });

@@ -2,7 +2,23 @@
   import SectionHeading from "$lib/comps/SectionHeading.svelte";
   import PixelIcon from "$lib/pixel/PixelIcon.svelte";
   import PixelSprite from "$lib/pixel/PixelSprite.svelte";
-  import { aws, bolt, book, git, gopher, react, server, shield, tux, type Sprite } from "$lib/pixel/sprites.js";
+  import {
+    aws,
+    bolt,
+    book,
+    frog,
+    git,
+    gopher,
+    react,
+    server,
+    shield,
+    tuft,
+    tux,
+    umbrellaOpen,
+    umbrellaShut,
+    type Sprite,
+  } from "$lib/pixel/sprites.js";
+  import globalState from "$lib/utils/global.svelte";
   import { Text } from "$lib/utils/lang.svelte";
   import { reveal } from "$lib/utils/reveal.js";
   import sfx from "$lib/utils/sfx.svelte";
@@ -16,6 +32,8 @@
     stack: new Text(ui.about.stack),
     education: new Text(ui.about.education),
     languages: new Text(ui.about.languages),
+    frog: new Text(ui.weather.frog),
+    umbrella: new Text(ui.weather.umbrella),
   };
   const languages = new Text(aboutJSON.languages);
 
@@ -47,13 +65,77 @@
     desc: new Text(e.desc),
   }));
 
-  const devicon = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/";
+  // devicon logos, copied into static/ so they come from our own host instead of a CDN
+  const devicon = `${globalState.basePath}/icons/devicon/`;
   // hand-drawn stand-ins for logos the automatic pixel pass turns to mush
   const techArt: Record<string, Sprite> = { Go: gopher, React: react, AWS: aws, Linux: tux, Git: git };
   let hoveredTech = $state<string | null>(null);
+
+  // a frog hides in the grass and croaks now and then; sing back to him and it rains for a while.
+  // While it pours an umbrella stands next to him, and opening it stops the rain at once.
+  const RAIN = 45;
+  let croak = $state(false);
+  let opened = $state(false);
+  let raining = $derived(globalState.weather === "rain");
+  $effect(() => {
+    let off: ReturnType<typeof setTimeout> | undefined;
+    const id = setInterval(() => {
+      croak = true;
+      off = setTimeout(() => (croak = false), 450);
+    }, 4200);
+    return () => {
+      clearInterval(id);
+      clearTimeout(off);
+    };
+  });
+  // the open umbrella stays up a moment after the rain is gone, then is put away
+  $effect(() => {
+    if (!opened) return;
+    const id = setTimeout(() => (opened = false), 2500);
+    return () => clearTimeout(id);
+  });
+
+  function callRain() {
+    sfx.croak();
+    croak = true;
+    setTimeout(() => (croak = false), 450);
+    opened = false;
+    globalState.setWeather("rain", RAIN);
+  }
+
+  function openUmbrella() {
+    sfx.select();
+    opened = true;
+    globalState.setWeather("clear");
+  }
 </script>
 
 <section id="about" class="relative py-24 sm:py-32">
+  <!-- in the left margin on wide screens, above the heading on small ones -->
+  <div class="absolute top-6 left-[6%] z-20 flex items-end gap-3 xl:top-[38%] xl:left-[max(8px,calc(50%-576px-88px))]">
+    <button
+      type="button"
+      class="flex flex-col items-center"
+      aria-label={t.frog.value}
+      onclick={callRain}
+      onmouseenter={() => sfx.cursor()}
+    >
+      <span class="relative z-0 -mb-[15px]"><PixelSprite sprite={frog} frame={croak ? 1 : 0} scale={3} /></span>
+      <span class="relative z-[1]" aria-hidden="true"><PixelSprite sprite={tuft} scale={3} /></span>
+    </button>
+    {#if raining || opened}
+      <button
+        type="button"
+        class="-mb-1"
+        aria-label={t.umbrella.value}
+        disabled={opened}
+        onclick={openUmbrella}
+        onmouseenter={() => sfx.cursor()}
+      >
+        <PixelSprite sprite={opened ? umbrellaOpen : umbrellaShut} scale={3} />
+      </button>
+    {/if}
+  </div>
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
     <SectionHeading title={t.heading.value} kicker={t.kicker.value} />
 

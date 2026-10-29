@@ -3,6 +3,8 @@
   import "./layout.css";
   import Background from "$lib/comps/Background.svelte";
   import Header from "$lib/comps/Header.svelte";
+  import Weather from "$lib/pixel/Weather.svelte";
+  import { preloadSheets } from "$lib/pixel/sprites.js";
   import globalState from "$lib/utils/global.svelte";
   import language, { Text } from "$lib/utils/lang.svelte";
   import ui from "$lib/json/ui.json" with { type: "json" };
@@ -16,6 +18,7 @@
 
   onMount(() => {
     language.set();
+    preloadSheets();
     mounted = true;
   });
 
@@ -49,6 +52,7 @@
 
 <Background />
 {#if mounted}
+  <Weather />
   <Header />
   <main class="relative z-10">
     {@render children()}

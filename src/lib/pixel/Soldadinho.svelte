@@ -3,9 +3,12 @@
     The soldadinho as a little hoverable critter: point at him and he chirps,
     beak flapping open-shut-open in time with the two whistles. He casts a small
     shadow that stays on the ground and shrinks while he is up in a hop.
+    In the rain he stops hopping and shivers, fluffed up and dripping; in a gale he crouches
+    and faces into it (both are frame strips in ./png).
   */
   import PixelSprite from "./PixelSprite.svelte";
-  import { birdShadow, recolor, soldadinho, soldadinhoChirp } from "./sprites.js";
+  import { birdShadow, recolor, soldadinho, soldadinhoChirp, soldadinhoCold, soldadinhoWind } from "./sprites.js";
+  import globalState from "$lib/utils/global.svelte";
   import sfx from "$lib/utils/sfx.svelte";
 
   let {
@@ -24,8 +27,13 @@
   } = $props();
 
   let shadow = $derived(recolor(birdShadow, { k: shade }));
+  let weather = $derived(globalState.weather);
+  let hopping = $derived(hop && weather === "clear");
 
   let open = $state(false);
+  let pose = $derived(weather === "rain" ? soldadinhoCold : weather === "wind" ? soldadinhoWind : open ? soldadinhoChirp : soldadinho);
+  // the gale frames face a wind from the right; mirrored, he faces one from the left
+  let flip = $derived(weather === "wind" && globalState.windDir > 0);
   let timers: ReturnType<typeof setTimeout>[] = [];
 
   function chirp() {
@@ -45,11 +53,11 @@
 </script>
 
 <span class="pointer-events-auto inline-flex flex-col items-center {css}" onpointerenter={chirp} role="presentation">
-  <span class="relative z-[1] {hop ? 'hop' : ''}">
-    <PixelSprite sprite={open ? soldadinhoChirp : soldadinho} {scale} {fps} />
+  <span class="relative z-[1] {hopping ? 'hop' : ''}" style:transform={flip ? "scaleX(-1)" : undefined}>
+    <PixelSprite sprite={pose} {scale} fps={weather === "clear" ? fps : 7} />
   </span>
   <!-- tucked one art pixel up, so the feet stand on its top edge -->
-  <span class={hop ? "shadow-hop" : ""} style="margin-top: {-scale}px;">
+  <span class={hopping ? "shadow-hop" : ""} style="margin-top: {-scale}px;">
     <PixelSprite sprite={shadow} {scale} />
   </span>
 </span>

@@ -5,13 +5,15 @@
     plays on a phone too. Only loaded once someone finds the cartridge.
   */
   import { onMount } from "svelte";
-  import { fade, fly } from "svelte/transition";
+  import { fade, fly, scale as grow } from "svelte/transition";
   import { ASCII_BIRD, ASCII_BIRD_SHADE, SHADES } from "./art.js";
   import { CANVAS, Game, ZOOM, type Button, type Sound, type State } from "./engine.js";
   import { cap, capsule, circle, edge, minus, path, pick, shape, shift, union } from "./pixels.js";
   import globalState from "$lib/utils/global.svelte";
   import { Text } from "$lib/utils/lang.svelte";
   import { reducedMotion, stepped } from "$lib/utils/motion.svelte";
+  import PixelSprite from "$lib/pixel/PixelSprite.svelte";
+  import { daltonTalk } from "$lib/pixel/sprites.js";
   import sfx from "$lib/utils/sfx.svelte";
   import ui from "$lib/json/ui.json" with { type: "json" };
 
@@ -58,6 +60,7 @@
     spring: () => sfx.spring(),
     smash: () => sfx.smash(),
     check: () => sfx.check(),
+    color: () => sfx.color(),
   };
 
   // the title's ASCII soldadinho, split into runs of one shade so each run is a single span
@@ -73,6 +76,45 @@
   });
 
   let scene = $state<State>("boot");
+
+  /*
+    The coach: Dalton's head pops up over the top of the glass the first time the level starts
+    and says the controls, one short line at a time, typed out with the site's dialog blip
+    while his mouth flaps. On a touch screen it names the shell's buttons instead of keys.
+  */
+  const TIP_TIME = 5000; // how long a line stays up once it is all typed
+  const CPS = 35;
+  const touch = typeof matchMedia !== "undefined" && matchMedia("(pointer: coarse)").matches;
+  const TIPS = touch ? [t.tipMoveTouch, t.tipGlide, t.tipDashTouch, t.tipColorTouch] : [t.tipMove, t.tipGlide, t.tipDash, t.tipColor];
+  let tip = $state(-1);
+  let shown = $state(0);
+  let coached = false;
+  let line = $derived(tip >= 0 ? TIPS[tip].value : "");
+  let typing = $derived(!reducedMotion.current && shown < line.length);
+  $effect(() => {
+    if (scene === "play" && !coached) {
+      coached = true;
+      tip = 0;
+    }
+  });
+  // one letter at a time, then hold the line and move on to the next
+  $effect(() => {
+    // read `shown` here, not only in the timer, so every letter typed schedules the next one
+    const n = shown;
+    if (tip < 0) return;
+    const id = typing
+      ? setTimeout(() => {
+          shown = n + 1;
+          if (line[n]?.trim()) sfx.blip();
+        }, 1000 / CPS)
+      : setTimeout(() => {
+          shown = 0;
+          tip = tip + 1 < TIPS.length ? tip + 1 : -1;
+        }, TIP_TIME);
+    return () => clearTimeout(id);
+  });
+  /** the world is in colour (world 1-2): the glass drops its green tint */
+  let color = $state(false);
   let canvas = $state<HTMLCanvasElement>();
   let shell = $state<HTMLElement>();
   let game: Game | undefined;
@@ -82,11 +124,20 @@
 
   let vw = $state(1024);
   let vh = $state(768);
-  // whole pixels on a desk; on a phone the glass takes whatever the shell leaves (16px rim + 28px bezel a side)
+  /** how much smaller the whole console sits on a desk (the .frame zoom) */
+  const DESK = 0.8;
+  /** the shell around the glass, top to bottom, before the desk zoom: rim, bezel, buttons and speaker */
+  const CHROME = 350;
+  /*
+    On a desk the glass grows in quarter steps until the console fills the window's height (less
+    room for the hint line under it); on a phone it takes whatever the shell leaves (16px rim +
+    28px bezel a side). Only the glass grows, the game still sees just as far.
+  */
+  const quarter = (n: number) => Math.floor(n * 4) / 4;
   let scale = $derived(
     vw < 560
       ? Math.max(1, (Math.min(vw - 24, 440) - 88) / 160)
-      : Math.max(2, Math.min(4, Math.floor((vh - 330) / 144), Math.floor((vw - 140) / 160))),
+      : Math.max(2, Math.min(6, quarter(((vh - 150) / DESK - CHROME) / 144), quarter((vw - 140) / DESK / 160))),
   );
 
   /**
@@ -196,9 +247,9 @@
   function press(b: Button | "select", down: boolean) {
     if (held[b] === down) return;
     held[b] = down;
-    // SELECT is the sound switch, since the page's B key stands down while the console is on
+    // SELECT switches the screen to colour and back; the sound stays on the page's B key
     if (b === "select") {
-      if (down) sfx.toggle();
+      if (down) game?.toggleColor();
     } else game?.press(b, down);
   }
 
@@ -257,6 +308,7 @@
       }),
       quick: reducedMotion.current,
       scene: (state) => (scene = state),
+      color: (on) => (color = on),
     });
     game.start();
     shell?.focus();
@@ -314,8 +366,11 @@
   <button type="button" class="backdrop fixed inset-0 cursor-default" aria-label={t.close.value} onclick={close}></button>
 
   <div class="pointer-events-none relative flex min-h-full flex-col items-center justify-center gap-4 px-3 py-6">
-    <!-- the frame carries the ink outline and drop shadow, since the stepped clip on the shell would cut them off -->
-    <div class="frame pointer-events-auto" in:fly|global={{ y: 60, duration: 260, easing: stepped(5) }}>
+    <!-- the frame carries the ink outline and drop shadow, since the stepped clip on the shell would cut them off.
+         They are cast by a still copy of the shell's silhouette behind it: filtering the frame itself would
+         re-run five shadows over the live screen on every frame -->
+    <div class="frame pointer-events-auto" style="--desk: {DESK};" in:fly|global={{ y: 60, duration: 260, easing: stepped(5) }}>
+      <div class="cast" aria-hidden="true"><div class="silhouette" style={SHELL}></div></div>
       <div bind:this={shell} role="dialog" aria-modal="true" aria-label={t.title.value} tabindex="-1" class="shell" style={SHELL}>
         <!-- the rim along the top, where the power switch lives; sliding it off closes the game -->
         <div class="rim">
@@ -329,12 +384,24 @@
           <p class="bezel-text"><span class="line"></span>DOT MATRIX · 4 SHADES<span class="line"></span></p>
           <span class="led" aria-hidden="true"></span>
           <span class="led-label" aria-hidden="true">BATTERY</span>
-          <div class="lcd" class:dots={scale / ZOOM >= 1.5} style="--s: {scale}; --dot: {scale / ZOOM};">
+          <div class="lcd" class:dots={scale / ZOOM >= 1.5} class:color style="--s: {scale}; --dot: {scale / ZOOM};">
             <canvas bind:this={canvas} width={CANVAS.w} height={CANVAS.h} style="width: {160 * scale}px; height: {144 * scale}px;"
               >Chapada Adventures</canvas
             >
+            {#if scene === "play" && tip >= 0}
+              {#key tip}
+                <div class="coach" transition:fly={{ y: -16, duration: 200, easing: stepped(4) }}>
+                  <PixelSprite sprite={daltonTalk} frame={typing ? Math.floor(shown / 2) % 2 : 0} scale={3} class="shrink-0" />
+                  <!-- the full line reserves the space and is what screen readers get; the typed copy sits on top -->
+                  <p class="bubble" in:grow={{ start: 0.2, duration: 220, delay: 80, easing: stepped(5) }}>
+                    <span class="invisible" aria-live="polite">{line}</span>
+                    <span class="typed" aria-hidden="true">{reducedMotion.current ? line : line.slice(0, shown)}</span>
+                  </p>
+                </div>
+              {/key}
+            {/if}
             {#if scene === "title"}
-              <pre class="ascii" aria-hidden="true" style="--ink: {SHADES[3]}; --mid: {SHADES[2]}; --light: {SHADES[1]};">{#each ART as runs, row (row)}{#each runs as run, i (i)}<span class="s{run.shade}">{run.text}</span>{/each}{"\n"}{/each}</pre>
+              <pre class="ascii" aria-hidden="true" style={color ? "--ink: #181018; --mid: #c01820; --light: #a8a0b8;" : `--ink: ${SHADES[3]}; --mid: ${SHADES[2]}; --light: ${SHADES[1]};`}>{#each ART as runs, row (row)}{#each runs as run, i (i)}<span class="s{run.shade}">{run.text}</span>{/each}{"\n"}{/each}</pre>
             {/if}
           </div>
         </div>
@@ -406,7 +473,6 @@
       </div>
     </div>
 
-    <p class="hidden font-label text-[12px] text-snow/85 sm:block">{t.hint.value}</p>
   </div>
 </div>
 
@@ -424,13 +490,23 @@
 
   /* a 3px ink outline and a hard drop shadow that follow the stepped edge */
   .frame {
+    position: relative;
+  }
+  .cast {
+    position: absolute;
+    inset: 0;
     filter: drop-shadow(3px 0 0 var(--color-ink)) drop-shadow(-3px 0 0 var(--color-ink)) drop-shadow(0 3px 0 var(--color-ink))
       drop-shadow(0 -3px 0 var(--color-ink)) drop-shadow(0 10px 0 rgb(0 0 0 / 0.35));
+  }
+  .silhouette {
+    width: 100%;
+    height: 100%;
+    background: var(--color-ink);
   }
   /* on a desk the whole console sits a size smaller, so it reads as a handheld and not a wall */
   @media (min-width: 560px) {
     .frame {
-      zoom: 0.7;
+      zoom: var(--desk);
     }
   }
 
@@ -597,12 +673,69 @@
       linear-gradient(to bottom, rgb(155 188 15 / 0.35) 1px, transparent 1px);
     background-size: calc(var(--dot) * 1px) calc(var(--dot) * 1px);
   }
+  /* in colour the glass is a plain one: a neutral grid and shade, so nothing tints the picture green */
+  .lcd.color::after {
+    box-shadow:
+      inset 0 6px 0 0 rgb(0 0 0 / 0.14),
+      inset 6px 0 0 0 rgb(0 0 0 / 0.08);
+  }
+  .lcd.dots.color::after {
+    background-image:
+      linear-gradient(to right, rgb(0 0 0 / 0.12) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(0 0 0 / 0.12) 1px, transparent 1px);
+  }
 
   /*
     The title's ASCII art, 120 columns by 70 rows, in game pixels: each row 2px tall and each
     character about 1px wide, starting 22px in. Far finer than the screen's own letters, so it
     sits on the glass as tiny text, under the dot-matrix grid like everything else.
   */
+  /* the coach sits on the glass just under the HUD, his head next to a speech bubble */
+  .coach {
+    position: absolute;
+    top: calc(var(--s) * 18px);
+    left: calc(var(--s) * 4px);
+    right: calc(var(--s) * 4px);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1.25;
+    pointer-events: none;
+  }
+  .bubble {
+    position: relative;
+    padding: 8px 12px;
+    background: #f8f8f8;
+    color: #181018;
+    font-family: var(--font-label);
+    font-size: clamp(13px, calc(var(--s) * 4px), 21px);
+    box-shadow:
+      0 0 0 3px #181018,
+      4px 4px 0 3px rgb(0 0 0 / 0.25);
+  }
+  .bubble {
+    transform-origin: left center;
+  }
+  .bubble .typed {
+    position: absolute;
+    inset: 8px 12px;
+  }
+  /* the little tail pointing back at his mouth */
+  .bubble::before {
+    content: "";
+    position: absolute;
+    left: -9px;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    margin-top: -3px;
+    background: #f8f8f8;
+    box-shadow:
+      -3px 0 0 0 #181018,
+      0 -3px 0 0 #181018,
+      0 3px 0 0 #181018;
+  }
+
   .ascii {
     position: absolute;
     left: calc(var(--s) * 22px);

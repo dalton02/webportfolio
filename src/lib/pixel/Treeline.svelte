@@ -57,14 +57,21 @@
     // whole art pixels on screen; the wrapper crops the spare column
     el.style.width = `${w * PX}px`;
     const g = el.getContext("2d")!;
-    g.clearRect(0, 0, w, H);
     const back = crowns(w, BACK_BASE, [8, 15], [7, 13], 12, 41);
     const front = crowns(w, FRONT_BASE, [6, 11], [4, 9], 3, 97);
     // 4x4 ordered dither, for the fade from the bushes into the night
     const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+    // every colour is opaque, so the pixels go straight into one ImageData instead of a rect each
+    const img = g.createImageData(w, H);
+    const px = img.data;
+    const rgb = new Map(Object.values(C).map((c) => [c, [1, 3, 5].map((k) => parseInt(c.slice(k, k + 2), 16))]));
     const dot = (x: number, y: number, c: string) => {
-      g.fillStyle = c;
-      g.fillRect(x, y, 1, 1);
+      const i = (y * w + x) * 4;
+      const [r, gr, b] = rgb.get(c)!;
+      px[i] = r;
+      px[i + 1] = gr;
+      px[i + 2] = b;
+      px[i + 3] = 255;
     };
     for (let x = 0; x < w; x++) {
       const tb = Math.ceil(back.top[x]);
@@ -92,6 +99,7 @@
         }
       }
     }
+    g.putImageData(img, 0, 0);
   }
 
   $effect(() => {

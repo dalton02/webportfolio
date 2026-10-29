@@ -1,40 +1,16 @@
-<script lang="ts">
-  import type { Sprite } from "./sprites.js";
-  import { reducedMotion } from "$lib/utils/motion.svelte";
+<script lang="ts" module>
+  import type { Sheet, Sprite } from "./sprites.js";
 
-  let {
-    sprite,
-    scale = 4,
-    frame,
-    fps = 0,
-    label,
-    class: css = "",
-  }: {
-    sprite: Sprite;
-    /** whole-number scale, so every art pixel is the same size on screen */
-    scale?: number;
-    /** pin a frame; leave unset to let `fps` cycle through them */
-    frame?: number;
-    fps?: number;
-    label?: string;
-    class?: string;
-  } = $props();
-
-  let tick = $state(0);
-
-  $effect(() => {
-    if (frame !== undefined || fps <= 0 || sprite.frames.length < 2 || reducedMotion.current) return;
-    const id = setInterval(() => tick++, 1000 / fps);
-    return () => clearInterval(id);
-  });
-
-  let current = $derived(frame ?? tick);
+  /** Run-length paths per sprite and frame; a frame's paths never change, so build them once. */
+  const built = new WeakMap<Sprite, [string, string][][]>();
 
   /** One <path> per colour, built from horizontal runs, so even a 16×16 sprite is a few nodes. */
-  let paths = $derived.by(() => {
-    const rows = sprite.frames[current % sprite.frames.length];
+  function pathsOf(sprite: Sprite, frame: number) {
+    let frames = built.get(sprite);
+    if (!frames) built.set(sprite, (frames = []));
+    if (frames[frame]) return frames[frame];
     const byColor = new Map<string, string>();
-    rows.forEach((row, y) => {
+    sprite.frames[frame].forEach((row, y) => {
       let x = 0;
       while (x < row.length) {
         const c = row[x];
@@ -47,21 +23,79 @@
         x = end;
       }
     });
-    return [...byColor];
-  });
+    return (frames[frame] = [...byColor]);
+  }
 </script>
 
-<svg
-  width={sprite.w * scale}
-  height={sprite.h * scale}
-  viewBox="0 0 {sprite.w} {sprite.h}"
-  shape-rendering="crispEdges"
-  class="shrink-0 {css}"
-  role={label ? "img" : undefined}
-  aria-label={label}
-  aria-hidden={label ? undefined : "true"}
->
-  {#each paths as [fill, d] (fill)}
-    <path {fill} {d} />
-  {/each}
-</svg>
+<script lang="ts">
+  import { reducedMotion } from "$lib/utils/motion.svelte";
+  import { page, watch } from "$lib/utils/visible.svelte";
+
+  let {
+    sprite,
+    scale = 4,
+    frame,
+    fps = 0,
+    label,
+    class: css = "",
+  }: {
+    /** a char-map sprite, or a PNG sprite sheet (frames side by side) */
+    sprite: Sprite | Sheet;
+    /** whole-number scale, so every art pixel is the same size on screen */
+    scale?: number;
+    /** pin a frame; leave unset to let `fps` cycle through them */
+    frame?: number;
+    fps?: number;
+    label?: string;
+    class?: string;
+  } = $props();
+
+  let tick = $state(0);
+  let count = $derived("src" in sprite ? sprite.frames : sprite.frames.length);
+
+  let el = $state<Element>();
+  let near = $state(false);
+  $effect(() => (el ? watch(el, (on) => (near = on)) : undefined));
+
+  // the timer only runs while the sprite is near the screen and the tab is in front
+  $effect(() => {
+    if (frame !== undefined || fps <= 0 || count < 2 || reducedMotion.current || !near || !page.visible) return;
+    const id = setInterval(() => tick++, 1000 / fps);
+    return () => clearInterval(id);
+  });
+
+  let current = $derived((frame ?? tick) % count);
+
+  let paths = $derived("src" in sprite ? [] : pathsOf(sprite, current));
+</script>
+
+{#if "src" in sprite}
+  <!-- a window one frame wide sliding along the strip, scaled up with hard pixel edges.
+       Block, like the svg below gets from Tailwind's preflight, so no line-box gap sits under the feet -->
+  <span
+    bind:this={el}
+    class="block shrink-0 bg-no-repeat {css}"
+    style="width: {sprite.w * scale}px; height: {sprite.h * scale}px; background-image: url({sprite.src});
+      background-size: {sprite.w * sprite.frames * scale}px {sprite.h * scale}px;
+      background-position: {-current * sprite.w * scale}px 0; image-rendering: pixelated;"
+    role={label ? "img" : undefined}
+    aria-label={label}
+    aria-hidden={label ? undefined : "true"}
+  ></span>
+{:else}
+  <svg
+    bind:this={el}
+    width={sprite.w * scale}
+    height={sprite.h * scale}
+    viewBox="0 0 {sprite.w} {sprite.h}"
+    shape-rendering="crispEdges"
+    class="shrink-0 {css}"
+    role={label ? "img" : undefined}
+    aria-label={label}
+    aria-hidden={label ? undefined : "true"}
+  >
+    {#each paths as [fill, d] (fill)}
+      <path {fill} {d} />
+    {/each}
+  </svg>
+{/if}

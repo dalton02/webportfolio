@@ -11,11 +11,14 @@
     -  branch (one way, hold down to drop)  ~  sandstone that gives way   D  cracked rock (dash)
     P  checkpoint     c  calango         k  carcará           s  sapo-cururu
     F |  flagpole top / pole             n  nest (left edge, sits on the ground)
+    f  fern (scenery)                    t  buriti palm (scenery, stands on its cell)
+
+  World 1-2 is the forest up on top: the same moves, asked for together.
 */
 
 export const ROWS = 18;
 
-const STRETCHES: string[][] = [
+const STRETCHES_1: string[][] = [
   // home turf: a quiet start, the first blocks to bonk and a step one hop clears
   [
     "......................",
@@ -200,11 +203,125 @@ const STRETCHES: string[][] = [
   ],
 ];
 
+const STRETCHES_2: string[][] = [
+  // into the forest: the first blocks, a palm, a step
+  [
+    "..........................",
+    "..........................",
+    ".......?B!B?..............",
+    "..........................",
+    "..........................",
+    "...t........f.....HH......",
+    "##########################",
+    "##########################",
+  ],
+  // a ladder of branches up into the leaves, sapos waiting at the bottom
+  [
+    "............................",
+    "....................ooo.....",
+    "....................---.....",
+    "............................",
+    "..............---...........",
+    "............................",
+    "........---.................",
+    "............................",
+    "..--........................",
+    "...f.....s........s....t....",
+    "############################",
+    "############################",
+  ],
+  // the spring: mist rising off the falls in two columns, a branch between them and hawks over the water
+  [
+    "....................................",
+    "..........ww..........ww............",
+    "..........ww....k.....wo........k...",
+    "..........ww..........ww............",
+    "..........ww..........ww............",
+    "..........ww....ooo...ww............",
+    "..........ww..........ww............",
+    "..........ww..........ww............",
+    "..........ww......---.ww............",
+    "..........ww..........ww............",
+    "..........ww..........ww............",
+    "t.........ww..........ww.........f..",
+    "####......ww..........ww......######",
+    "####......ww..........ww......######",
+  ],
+  // a room of hard rock with cracked doors: dash in, grab the coins, dash out
+  [
+    "................................",
+    "................................",
+    "........HHHHHHHHHHHH............",
+    "........HHHHHHHHHHHH............",
+    "........D..........D............",
+    "........D....oo....D.....c......",
+    "..f.....D....oo....D......t.....",
+    "################################",
+    "################################",
+  ],
+  // the checkpoint
+  [
+    "............",
+    "..f...P...f.",
+    "############",
+    "############",
+  ],
+  // three sandstone bridges over a field of spikes, a heart up above
+  [
+    "..................................",
+    "..................................",
+    "..........?!?.....................",
+    "..................................",
+    "..................................",
+    "...~~~~~~.....~~~~~~.....~~~~~~...",
+    "..xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx..",
+    "##################################",
+    "##################################",
+  ],
+  // springs up into the canopy, coins on the high branches, a hawk in the way
+  [
+    "......................................",
+    "......ooooo...........................",
+    "......................................",
+    "......-----.........ooo...............",
+    "..................-------.............",
+    "......................................",
+    "......................................",
+    "......................................",
+    "...........k..........................",
+    "......................................",
+    "..^^........c.....^^......s...t.......",
+    "######################################",
+    "######################################",
+  ],
+  // last steps, the flag, and the nest
+  [
+    "........................",
+    "........................",
+    "..........F.............",
+    "..........|.............",
+    ".....H....|.............",
+    "....HH....|.............",
+    ".f.HHH....|....n...t....",
+    "########################",
+    "########################",
+  ],
+];
+
 const sky = (s: string[]) => [...Array.from({ length: ROWS - s.length }, () => ".".repeat(s[0].length)), ...s];
 
-if (import.meta.env?.DEV) {
-  for (const [i, s] of STRETCHES.entries())
-    if (s.length > ROWS || s.some((row) => row.length !== s[0].length)) console.warn(`level stretch ${i} is ragged`, s);
-}
+const build = (stretches: string[][]) => {
+  if (import.meta.env?.DEV) {
+    for (const [i, s] of stretches.entries())
+      if (s.length > ROWS || s.some((row) => row.length !== s[0].length)) console.warn(`level stretch ${i} is ragged`, s);
+  }
+  return Array.from({ length: ROWS }, (_, r) => stretches.map((s) => sky(s)[r]).join(""));
+};
 
-export const LEVEL: string[] = Array.from({ length: ROWS }, (_, r) => STRETCHES.map((s) => sky(s)[r]).join(""));
+/** `far` is what stands on the horizon: the chapada from below, the forest canopy from on top */
+export type Level = { name: string; map: string[]; far: "mesa" | "canopy" };
+
+export const LEVELS: Level[] = [
+  { name: "1-1", map: build(STRETCHES_1), far: "mesa" },
+  { name: "1-2", map: build(STRETCHES_2), far: "canopy" },
+];

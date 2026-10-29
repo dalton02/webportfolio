@@ -106,6 +106,8 @@ class Sfx {
   private lastBlip = 0;
   private music: { bus: GainNode; timer: ReturnType<typeof setInterval> } | undefined;
   private song = SITE_SONG;
+  private ambience: { bus: GainNode; src: AudioBufferSourceNode; lfo?: OscillatorNode } | undefined;
+  private sky: "clear" | "rain" | "wind" = "clear";
 
   /** Reads the saved choice. Audio itself only starts after a click (browser autoplay rules). */
   init() {
@@ -145,12 +147,15 @@ class Sfx {
     } catch {
       // storage blocked: the switch still works for this visit
     }
-    if (this.muted) this.stopMusic();
-    else {
+    if (this.muted) {
+      this.stopMusic();
+      this.stopAmbience();
+    } else {
       // turning it on is itself a click or key press, so audio is allowed from here
       this.locked = false;
       this.select();
       this.startMusic();
+      this.startAmbience();
     }
   }
 
@@ -211,6 +216,62 @@ class Sfx {
     m.bus.gain.cancelScheduledValues(ctx.currentTime);
     m.bus.gain.setValueAtTime(m.bus.gain.value, ctx.currentTime);
     m.bus.gain.linearRampToValueAtTime(on ? 0 : 1, ctx.currentTime + 0.15);
+  }
+
+  /** Rain hiss or gusting wind under the tune, following the field's weather; "clear" fades it out. */
+  weather(kind: "clear" | "rain" | "wind") {
+    if (kind === this.sky) return;
+    this.sky = kind;
+    this.stopAmbience();
+    this.startAmbience();
+  }
+
+  /** Two seconds of white noise on a loop, through a low-pass (rain) or a swaying band-pass (wind). */
+  private startAmbience() {
+    const ctx = this.audio();
+    if (!ctx || this.ambience || this.sky === "clear") return;
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.loop = true;
+    const filter = ctx.createBiquadFilter();
+    const bus = ctx.createGain();
+    let lfo: OscillatorNode | undefined;
+    if (this.sky === "rain") {
+      filter.type = "lowpass";
+      filter.frequency.value = 1600;
+    } else {
+      // the band sliding up and down reads as gusts
+      filter.type = "bandpass";
+      filter.frequency.value = 520;
+      filter.Q.value = 1.4;
+      lfo = ctx.createOscillator();
+      lfo.frequency.value = 0.22;
+      const depth = ctx.createGain();
+      depth.gain.value = 320;
+      lfo.connect(depth).connect(filter.frequency);
+      lfo.start();
+    }
+    bus.gain.setValueAtTime(0, ctx.currentTime);
+    bus.gain.linearRampToValueAtTime(this.sky === "rain" ? 0.05 : 0.08, ctx.currentTime + 1.5);
+    src.connect(filter).connect(bus).connect(ctx.destination);
+    src.start();
+    this.ambience = { bus, src, lfo };
+  }
+
+  private stopAmbience() {
+    const a = this.ambience;
+    const ctx = this.ctx;
+    if (!a || !ctx) return;
+    this.ambience = undefined;
+    const end = ctx.currentTime + 1.2;
+    a.bus.gain.cancelScheduledValues(ctx.currentTime);
+    a.bus.gain.setValueAtTime(a.bus.gain.value, ctx.currentTime);
+    a.bus.gain.linearRampToValueAtTime(0, end);
+    a.src.stop(end);
+    a.lfo?.stop(end);
   }
 
   private stopMusic() {
@@ -315,6 +376,26 @@ class Sfx {
       osc.connect(gain).connect(ctx.destination);
       osc.start(t);
       osc.stop(t + 0.08);
+    });
+  }
+
+  /** A frog in the grass: two low "croc"s, each sliding down. */
+  croak() {
+    const ctx = this.audio();
+    if (!ctx) return;
+    const t0 = ctx.currentTime + 0.01;
+    [0, 0.17].forEach((at) => {
+      const t = t0 + at;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "square";
+      osc.frequency.setValueAtTime(240, t);
+      osc.frequency.exponentialRampToValueAtTime(110, t + 0.11);
+      gain.gain.setValueAtTime(0.06, t);
+      gain.gain.linearRampToValueAtTime(0, t + 0.12);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.12);
     });
   }
 
@@ -453,6 +534,19 @@ class Sfx {
       [hz("G5"), 0.07],
       [hz("C6"), 0.16],
     ], 0.045);
+  }
+
+  /** The world turning to colour: a bright arpeggio running up two octaves, then a sparkle on top. */
+  color() {
+    this.play([
+      [hz("C5"), 0.05],
+      [hz("E5"), 0.05],
+      [hz("G5"), 0.05],
+      [hz("C6"), 0.05],
+      [hz("E6"), 0.05],
+      [hz("G6"), 0.05],
+      [hz("C7"), 0.24, "triangle"],
+    ], 0.04);
   }
 
   /** A soft wingbeat while gliding. */

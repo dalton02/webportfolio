@@ -1,5 +1,4 @@
 <script lang="ts">
-  import z from "zod";
   import Button from "$lib/comps/Button.svelte";
   import Icon from "$lib/comps/Icon.svelte";
   import Input from "$lib/comps/Input.svelte";
@@ -23,12 +22,11 @@
   const [emailUser, emailDomain] = email.split("@");
   const resume = new Text(resumeUrl);
 
-  let validation = $derived(
-    z.object({
-      name: z.string().min(4, { message: t.nameError.value }),
-      message: z.string().min(10, { message: t.messageError.value }),
-    }),
-  );
+  const validation = {
+    name: (v: string) => (v.length >= 4 ? "" : t.nameError.value),
+    message: (v: string) => (v.length >= 10 ? "" : t.messageError.value),
+  };
+  const valid = () => !validation.name(form.name) && !validation.message(form.message);
 
   let form = $state({ name: "", message: "" });
   let copied = $state(false);
@@ -51,7 +49,7 @@
   }
 
   function submitEmail() {
-    if (!validation.safeParse(form).success) return;
+    if (!valid()) return;
     const subject = new Text({
       ptBr: `Contato de ${form.name}`,
       enUs: `Contact of ${form.name}`,
@@ -68,7 +66,7 @@
   }
 
   function submitWhats() {
-    if (!validation.safeParse(form).success) return;
+    if (!valid()) return;
     const text = new Text({
       ptBr: `Olá meu nome é ${form.name},\n${form.message}`,
       enUs: `Hi there, my name is ${form.name}, \n ${form.message}`,
@@ -188,14 +186,14 @@
           >
             <Input
               bind:value={form.name}
-              validation={validation.shape.name}
+              validation={validation.name}
               label={t.name.value}
               placeholder={t.namePlaceholder.value}
             />
             <Input
               kind="textarea"
               bind:value={form.message}
-              validation={validation.shape.message}
+              validation={validation.message}
               label={t.message.value}
               placeholder={t.messagePlaceholder.value}
             />

@@ -1,6 +1,4 @@
 <script lang="ts">
-  import type { ZodTypeAny } from "zod";
-
   let {
     value = $bindable(),
     validation,
@@ -9,7 +7,8 @@
     kind = "input",
   }: {
     value: string;
-    validation: ZodTypeAny;
+    /** the error to show for this value, or "" when it's fine */
+    validation: (value: string) => string;
     label: string;
     placeholder: string;
     kind?: "input" | "textarea";
@@ -17,11 +16,7 @@
 
   const id = $props.id();
 
-  let error = $derived.by(() => {
-    if (!value) return "";
-    const v = validation.safeParse(value);
-    return v.success ? "" : (v.error.issues[0]?.message ?? "");
-  });
+  let error = $derived(value ? validation(value) : "");
 
   const field = `w-full border-0 bg-night-hi px-4 py-3 font-pixel text-[18px] text-snow outline-none
     placeholder:text-mist/60 focus:ring-0`;
